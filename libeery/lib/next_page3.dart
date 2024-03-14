@@ -15,7 +15,14 @@ class NextPage3 extends StatefulWidget {
 class _NextPage3State extends State<NextPage3> {
 
   int currentStep = 3;
-    List<bool> progressStatus = [false, false, true, false];
+  List<bool> progressStatus = [false, false, true, false];
+
+  Color color1 = const Color.fromRGBO(51, 51, 51, 1);
+  Color color2 = const Color.fromRGBO(217, 217, 217, 1);
+  Color color3 = const Color.fromRGBO(241, 135, 0, 1);
+  Color color4 = const Color.fromRGBO(197, 197, 197, 1);
+
+ // Untuk navigate di appBar
   void navigateToNextPages() {
     if (currentStep < 4) {
       setState(() {
@@ -28,7 +35,7 @@ class _NextPage3State extends State<NextPage3> {
         case 2:
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => NextPage2()),
+            MaterialPageRoute(builder: (context) => NextPage2()), // NextPage2() ganti jadi class di bookingPageTab2 
           ).then((_) {
             // Reset warna ProgressIndicator yang pertama setelah kembali dari halaman 2
             setState(() {
@@ -39,10 +46,15 @@ class _NextPage3State extends State<NextPage3> {
         case 3:
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => NextPage3()),
+            MaterialPageRoute(builder: (context) => NextPage3()), // NextPage3() ganti jadi class di bookingPageTab3
           );
           break;
-       
+         case 4:
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => NextPage3()), // NextPage3() ganti jadi class di bookingPageTab4
+          );
+          break;
       }
     }
   }
@@ -52,25 +64,48 @@ class _NextPage3State extends State<NextPage3> {
     return Scaffold(
       backgroundColor: Colors.grey[900],
       appBar: AppBar(
+        automaticallyImplyLeading: false, // ini buat ilangin navigationUp dari navigasi bawaan emulator androidnya biar kita bisa pake icon kita sendiri
         backgroundColor: Colors.white,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildProgressIndicator(1),
-            _buildProgressIndicator(2),
-            _buildProgressIndicator(3),
-            _buildProgressIndicator(4),
-          ],
-        ),
-        leading: IconButton(
-          icon: const Icon(
-              Icons.arrow_back_ios,
+        title: Padding(
+          padding: const EdgeInsets.only(top: 23.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildProgressIndicator(1),
+                  _buildProgressIndicator(2),
+                  _buildProgressIndicator(3),
+                  _buildProgressIndicator(4),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(12.0, 10.0, 0, 0),
+                    child: IconButton(
+                      onPressed: (){
+                        Navigator.of(context).pop();
+                      }, 
+                      icon: const Icon(Icons.arrow_back_ios),
+                      ),
+                    ),
+                ],
+              ),
+            ],
           ),
-          iconSize: 20,
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
         ),
+      ),
+      body: Container(
+        color: Colors.white,
+        child: Center(
+            child: Text(
+              'page3',
+              style: TextStyle(fontSize: 24),
+            ),
+          ),
       ),
     );
   }
@@ -78,16 +113,15 @@ class _NextPage3State extends State<NextPage3> {
     // Memeriksa apakah kotak progresif harus diisi atau tidak
      bool filled = progressStatus[step - 1];
     // Warna kotak progresif berdasarkan status
-    Color color = filled ? Colors.green : Colors.grey;
-
+    Color color = filled ? color3 : color4;
     return Container(
-      width: 20,
-      height: 20,
-      margin: const EdgeInsets.symmetric(horizontal: 5),
+      width: 72,
+      height: 4,
+      margin: const EdgeInsets.symmetric(horizontal: 1),
       decoration: BoxDecoration(
-        shape: BoxShape.circle,
+        borderRadius: BorderRadius.circular(100),
         color: color,
-        border: Border.all(color: Colors.black),
+        border: Border.all(color: color)
       ),
     );
   }
