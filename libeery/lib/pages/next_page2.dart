@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:libeery/next_page2.dart';
+import 'package:libeery/pages/next_page3.dart';
 
 void main() => runApp(MaterialApp(
-  home: NextPage3(),
+  home: NextPage2(),
 ));
 
-class NextPage3 extends StatefulWidget {
-  const NextPage3({super.key});
+class NextPage2 extends StatefulWidget {
+  const NextPage2({super.key});
 
   @override
-  State<NextPage3> createState() => _NextPage3State();
+  State<NextPage2> createState() => _NextPage2State();
 }
 
-class _NextPage3State extends State<NextPage3> {
+class _NextPage2State extends State<NextPage2> {
 
-  int currentStep = 3;
-  List<bool> progressStatus = [false, false, true, false];
+  int currentStep = 2;
+  List<bool> progressStatus = [false, true, false, false];
 
   Color color1 = const Color.fromRGBO(51, 51, 51, 1);
   Color color2 = const Color.fromRGBO(217, 217, 217, 1);
   Color color3 = const Color.fromRGBO(241, 135, 0, 1);
   Color color4 = const Color.fromRGBO(197, 197, 197, 1);
-
- // Untuk navigate di appBar
+  // Untuk navigate di appBar
   void navigateToNextPages() {
     if (currentStep < 4) {
       setState(() {
@@ -102,7 +101,7 @@ class _NextPage3State extends State<NextPage3> {
         color: Colors.white,
         child: Center(
             child: Text(
-              'page3',
+              'page2',
               style: TextStyle(fontSize: 24),
             ),
           ),
