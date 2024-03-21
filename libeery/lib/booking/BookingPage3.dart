@@ -193,7 +193,7 @@ class BookingPage3State extends State<BookingPage3> {
           ),
 
           Container(
-            height: 30,
+            height: 40,
             padding: EdgeInsets.symmetric(horizontal: 25),
             child: Column(
               children: [
@@ -210,6 +210,10 @@ class BookingPage3State extends State<BookingPage3> {
                     ),
                   ]
                 ),
+                Divider(
+                  thickness: 1.0,
+                  color: Color(0xff333333),
+                )
               ]
             ),
           ),
