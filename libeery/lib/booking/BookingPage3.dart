@@ -41,7 +41,7 @@ class BookingPage3State extends State<BookingPage3> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepOrangeAccent,
+        backgroundColor: Colors.white,
       ),
       body: Column(
         children: [
@@ -91,7 +91,6 @@ class BookingPage3State extends State<BookingPage3> {
             ),
           ),
           
-          // untuk pemilihan level 1-5
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -135,7 +134,6 @@ class BookingPage3State extends State<BookingPage3> {
                     )
                   ),
                   
-                  // untuk memilih 60 kotak dari masing-masing level
                   Expanded(
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
@@ -203,6 +201,7 @@ class BookingPage3State extends State<BookingPage3> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children:[
                     Text("Loker yang dipilih"),
+                    if (selectedLevel != -1 && selectedRow != -1 && selectedColumn != -1)
                     Text(
                       "${(selectedLevel+1).toString()} - ${selectedRow.toString() + selectedColumn.toString()}", 
                       style: TextStyle(
