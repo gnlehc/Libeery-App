@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 void main(){
   runApp(BookingPage3());
@@ -18,6 +17,8 @@ class Loker{
 }
 
 class BookingPage3 extends StatefulWidget {
+  const BookingPage3({super.key});
+
   @override
   BookingPage3State createState() => BookingPage3State();
 }
@@ -27,7 +28,7 @@ class BookingPage3State extends State<BookingPage3> {
     5,
     (index) => List.generate(
       5 * 12,
-      (index) => Loker(dipilih: false, color: Color(0xff5EC762)),
+      (index) => Loker(dipilih: false, color: const Color(0xff5EC762)),
     ),
   );
 
@@ -35,7 +36,7 @@ class BookingPage3State extends State<BookingPage3> {
   bool levelDipilih = false;
   int selectedColumn = -1;
   int selectedRow = -1;
-  int selectedLevel = -1;
+  int selectedLevel = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +48,8 @@ class BookingPage3State extends State<BookingPage3> {
         children: [
           Container(
             height: 100,
-            padding: EdgeInsets.symmetric(horizontal: 25),
-            child: Column(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -71,8 +72,8 @@ class BookingPage3State extends State<BookingPage3> {
           
           Container(
             height: 30,
-            padding: EdgeInsets.symmetric(horizontal: 25),
-            child: Row(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 AvailabilityInfo(
@@ -96,7 +97,7 @@ class BookingPage3State extends State<BookingPage3> {
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: Row(
                 children: [
-                  Container(
+                  SizedBox(
                     width: 50,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
@@ -112,9 +113,9 @@ class BookingPage3State extends State<BookingPage3> {
                             },
                             child: Container(
                               height: 120,
-                              margin: EdgeInsets.all(5),
+                              margin: const EdgeInsets.all(5),
                               decoration: BoxDecoration(
-                                color: selectedLevel == index ? Color(0xffF18700) : Color.fromARGB(255, 224, 224, 224),
+                                color: selectedLevel == index ? const Color(0xffF18700) : const Color.fromARGB(255, 224, 224, 224),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Center(
@@ -123,7 +124,7 @@ class BookingPage3State extends State<BookingPage3> {
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
-                                    color: selectedLevel == index ? Color(0xffF1F1F1) : Color(0xff333333),
+                                    color: selectedLevel == index ? const Color(0xffF1F1F1) : const Color(0xff333333),
                                   ),
                                 ),
                               ),
@@ -138,12 +139,12 @@ class BookingPage3State extends State<BookingPage3> {
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       child: GridView.count(
-                        padding: EdgeInsets.only(top: 10, left: 15),
+                        padding: const EdgeInsets.only(top: 10, left: 15),
                         mainAxisSpacing: 10,
                         crossAxisSpacing: 10,
                         crossAxisCount: 5,
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         children: List.generate(
                           60,
                           (index) {
@@ -154,14 +155,14 @@ class BookingPage3State extends State<BookingPage3> {
                                 setState(() {
                                   for (int i = 0; i < lokerUser.length; i++) {
                                     for (int j = 0; j < lokerUser[i].length; j++) {
-                                      lokerUser[i][j].color = Color(0xff5EC762);
+                                      lokerUser[i][j].color = const Color(0xff5EC762);
                                     }
                                   }
 
-                                  if (lokerUser[row][column].color == Color(0xff5EC762)) {
-                                    lokerUser[row][column].color = Color(0xff0097DA);
+                                  if (lokerUser[row][column].color == const Color(0xff5EC762)) {
+                                    lokerUser[row][column].color = const Color(0xff0097DA);
                                   } else {
-                                    lokerUser[row][column].color = Color(0xff5EC762);
+                                    lokerUser[row][column].color = const Color(0xff5EC762);
                                   }
 
                                   selectedColumn = column+1;
@@ -194,23 +195,23 @@ class BookingPage3State extends State<BookingPage3> {
 
           Container(
             height: 40,
-            padding: EdgeInsets.symmetric(horizontal: 25),
+            padding: const EdgeInsets.symmetric(horizontal: 25),
             child: Column(
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children:[
-                    Text("Loker yang dipilih"),
+                    const Text("Loker yang dipilih"),
                     if (selectedLevel != -1 && selectedRow != -1 && selectedColumn != -1)
                     Text(
                       "${(selectedLevel+1).toString()} - ${selectedRow.toString() + selectedColumn.toString()}", 
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.w700
                       ),
                     ),
                   ]
                 ),
-                Divider(
+                const Divider(
                   thickness: 1.0,
                   color: Color(0xff333333),
                 )
@@ -220,17 +221,17 @@ class BookingPage3State extends State<BookingPage3> {
 
           Container(
             height: 100,
-            padding: EdgeInsets.symmetric(horizontal: 25),
+            padding: const EdgeInsets.symmetric(horizontal: 25),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 ElevatedButton(
                   onPressed: (){}, 
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xffF18700),
-                    fixedSize: Size(134, 20),
+                    backgroundColor: const Color(0xffF18700),
+                    fixedSize: const Size(134, 20),
                   ),
-                  child: Text(
+                  child: const Text(
                     "Selanjutnya", 
                     style: TextStyle(
                       color: Color(0xffF1F1F1)
@@ -258,7 +259,7 @@ class BookingPage3State extends State<BookingPage3> {
 }
 
 class AvailabilityInfo extends StatelessWidget {
-  AvailabilityInfo({
+  const AvailabilityInfo({
     super.key,
     required this.information,
     required this.colorInfo,
@@ -279,7 +280,7 @@ class AvailabilityInfo extends StatelessWidget {
             borderRadius: BorderRadius.circular(3),
           ),
         ),
-        SizedBox(width: 5),
+        const SizedBox(width: 5),
         Text(
           information, 
           style: TextStyle(
