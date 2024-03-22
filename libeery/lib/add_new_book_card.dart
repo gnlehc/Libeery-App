@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:dotted_border/dotted_border.dart';
 
 void main(){
   runApp(const AddNewBookCard());
@@ -8,21 +9,54 @@ class AddNewBookCard extends StatefulWidget {
   const AddNewBookCard({super.key});
 
   @override
-  _AddNewBookCardState createState() => _AddNewBookCardState();
+  AddNewBookCardState createState() => AddNewBookCardState();
 }
 
-class _AddNewBookCardState extends State<AddNewBookCard> {
+class AddNewBookCardState extends State<AddNewBookCard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add New Book'),
+        backgroundColor: Colors.white,
       ),
-      body: const Center(
-        child: Text(
-          'Add New Book Form',
-          style: TextStyle(fontSize: 20.0),
-        ),
+      body: Column(
+        children: [
+          Center(
+            child: DottedBorder(
+              dashPattern: const [10, 15],
+              color: const Color(0xffA4A4A4),
+              strokeWidth: 2,
+              borderType: BorderType.RRect,
+              radius: const Radius.circular(10),
+              child: SizedBox(
+                width: 350,
+                height: 100,
+                child: Center(
+                  child: DottedBorder(
+                    dashPattern: const [10, 10],
+                    color: const Color(0xffA4A4A4),
+                    strokeWidth: 1.5,
+                    borderType: BorderType.Circle,
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Center(
+                        child: Icon(
+                          Icons.add,
+                          size: 40,
+                          color: Color(0xffA4A4A4),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ]
       ),
     );
   }
