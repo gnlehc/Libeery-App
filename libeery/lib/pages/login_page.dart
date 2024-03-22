@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:libeery/widgets/login_form.dart';
+import 'package:libeery/widgets/choose_login_widget.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key});
+class ChooseLoginPage extends StatelessWidget {
+  const ChooseLoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Color(0xFF0097DA), // Set the background color here
+        color: const Color(0xFF0097DA), // Set the background color here
         child: const Center(
             child: SingleChildScrollView(
           child: Column(
@@ -29,7 +29,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: EdgeInsets.all(20.0),
-                    child: LoginForm(),
+                    child: ChooseLoginWidget(),
                   ),
                 ),
               ),
