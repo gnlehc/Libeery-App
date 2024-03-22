@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 void main(){
-  runApp(AddNewBookCard());
+  runApp(const AddNewBookCard());
 }
 
 class AddNewBookCard extends StatefulWidget {
+  const AddNewBookCard({super.key});
+
   @override
   _AddNewBookCardState createState() => _AddNewBookCardState();
 }
@@ -15,9 +16,9 @@ class _AddNewBookCardState extends State<AddNewBookCard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add New Book'),
+        title: const Text('Add New Book'),
       ),
-      body: Center(
+      body: const Center(
         child: Text(
           'Add New Book Form',
           style: TextStyle(fontSize: 20.0),

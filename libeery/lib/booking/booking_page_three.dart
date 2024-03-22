@@ -194,8 +194,8 @@ class BookingPage3State extends State<BookingPage3> {
           ),
 
           Container(
-            height: 40,
-            padding: const EdgeInsets.symmetric(horizontal: 25),
+            height: 60,
+            padding: const EdgeInsets.symmetric(vertical:10, horizontal: 25),
             child: Column(
               children: [
                 Row(
