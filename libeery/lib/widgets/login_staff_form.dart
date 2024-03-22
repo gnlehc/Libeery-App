@@ -74,7 +74,7 @@ class LoginStaffFormState extends State<LoginStaffForm> {
           "Sebelum masuk ke dalam LKC BINUS, harap memasukkan NIS dan kata sandi BinusMaya kamu ya!",
           style: TextStyle(
             fontSize: 12,
-            fontWeight: FontWeight.w300,
+            fontWeight: FontWeight.w400,
             color: Color(0xFF333333),
           ),
           textAlign: TextAlign.center,
@@ -132,7 +132,7 @@ class LoginStaffFormState extends State<LoginStaffForm> {
                   hintText: 'Masukkan NIS kamu...',
                   hintStyle: const TextStyle(
                     fontSize: 12,
-                    fontWeight: FontWeight.w300,
+                    fontWeight: FontWeight.w400,
                     color: Color(0xFF333333),
                   ),
                   border: OutlineInputBorder(
@@ -166,7 +166,7 @@ class LoginStaffFormState extends State<LoginStaffForm> {
                   hintText: 'Masukkan password kamu...',
                   hintStyle: const TextStyle(
                     fontSize: 12,
-                    fontWeight: FontWeight.w300,
+                    fontWeight: FontWeight.w400,
                     color: Color(0xFF333333),
                   ),
                   border: OutlineInputBorder(

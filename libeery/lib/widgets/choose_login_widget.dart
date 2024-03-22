@@ -35,12 +35,12 @@ class ChooseLoginWidgetState extends State<ChooseLoginWidget> {
           "Masuk ke dalam akun BINUSmu terlebih dahulu yuk. Kamu seorang mahasiswa atau dosen atau staff nih?",
           style: TextStyle(
             fontSize: 12,
-            fontWeight: FontWeight.w300,
+            fontWeight: FontWeight.w400,
             color: Color(0xFF333333),
           ),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 16),
         LoginOptionsButton(
           buttonText: 'Mahasiswa',
           isSelected: _selectedButton == 'Mahasiswa',
@@ -52,7 +52,7 @@ class ChooseLoginWidgetState extends State<ChooseLoginWidget> {
             }
           },
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 16),
         LoginOptionsButton(
           buttonText: 'Staff',
           isSelected: _selectedButton == 'Staff',
@@ -64,7 +64,7 @@ class ChooseLoginWidgetState extends State<ChooseLoginWidget> {
             }
           },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 24),
         ElevatedButton(
           onPressed: () => _navigateToLogin(context),
           style: ElevatedButton.styleFrom(
