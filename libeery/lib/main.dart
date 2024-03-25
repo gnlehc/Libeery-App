@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
-import 'pages/booking_page_one.dart';
+import 'package:libeery/pages/book_for_later_page.dart';
+import 'package:libeery/pages/book_for_now_page.dart';
+import 'package:libeery/pages/booking_page_one.dart';
+import 'package:libeery/pages/login_form_page.dart';
+import 'package:libeery/pages/login_page.dart';
+import 'package:libeery/pages/splashscreen_page.dart';
+import 'package:libeery/widgets/login_mhs_form.dart';
+import 'package:libeery/widgets/login_staff_form.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,12 +19,20 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        fontFamily: 'Montserrat',
       ),
-      home: const BookingPageOne(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => SplashScreen(),
+        '/chooselogin': (context) => const ChooseLoginPage(),
+        '/loginstaff': (context) =>
+            const LoginFormPage(formWidget: LoginStaffForm()),
+        '/loginmahasiswa': (context) =>
+            const LoginFormPage(formWidget: LoginMhsForm()),
+        '/bookingpageone': (context) => const BookingPageOne(),
+        '/bookfornow':(context) => const BookForNow(),
+        '/bookforlater':(context) => const BookForLater(),
+      },
     );
   }
 }
-
-
