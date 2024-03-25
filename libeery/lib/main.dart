@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => SplashScreen(),
+        '/': (context) => const SplashScreen(),
         '/chooselogin': (context) => const ChooseLoginPage(),
         '/loginstaff': (context) =>
             const LoginFormPage(formWidget: LoginStaffForm()),
