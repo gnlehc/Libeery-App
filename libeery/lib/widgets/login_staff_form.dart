@@ -1,7 +1,6 @@
-import 'dart:convert';
 import 'dart:core';
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
+import 'package:libeery/services/msstaff_service.dart';
 
 class LoginStaffForm extends StatefulWidget {
   const LoginStaffForm({super.key});
@@ -15,39 +14,6 @@ class LoginStaffFormState extends State<LoginStaffForm> {
   final TextEditingController passwordController = TextEditingController();
   bool _isObscure = true;
   String? errorMessage;
-
-  Future<String?> loginStaff(String nomorInduk, String password) async {
-    try {
-      final dio = Dio();
-      dio.options.validateStatus = (status) {
-        return true; // Always return true to prevent Dio from throwing exceptions
-      };
-
-      Map<String, dynamic> data = {
-        'NIS': nomorInduk,
-        'Password': password,
-      };
-
-      Response response = await dio.post(
-        'https://libeery-api-production.up.railway.app/api/public/loginstaff',
-        data: json.encode(data),
-        options: Options(headers: {
-          'Content-Type': 'application/json',
-        }),
-      );
-      if (response.statusCode == 200) {
-        // print('Login successful: ${response.data}');
-        return null;
-        // redirect to another page
-      } else if (response.statusCode == 400) {
-        return response.data['Message'];
-      } else {
-        return response.data['Message'] ?? 'Unknown error occurred.';
-      }
-    } catch (error) {
-      return 'Unexpected error occurred: $error';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -201,23 +167,12 @@ class LoginStaffFormState extends State<LoginStaffForm> {
                   if (nomorIndukController.text == "" ||
                       passwordController.text == "") {
                     setState(() {
-                      this.errorMessage =
-                          "Harap mengisi kolom NIS dan Password";
+                      errorMessage = "Harap mengisi kolom NIS dan Password";
                     });
                     return;
                   }
 
-                  String? errorMessage = await loginStaff(
-                    nomorIndukController.text,
-                    passwordController.text,
-                  );
-                  if (errorMessage == null) {
-                    // print("Success");
-                  } else {
-                    setState(() {
-                      this.errorMessage = errorMessage;
-                    });
-                  }
+                  loginStaff(context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFF18700),
@@ -248,5 +203,27 @@ class LoginStaffFormState extends State<LoginStaffForm> {
     nomorIndukController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+
+  Future<void> loginStaff(BuildContext context) async {
+    try {
+      List<dynamic> response = await MsStaffService.loginStaff(
+        nomorIndukController.text,
+        passwordController.text,
+      );
+
+      if (response[0] == 200) {
+        print(response[1]);
+        Navigator.pushNamed(context, '/home', arguments: response[1]);
+      } else {
+        setState(() {
+          errorMessage = response[1];
+        });
+      }
+    } catch (error) {
+      setState(() {
+        errorMessage = 'Unexpected error occurred: $error';
+      });
+    }
   }
 }

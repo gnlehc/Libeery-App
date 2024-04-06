@@ -1,7 +1,6 @@
-import 'dart:convert';
 import 'dart:core';
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
+import 'package:libeery/services/msmhs_service.dart';
 
 class LoginMhsForm extends StatefulWidget {
   const LoginMhsForm({super.key});
@@ -15,38 +14,6 @@ class LoginMhsFormState extends State<LoginMhsForm> {
   final TextEditingController passwordController = TextEditingController();
   bool _isObscure = true;
   String? errorMessage;
-
-  Future<String?> loginMhs(String nomorInduk, String password) async {
-    try {
-      final dio = Dio();
-      dio.options.validateStatus = (status) {
-        return true; // Always return true to prevent Dio from throwing exceptions
-      };
-
-      Map<String, dynamic> data = {
-        'NIM': nomorInduk,
-        'Password': password,
-      };
-
-      Response response = await dio.post(
-        'https://libeery-api-production.up.railway.app/api/public/loginmhs',
-        data: json.encode(data),
-        options: Options(headers: {
-          'Content-Type': 'application/json',
-        }),
-      );
-      if (response.statusCode == 200) {
-        return null;
-        // redirect to another page
-      } else if (response.statusCode == 400) {
-        return response.data['Message'];
-      } else {
-        return response.data['Message'] ?? 'Unknown error occurred.';
-      }
-    } catch (error) {
-      return 'Unexpected error occurred: $error';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -199,29 +166,16 @@ class LoginMhsFormState extends State<LoginMhsForm> {
                   if (nomorIndukController.text == "" ||
                       passwordController.text == "") {
                     setState(() {
-                      this.errorMessage =
-                          "Harap mengisi kolom NIM dan Password";
+                      errorMessage = "Harap mengisi kolom NIM dan Password";
                     });
                     return;
                   }
-                  String? errorMessage = await loginMhs(
-                    nomorIndukController.text,
-                    passwordController.text,
-                  );
-
-                  if (errorMessage == null) {
-                    // navigate to next page
-                  } else {
-                    setState(() {
-                      this.errorMessage = errorMessage;
-                    });
-                  }
+                  loginMhs(context);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFF18700), // Button color
+                  backgroundColor: const Color(0xFFF18700),
                   shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(20), // Button corner radius
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   padding: const EdgeInsets.only(left: 16, right: 16),
                 ),
@@ -246,5 +200,27 @@ class LoginMhsFormState extends State<LoginMhsForm> {
     nomorIndukController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+
+  Future<void> loginMhs(BuildContext context) async {
+    try {
+      List<dynamic> response = await MsMhsService.loginMhs(
+        nomorIndukController.text,
+        passwordController.text,
+      );
+
+      if (response[0] == 200) {
+        print(response[1]);
+        Navigator.pushNamed(context, '/home', arguments: response[1]);
+      } else {
+        setState(() {
+          errorMessage = response[1];
+        });
+      }
+    } catch (error) {
+      setState(() {
+        errorMessage = 'Unexpected error occurred: $error';
+      });
+    }
   }
 }
