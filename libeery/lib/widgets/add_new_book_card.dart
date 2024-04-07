@@ -24,7 +24,7 @@ class AddNewBookCardState extends State<AddNewBookCard> {
           Center(
             child: DottedBorder(
               dashPattern: const [10, 15],
-              color: const Color(0xffA4A4A4),
+              color: const Color(0xff333333),
               strokeWidth: 2,
               borderType: BorderType.RRect,
               radius: const Radius.circular(10),
@@ -34,7 +34,7 @@ class AddNewBookCardState extends State<AddNewBookCard> {
                 child: Center(
                   child: DottedBorder(
                     dashPattern: const [10, 10],
-                    color: const Color(0xffA4A4A4),
+                    color: const Color(0xff333333),
                     strokeWidth: 1.5,
                     borderType: BorderType.Circle,
                     child: Container(
@@ -47,7 +47,7 @@ class AddNewBookCardState extends State<AddNewBookCard> {
                         child: Icon(
                           Icons.add,
                           size: 40,
-                          color: Color(0xffA4A4A4),
+                          color: Color(0xff333333),
                         ),
                       ),
                     ),

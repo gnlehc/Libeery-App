@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:libeery/models/loker_model.dart';
+import 'package:libeery/services/loker_service.dart';
 
 void main(){
-  runApp(BookingPage3());
+  runApp(const BookingPage3());
 }
 
 class Loker{
@@ -24,6 +26,20 @@ class BookingPage3 extends StatefulWidget {
 }
 
 class BookingPage3State extends State<BookingPage3> {
+  List<MsLoker> listLoker = [];
+  Repository repository = Repository();
+
+  getLoker() async{
+    listLoker = await repository.getLoker();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    getLoker();
+    super.initState();
+  }
+
   List<List<Loker>> lokerUser = List.generate(
     5,
     (index) => List.generate(
@@ -34,8 +50,9 @@ class BookingPage3State extends State<BookingPage3> {
 
   bool lokerDipilih = false;
   bool levelDipilih = false;
-  int selectedColumn = -1;
-  int selectedRow = -1;
+  int selectedLocker = 0;
+  // int selectedColumn = -1;
+  // int selectedRow = -1;
   int selectedLevel = 0;
 
   @override
@@ -148,14 +165,26 @@ class BookingPage3State extends State<BookingPage3> {
                         children: List.generate(
                           60,
                           (index) {
+                            // indexing error
                             int row = index ~/ 12;
                             int column = index % 12;
+                            MsLoker currentLoker = listLoker[index]; // Ambil data MsLoker berdasarkan index
+
+                            Color color;
+                            if (currentLoker.availability == "Booked") {
+                              color = const Color(0xffC75E5E); // Warna merah jika loker sudah dipesan
+                            } else {
+                              color = lokerUser[row][column].color; // Warna hijau jika tersedia atau warna sebelumnya jika sudah dipilih
+                            }
+
                             return GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  for (int i = 0; i < lokerUser.length; i++) {
-                                    for (int j = 0; j < lokerUser[i].length; j++) {
-                                      lokerUser[i][j].color = const Color(0xff5EC762);
+                                  if (currentLoker.availability != "Booked") {
+                                    for (int i = 0; i < lokerUser.length; i++) {
+                                      for (int j = 0; j < lokerUser[i].length; j++) {
+                                        lokerUser[i][j].color = const Color(0xff5EC762);
+                                      }
                                     }
                                   }
 
@@ -165,12 +194,7 @@ class BookingPage3State extends State<BookingPage3> {
                                     lokerUser[row][column].color = const Color(0xff5EC762);
                                   }
 
-                                  selectedColumn = column+1;
-                                  selectedRow = row;
-                                  if(selectedColumn >= 10){
-                                    selectedColumn -= 10;
-                                    selectedRow += 1;
-                                  }
+                                  selectedLocker = index+1;
                                 });
                               },
                               
@@ -202,9 +226,9 @@ class BookingPage3State extends State<BookingPage3> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children:[
                     const Text("Loker yang dipilih"),
-                    if (selectedLevel != -1 && selectedRow != -1 && selectedColumn != -1)
+                    if (selectedLevel != -1 && selectedLocker != 0)
                     Text(
-                      "${(selectedLevel+1).toString()} - ${selectedRow.toString() + selectedColumn.toString()}", 
+                      "${(selectedLevel+1).toString()} - ${(selectedLocker).toString()}", 
                       style: const TextStyle(
                         fontWeight: FontWeight.w700
                       ),
