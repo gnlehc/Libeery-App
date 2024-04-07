@@ -27,10 +27,11 @@ class BookingPage3 extends StatefulWidget {
 
 class BookingPage3State extends State<BookingPage3> {
   List<MsLoker> listLoker = [];
-  Repository repository = Repository();
+  LokerService service = LokerService();
 
   getLoker() async{
-    listLoker = await repository.getLoker();
+    listLoker = await service.getLoker();
+    print(listLoker);
     setState(() {});
   }
 
@@ -163,18 +164,18 @@ class BookingPage3State extends State<BookingPage3> {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         children: List.generate(
-                          60,
+                          listLoker.length,
                           (index) {
-                            // indexing error
-                            int row = index ~/ 12;
-                            int column = index % 12;
-                            MsLoker currentLoker = listLoker[index]; // Ambil data MsLoker berdasarkan index
+                            int lockerId = listLoker[index].lockerID;
+                            int row = (lockerId - 1) ~/ 12; // Hitung row berdasarkan locker_id
+                            int column = (lockerId - 1) % 12; // Hitung column berdasarkan locker_id
+                            MsLoker currentLoker = listLoker[index]; 
 
                             Color color;
                             if (currentLoker.availability == "Booked") {
-                              color = const Color(0xffC75E5E); // Warna merah jika loker sudah dipesan
+                              color = const Color(0xffC75E5E);
                             } else {
-                              color = lokerUser[row][column].color; // Warna hijau jika tersedia atau warna sebelumnya jika sudah dipilih
+                              color = lokerUser[row][column].color;
                             }
 
                             return GestureDetector(
@@ -194,7 +195,7 @@ class BookingPage3State extends State<BookingPage3> {
                                     lokerUser[row][column].color = const Color(0xff5EC762);
                                   }
 
-                                  selectedLocker = index+1;
+                                  selectedLocker = lockerId;
                                 });
                               },
                               

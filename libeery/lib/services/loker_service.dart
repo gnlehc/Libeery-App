@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:libeery/models/loker_model.dart';
 
-class Repository{
+class LokerService{
   final _baseUrl = 'https://libeery-api-development.up.railway.app/api/private/lokers';
   Dio dio = Dio();
 
