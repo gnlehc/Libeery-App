@@ -1,22 +1,24 @@
+import 'package:libeery/models/loker.dart';
 import 'package:dio/dio.dart';
-import 'package:libeery/models/loker_model.dart';
 
 class LokerService{
-  final _baseUrl = 'https://libeery-api-development.up.railway.app/api/private/lokers';
-  Dio dio = Dio();
+  static const baseUrl = 'https://libeery-api-development.up.railway.app/api/private/lokers';
 
-  Future getLoker() async{
+  static Future<List<dynamic>> getLoker() async{
     try{
-      final response = await dio.get(_baseUrl);
+      final dio = Dio();
+      Response response = await dio.get(baseUrl);
 
       if(response.statusCode == 200){
-        print(response.data);
-        List<dynamic> jsonData = response.data;
+        List<dynamic> jsonData = response.data['Data'];
         List<MsLoker> tempLokerUser = jsonData.map((json) => MsLoker.fromJson(json)).toList();
         return tempLokerUser;
+      }else{
+        throw Exception('Failed to load loker data: ${response.statusCode}');
       }
     }catch(e){
       print(e.toString());
+      throw Exception(e.toString());
     }
   }
 }

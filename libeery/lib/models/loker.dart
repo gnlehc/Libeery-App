@@ -22,4 +22,14 @@ class MsLoker {
       stsrc: json['Stsrc'],
     );
   }
+
+  Map<String, dynamic> lokerResponseDTO(Map<String, dynamic> json) {
+    return {
+      'lockerID': json['LockerID'],
+      'rowNumber': json['RowNumber'],
+      'columnNumber': json['ColumnNumber'],
+      'availability': json['Availability'],
+      'stsrc': json['Stsrc'],
+    };
+  }
 }

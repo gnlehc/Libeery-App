@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:libeery/models/loker_model.dart';
+import 'package:libeery/models/loker.dart';
 import 'package:libeery/services/loker_service.dart';
 
 void main(){
@@ -26,19 +26,23 @@ class BookingPage3 extends StatefulWidget {
 }
 
 class BookingPage3State extends State<BookingPage3> {
-  List<MsLoker> listLoker = [];
-  LokerService service = LokerService();
+  List<dynamic> listLoker = [];
 
-  getLoker() async{
-    listLoker = await service.getLoker();
-    print(listLoker);
-    setState(() {});
+  void getLoker() async{
+    try {
+      final List<dynamic> result = await LokerService.getLoker();
+      setState(() {
+        listLoker = result;
+      });
+    } catch (e) {
+      e.toString();
+    }
   }
 
   @override
   void initState() {
-    getLoker();
     super.initState();
+    getLoker();
   }
 
   List<List<Loker>> lokerUser = List.generate(
@@ -51,10 +55,53 @@ class BookingPage3State extends State<BookingPage3> {
 
   bool lokerDipilih = false;
   bool levelDipilih = false;
-  int selectedLocker = 0;
-  // int selectedColumn = -1;
-  // int selectedRow = -1;
-  int selectedLevel = 0;
+  int selectedColumn = -1;
+  int selectedRow = -1;
+
+  void updateSelectedLocker(int rowIndex, int columnIndex) {
+    setState(() {
+
+      // Check locker's availability
+      final MsLoker selectedLoker = listLoker.firstWhere(
+        (element) =>
+            element.rowNumber == rowIndex + 1 &&
+            element.columnNumber == columnIndex + 1,
+        orElse: () => MsLoker(
+          lockerID: 0, 
+          rowNumber: 0, 
+          columnNumber: 0, 
+          availability: 'Active', 
+          stsrc: ''
+        ),
+      );
+
+      // if booked, return because the color already set to be red
+      if (selectedLoker.availability == 'Booked') {
+        return;
+      }
+
+      // Reselect to other locker
+      if (selectedRow == rowIndex && selectedColumn == columnIndex) {
+        lokerUser[rowIndex][columnIndex].dipilih = false;
+        lokerUser[rowIndex][columnIndex].color = const Color(0xff5EC762); // Available color
+        selectedRow = -1;
+        selectedColumn = -1;
+      } else {
+        // Deselect locker
+        if (selectedRow != -1 && selectedColumn != -1) {
+          lokerUser[selectedRow][selectedColumn].dipilih = false;
+          lokerUser[selectedRow][selectedColumn].color = const Color(0xff5EC762); // Available color
+        }
+
+        // Selecting any locker available
+        lokerUser[rowIndex][columnIndex].dipilih = true;
+        lokerUser[rowIndex][columnIndex].color = const Color(0xff0097DA); // Selected color
+        selectedRow = rowIndex;
+        selectedColumn = columnIndex;
+      }
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -110,114 +157,80 @@ class BookingPage3State extends State<BookingPage3> {
             ),
           ),
           
-          Expanded(
+          SizedBox(
+            height: 300,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: Row(
                 children: [
-                  SizedBox(
-                    width: 50,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: Column(
-                        children: List.generate(
-                          5, 
-                          (index) => GestureDetector(
-                            onTap: (){
-                              setState((){
-                                selectedLevel = index;
-                                levelDipilih = false;
-                              });
-                            },
-                            child: Container(
-                              height: 120,
-                              margin: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                color: selectedLevel == index ? const Color(0xffF18700) : const Color.fromARGB(255, 224, 224, 224),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "${index+1}",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: selectedLevel == index ? const Color(0xffF1F1F1) : const Color(0xff333333),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                  const SizedBox(
+                    height: 320,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        RowInfo(text: "1"),
+                        RowInfo(text: "2"),
+                        RowInfo(text: "3"),
+                        RowInfo(text: "4"),
+                        RowInfo(text: "5")
+                      ],
                     )
                   ),
                   
                   Expanded(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: GridView.count(
-                        padding: const EdgeInsets.only(top: 10, left: 15),
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
-                        crossAxisCount: 5,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: List.generate(
-                          listLoker.length,
-                          (index) {
-                            int lockerId = listLoker[index].lockerID;
-                            int row = (lockerId - 1) ~/ 12; // Hitung row berdasarkan locker_id
-                            int column = (lockerId - 1) % 12; // Hitung column berdasarkan locker_id
-                            MsLoker currentLoker = listLoker[index]; 
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 60,
+                      itemBuilder: (context, columnIndex) {
+                        return Column(
+                          children: List.generate(5, (rowIndex) {
+                            final MsLoker loker = listLoker.firstWhere(
+                              (element) =>
+                                  element.rowNumber == rowIndex + 1 &&
+                                  element.columnNumber == columnIndex + 1,
+                              orElse: () => MsLoker(
+                                lockerID: 0, 
+                                rowNumber: 0, 
+                                columnNumber: 0, 
+                                availability: 'Active', 
+                                stsrc: ''
+                              ),
+                            );
 
                             Color color;
-                            if (currentLoker.availability == "Booked") {
+                            if (loker.availability == 'Booked') {
                               color = const Color(0xffC75E5E);
                             } else {
-                              color = lokerUser[row][column].color;
+                              if (lokerUser[rowIndex][columnIndex].dipilih) {
+                                color = const Color(0xff0097DA);
+                              } else {
+                                color = const Color(0xff5EC762);
+                              }
                             }
 
                             return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  if (currentLoker.availability != "Booked") {
-                                    for (int i = 0; i < lokerUser.length; i++) {
-                                      for (int j = 0; j < lokerUser[i].length; j++) {
-                                        lokerUser[i][j].color = const Color(0xff5EC762);
-                                      }
-                                    }
-                                  }
-
-                                  if (lokerUser[row][column].color == const Color(0xff5EC762)) {
-                                    lokerUser[row][column].color = const Color(0xff0097DA);
-                                  } else {
-                                    lokerUser[row][column].color = const Color(0xff5EC762);
-                                  }
-
-                                  selectedLocker = lockerId;
-                                });
+                              onTap: (){
+                                updateSelectedLocker(rowIndex, columnIndex);
                               },
-                              
-                              child: Container(
-                                width: 20,
-                                height: 20,
-                                decoration: BoxDecoration(
-                                  color: lokerUser[row][column].color,
-                                  borderRadius: BorderRadius.circular(3),
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 16.5, left: 10),
+                                child: Container(
+                                  width: 40,
+                                  height: 40,
+                                  color: color,
                                 ),
-                              ),
+                              )
                             );
-                          },
-                        ),
-                      ),
+                          }),
+                        );
+                      },
                     ),
                   ),
                 ],
-              ),
+              )
             ),
           ),
-
+          
           Container(
             height: 60,
             padding: const EdgeInsets.symmetric(vertical:10, horizontal: 25),
@@ -227,9 +240,11 @@ class BookingPage3State extends State<BookingPage3> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children:[
                     const Text("Loker yang dipilih"),
-                    if (selectedLevel != -1 && selectedLocker != 0)
+                    if (selectedRow != -1 && selectedColumn != -1)
                     Text(
-                      "${(selectedLevel+1).toString()} - ${(selectedLocker).toString()}", 
+                      listLoker.firstWhere((loker) =>
+                        loker.rowNumber == selectedRow + 1 &&
+                        loker.columnNumber == selectedColumn + 1).lockerID.toString(),
                       style: const TextStyle(
                         fontWeight: FontWeight.w700
                       ),
@@ -279,6 +294,27 @@ class BookingPage3State extends State<BookingPage3> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class RowInfo extends StatelessWidget{
+  const RowInfo({
+    super.key,
+    required this.text,
+  });
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context){
+    return Text(
+      text, 
+      style: const TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+        color: Color(0xff333333),
+      )
     );
   }
 }
