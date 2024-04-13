@@ -211,7 +211,7 @@ class LoginMhsFormState extends State<LoginMhsForm> {
                     passwordController.text,
                   );
 
-                  if (errorMessage == null) {
+                  if (errorMessage == null && mounted) {
                     Navigator.push(
                     context, 
                     MaterialPageRoute(builder: (context)=> const BookingPageOne()) 
@@ -221,6 +221,7 @@ class LoginMhsFormState extends State<LoginMhsForm> {
                       this.errorMessage = errorMessage;
                     });
                   }
+
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFF18700), // Button color

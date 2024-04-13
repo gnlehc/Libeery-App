@@ -1,11 +1,46 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'dart:convert';
+import 'package:dio/dio.dart';
+import 'package:logger/logger.dart';
+
 
 void main() {
   runApp(const BookForNow());
 }
 
+class SessionVisitTime{
+  final String userID;
+  final String startSession;
+  final String endSession;
+  final int lokerID;
+
+  SessionVisitTime({
+    required this.userID,
+    required this.startSession,
+    required this.endSession,
+    required this.lokerID,
+  });
+
+  factory SessionVisitTime.fromJson(Map<String, dynamic> json){
+    return SessionVisitTime(
+      userID: json['UserID'],
+      startSession: json['StartSession'], 
+      endSession: json['EndSession'],
+      lokerID: json['LokerID'],
+    );
+  }
+
+  Map<String, dynamic> toJson(){
+    return {
+      'UserID' : userID,
+      'StartSession' : startSession,
+      'EndSession' : endSession,
+      'LokerID' : lokerID,
+    };
+  }
+}
 
 class BookForNow extends StatefulWidget {
   const BookForNow({super.key});
@@ -18,6 +53,13 @@ class BookForNow extends StatefulWidget {
 class _BookForNowState extends State<BookForNow> {
 
   List<bool> progressStatus = [false, true, false, false];
+  
+  final Logger logger = Logger(
+  printer: PrettyPrinter(), // Printer untuk menata keluaran log
+  level: Level.debug, // Level logging yang digunakan
+  );
+  String? errorMessage;
+
   Color color1 = const Color.fromRGBO(51, 51, 51, 1);
   Color color2 = const Color.fromRGBO(217, 217, 217, 1);
   Color color3 = const Color.fromRGBO(241, 135, 0, 1);
@@ -53,6 +95,34 @@ class _BookForNowState extends State<BookForNow> {
         border: Border.all(color: color)
       ),
     );
+  }
+
+  Future<String?> postSessionVisitTime( SessionVisitTime sessionVisitTime) async{
+    const url ='https://libeery-api-development.up.railway.app/api/private/bookSession-fornow';
+
+       try{
+      final dio = Dio();
+      dio.options.validateStatus = (status){
+        return true;
+      };
+
+      Response response = await dio.post(
+        url,
+        data: json.encode(sessionVisitTime.toJson()),
+        options: Options(headers: {
+          'Content-Type' : 'application/json',
+        }),
+      );
+
+      if(response.statusCode == 200){
+        return null;
+        
+      }else{
+        return response.data['Message'] ?? 'Unknown error occured';
+      }
+    }catch(error){
+      return 'Unexpected error occured: $error';
+    }
   }
 
   @override
@@ -279,11 +349,46 @@ class _BookForNowState extends State<BookForNow> {
             const SizedBox(height: 10.0),
             Center(
               child: ElevatedButton(
-                onPressed: () {
-                  // Navigator.push(
-                  //   context, 
-                  //   MaterialPageRoute(builder: (context)=> ) // tar ke booking page 3
-                  //   );
+                onPressed: () async{
+                  DateTime startSessionTime = DateTime(
+                    DateTime.now().year,
+                    DateTime.now().month,
+                    DateTime.now().day,
+                    startTime.hour,
+                    startTime.minute,
+                  );
+
+                  DateTime endSessionTime = DateTime(
+                    DateTime.now().year,
+                    DateTime.now().month,
+                    DateTime.now().day,
+                    selectedHour,
+                    selectedMinute,
+                  );
+
+
+                  SessionVisitTime sessionVisitTime = SessionVisitTime(
+                    userID: '102b1784-5575-41e0-9175-795fc92455db',
+                    startSession: startSessionTime.toIso8601String(),
+                    endSession: endSessionTime.toIso8601String(),
+                    lokerID: 40,
+
+                  );
+
+                  logger.d('startTime : $startSessionTime');
+                  logger.d('endTime : $endSessionTime');
+
+                  
+                  postSessionVisitTime(sessionVisitTime)
+                  .then((_) {
+                    logger.d('Berhasil post ke API');
+                  })
+                  .catchError((error) {
+                    setState(() {
+                      logger.d('Gagal post ke API: $error');
+                    });
+                  });
+
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: color3,
