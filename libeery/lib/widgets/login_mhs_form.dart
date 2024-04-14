@@ -113,6 +113,11 @@ class LoginMhsFormState extends State<LoginMhsForm> {
                     ),
                   ),
                 ),
+                onChanged: (_) {
+                  setState(() {
+                    errorMessage = null;
+                  });
+                },
               ),
               const SizedBox(height: 18),
               const Align(
@@ -159,6 +164,11 @@ class LoginMhsFormState extends State<LoginMhsForm> {
                     },
                   ),
                 ),
+                onChanged: (_) {
+                  setState(() {
+                    errorMessage = null;
+                  });
+                },
               ),
               const SizedBox(height: 24),
               ElevatedButton(
@@ -210,7 +220,6 @@ class LoginMhsFormState extends State<LoginMhsForm> {
       );
 
       if (response[0] == 200) {
-        print(response[1]);
         Navigator.pushNamed(context, '/home', arguments: response[1]);
       } else {
         setState(() {

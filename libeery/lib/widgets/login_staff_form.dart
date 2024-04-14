@@ -114,6 +114,11 @@ class LoginStaffFormState extends State<LoginStaffForm> {
                     ),
                   ),
                 ),
+                onChanged: (_) {
+                  setState(() {
+                    errorMessage = null;
+                  });
+                },
               ),
               const SizedBox(height: 18),
               const Align(
@@ -160,6 +165,11 @@ class LoginStaffFormState extends State<LoginStaffForm> {
                     },
                   ),
                 ),
+                onChanged: (_) {
+                  setState(() {
+                    errorMessage = null;
+                  });
+                },
               ),
               const SizedBox(height: 24),
               ElevatedButton(
