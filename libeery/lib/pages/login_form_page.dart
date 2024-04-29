@@ -30,7 +30,7 @@ class LoginFormPage extends StatelessWidget {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(20.0),
-                      child: formWidget, // Display the provided form widget
+                      child: formWidget, 
                     ),
                   ),
                 ),
