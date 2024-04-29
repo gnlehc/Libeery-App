@@ -23,11 +23,11 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const HomePage(),
-      //     // '/chooselogin': (context) => const ChooseLoginPage(),
-      //     // '/loginstaff': (context) =>
-      //     //     const LoginFormPage(formWidget: LoginStaffForm()),
-      //     // '/loginmahasiswa': (context) =>
-      //     //     const LoginFormPage(formWidget: LoginMhsForm()),
+          '/chooselogin': (context) => const ChooseLoginPage(),
+          '/loginstaff': (context) =>
+              const LoginFormPage(formWidget: LoginStaffForm()),
+          '/loginmahasiswa': (context) =>
+              const LoginFormPage(formWidget: LoginMhsForm()),
       },
     );
   }
