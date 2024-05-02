@@ -22,6 +22,7 @@ class MsMhs {
       'statusCode': json['statuscode'],
       'message': json['message'],
       'userId': json['userid'],
+      'username': json["username"]
     };
   }
 }

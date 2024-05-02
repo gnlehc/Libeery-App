@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:libeery/arguments/user_argument.dart';
 import 'package:libeery/services/msmhs_service.dart';
 
 class LoginMhsForm extends StatefulWidget {
@@ -220,7 +221,8 @@ class LoginMhsFormState extends State<LoginMhsForm> {
       );
 
       if (response[0] == 200) {
-        Navigator.pushNamed(context, '/home', arguments: response[1]);
+        Navigator.pushNamed(context, '/home',
+            arguments: UserArguments(response[1], response[2]));
       } else {
         setState(() {
           errorMessage = response[1];

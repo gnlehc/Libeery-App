@@ -23,6 +23,7 @@ class MsStaff {
       'statusCode': json['statuscode'],
       'message': json['message'],
       'userId': json['userid'],
+      'username': json["staff_name"]
     };
   }
 }

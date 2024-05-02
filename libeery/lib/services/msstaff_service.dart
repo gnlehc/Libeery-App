@@ -27,7 +27,8 @@ class MsStaffService {
       if (loginResponse['statusCode'] == 200) {
         // redirect to another page
         String userId = loginResponse['userId'];
-        return [200, userId];
+        String username = loginResponse['username'];
+        return [200, userId, username];
       } else {
         return [400, loginResponse['message']];
       }
