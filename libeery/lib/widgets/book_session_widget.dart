@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 
-// void main() {
-//   runApp(const AddNewBookCard());
-// }
-
 class AddNewBookCard extends StatefulWidget {
   const AddNewBookCard({super.key});
 
@@ -29,8 +25,8 @@ class AddNewBookCardState extends State<AddNewBookCard> {
                 borderType: BorderType.RRect,
                 radius: const Radius.circular(10),
                 child: SizedBox(
-                  width: 350,
-                  height: 100,
+                  width: 340,
+                  height: 80,
                   child: Center(
                     child: DottedBorder(
                       dashPattern: const [10, 10],

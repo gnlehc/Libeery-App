@@ -223,7 +223,6 @@ class LoginStaffFormState extends State<LoginStaffForm> {
       );
 
       if (response[0] == 200) {
-        print(response[1]);
         Navigator.pushNamed(context, '/home', arguments: response[1]);
       } else {
         setState(() {
