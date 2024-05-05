@@ -1,4 +1,4 @@
-import 'package:libeery/models/loker.dart';
+import 'package:libeery/models/msloker_model.dart';
 import 'package:dio/dio.dart';
 
 class LokerService{

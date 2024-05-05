@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:libeery/models/loker.dart';
-import 'package:libeery/services/loker_service.dart';
+import 'package:libeery/models/msloker_model.dart';
+import 'package:libeery/services/msloker_service.dart';
 
 void main(){
   runApp(const BookingPage3());

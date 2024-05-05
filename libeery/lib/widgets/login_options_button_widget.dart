@@ -24,7 +24,7 @@ class LoginOptionsButton extends StatelessWidget {
         },
         style: ElevatedButton.styleFrom(
           backgroundColor:
-              isSelected ? const Color(0xFF333333) : Color(0xFFD9D9D9),
+              isSelected ? const Color(0xFF333333) : const Color(0xFFD9D9D9),
           padding: EdgeInsets.symmetric(vertical: isSelected ? 16 * 1.2 : 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
