@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
+import 'package:libeery/pages/booking_page_three.dart';
 
 
 void main() {
@@ -357,6 +358,11 @@ class _BookForNowState extends State<BookForNow> {
                     startTime.minute,
                   );
 
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const BookingPage3()),
+                  );
+
                   DateTime endSessionTime = DateTime(
                     DateTime.now().year,
                     DateTime.now().month,
@@ -409,7 +415,7 @@ class _BookForNowState extends State<BookForNow> {
             Center(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/bookingone');
                 }, 
                 child: const Text(
                   'Sebelumnya...',
