@@ -3,23 +3,39 @@ import 'package:flutter/material.dart';
 class OngoingSession extends StatelessWidget {
   final int loker;
   final String periode;
-  const OngoingSession({super.key, required this.loker, required this.periode});
+  final DateTime startSession;
+  const OngoingSession({super.key, required this.loker, required this.periode, required this.startSession});
+
+  bool isSessionStart (DateTime now, DateTime startSession){
+    int nowHour = now.hour;
+    int sessionHour = startSession.hour;
+
+    if(nowHour < sessionHour){
+      return false;
+    }else{
+      return true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final bool isSessionStarted = isSessionStart(DateTime.now(), startSession);
     return Container(
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [
-            Color(0xFF0097DA), // Start color (blue)
-            Color(0xFF0097DA), // Mid color (blue)
-            Color.fromARGB(255, 148, 204, 228), // End Color
-          ],
-          begin: Alignment.topLeft, // Gradient start point
-          end: Alignment.bottomRight, // Gradient end point
-          stops: [0.0, 0.5, 1.0], // Gradient stops
-          tileMode: TileMode.clamp, // Handle overflow
-        ),
+        color: isSessionStarted ? null : Color.fromARGB(255, 214, 214, 214),
+        gradient: isSessionStarted
+            ? const LinearGradient(
+                colors: [
+                  Color(0xFF0097DA),
+                  Color(0xFF0097DA),
+                  Color.fromARGB(255, 148, 204, 228),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                stops: [0.0, 0.5, 1.0], 
+                tileMode: TileMode.clamp,
+              )
+            : null,
         borderRadius: BorderRadius.circular(10),
       ),
       width: 350,
@@ -32,30 +48,35 @@ class OngoingSession extends StatelessWidget {
           children: [
             RichText(
                 text: TextSpan(children: [
-              const TextSpan(
-                text: "Lokermu: ",
-                style: TextStyle(fontSize: 16, fontFamily: "Montserrat"),
-              ),
-              TextSpan(
-                text: '$loker',
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    fontFamily: "Montserrat"),
-              )
+                TextSpan(
+                  text: "Lokermu: ",
+                  style: TextStyle(
+                    fontSize: 16, 
+                    fontFamily: "Montserrat", 
+                    color: isSessionStarted ? Colors.white : Colors.grey.shade600,
+                  ),
+                ),
+                TextSpan(
+                  text: '$loker',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      fontFamily: "Montserrat",
+                      color: isSessionStarted ? Colors.white : Colors.grey.shade600),
+                )
             ])),
             RichText(
                 text: TextSpan(children: [
-              const TextSpan(
+              TextSpan(
                 text: "Periode: ",
-                style: TextStyle(fontSize: 16, fontFamily: "Montserrat"),
+                style: TextStyle(fontSize: 16, fontFamily: "Montserrat", color: isSessionStarted ? Colors.white : Colors.grey.shade600),
               ),
               TextSpan(
                 text: '$periode',
-                style: const TextStyle(
+                style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
-                    fontFamily: "Montserrat"),
+                    fontFamily: "Montserrat", color: isSessionStarted ? Colors.white : Colors.grey.shade600),
               )
             ])),
           ],

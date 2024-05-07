@@ -103,6 +103,7 @@ class _HomePageState extends State<HomePage> {
                                           OngoingSession(
                                             loker: i.lokerID!,
                                             periode: getSessionTime(i.sessionID!),
+                                            startSession: sessions.firstWhere((session) => session.sessionID == i.sessionID).startSession,
                                           ),
                                           const SizedBox(
                                             height: 10,
