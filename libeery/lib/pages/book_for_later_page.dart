@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libeery/models/mssession_model.dart';
+import 'package:libeery/pages/booking_page_three.dart';
 import 'package:libeery/services/mssession_service.dart';
 import 'package:logger/logger.dart';
 
@@ -414,7 +415,10 @@ class _BookForLaterState extends State<BookForLater> {
                         logger.d('Selected SessionID: $selectedSessionID');
                         if (result == null) {
                           logger.d('Berhasil post ke API');
-                          // navigate ke page selanjutnya
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const BookingPage3()),
+                          );
                         } else {
                           setState(() {
                             logger.e('Gagal post ke API: $result');

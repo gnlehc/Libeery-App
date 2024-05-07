@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:dotted_border/dotted_border.dart';
 
 class AddNewBookCard extends StatefulWidget {
   const AddNewBookCard({super.key});
@@ -15,44 +14,50 @@ class AddNewBookCardState extends State<AddNewBookCard> {
         onTap: () {
           Navigator.pushNamed(context, '/bookingone');
         },
-        child: Column(
-          children: [
-            Center(
-              child: DottedBorder(
-                dashPattern: const [10, 15],
-                color: const Color(0xff333333),
-                strokeWidth: 2,
-                borderType: BorderType.RRect,
-                radius: const Radius.circular(10),
-                child: SizedBox(
-                  width: 340,
-                  height: 80,
+        child: Center(
+          child: Container(
+            width: 350,
+            height: 50,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [
+                  Color(0xffFFAF49), 
+                  Color.fromARGB(255, 250, 184, 97), 
+                  Color.fromARGB(255, 255, 203, 134), 
+                ],
+                begin: Alignment.topLeft, 
+                end: Alignment.bottomRight, 
+                stops: [0.0, 0.7, 1.0], 
+                tileMode: TileMode.clamp, 
+              ),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 30,
+                  height: 30,
                   child: Center(
-                    child: DottedBorder(
-                      dashPattern: const [10, 10],
-                      color: const Color(0xff333333),
-                      strokeWidth: 1.5,
-                      borderType: BorderType.Circle,
-                      child: Container(
-                        width: 60,
-                        height: 60,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Center(
-                          child: Icon(
-                            Icons.add,
-                            size: 40,
-                            color: Color(0xff333333),
-                          ),
-                        ),
-                      ),
+                    child: Icon(
+                      Icons.add,
+                      size: 20,
+                      color: Color(0xffFFFFFF),
                     ),
                   ),
                 ),
-              ),
+                Text(
+                  'Membuat Booking Loker',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Color(0xffFFFFFF),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ));
   }
 }

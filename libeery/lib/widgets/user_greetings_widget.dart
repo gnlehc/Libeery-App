@@ -25,7 +25,7 @@ class GreetUser extends StatelessWidget {
             style: const TextStyle(
                 fontFamily: "Montserrat",
                 color: Colors.white,
-                fontSize: 35.0,
+                fontSize: 28.0,
                 fontWeight: FontWeight.bold),
           ),
         ],
