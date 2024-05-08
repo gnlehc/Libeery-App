@@ -1,5 +1,7 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:libeery/arguments/user_argument.dart';
+import 'package:libeery/models/msstaff_model.dart';
 import 'package:libeery/services/msstaff_service.dart';
 
 class LoginStaffForm extends StatefulWidget {
@@ -217,16 +219,18 @@ class LoginStaffFormState extends State<LoginStaffForm> {
 
   Future<void> loginStaff(BuildContext context) async {
     try {
-      List<dynamic> response = await MsStaffService.loginStaff(
-        nomorIndukController.text,
+      MsStaffService staffService = MsStaffService();
+      LoginStaffResponseDTO response = await staffService.loginStaff(nomorIndukController.text,
         passwordController.text,
       );
-
-      if (response[0] == 200) {
-        Navigator.pushNamed(context, '/home', arguments: response[1]);
+      if (response.statusCode == 200) {
+        print('Navigation to home screen...');
+        Navigator.of(context).pushNamed('/home',
+            arguments: UserArguments(response.userId!, response.username!));
       } else {
         setState(() {
-          errorMessage = response[1];
+          errorMessage = response.message;
+          print(response.message);
         });
       }
     } catch (error) {

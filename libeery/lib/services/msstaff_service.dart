@@ -3,37 +3,41 @@ import 'package:dio/dio.dart';
 import 'package:libeery/models/msstaff_model.dart';
 
 class MsStaffService {
-  static Future<List<dynamic>> loginStaff(
-      String nomorInduk, String password) async {
-    try {
-      final dio = Dio();
-      dio.options.validateStatus = (status) {
-        return true;
-      };
-      MsStaff msStaff = MsStaff(nis: nomorInduk, staffPassword: password);
-      Map<String, dynamic> jsonData = msStaff.toJson();
+  final Dio _dio = Dio();
+  
+  Future<LoginStaffResponseDTO> loginStaff(String nomorInduk, String password) async {
+  try {
+    _dio.options.validateStatus = (status) {
+     return true;
+    };
+    final msStaff = MsStaff(nis: nomorInduk, staffPassword: password);
+    final request = msStaff.toJson();
+    _printDebugInfo('Request Data', request);
 
-      Response response = await dio.post(
-        'https://libeery-api-development.up.railway.app/api/public/loginstaff',
-        data: jsonData,
-        options: Options(headers: {
-          'Content-Type': 'application/json',
-        }),
-      );
+    final response = await _dio.post(
+      'https://libeery-api-development.up.railway.app/api/public/loginstaff',
+      data: request,
+      options: Options(headers: {'Content-Type': 'application/json'}),
+    );
+    _printDebugInfo('Response Status Code', response.statusCode);
+    _printDebugInfo('Response Data', response.data);
+    
+    // Parse response data
+    final loginResponse = LoginStaffResponseDTO.fromJson(response.data);
+    _printDebugInfo('Parsed Response', loginResponse);
+    return loginResponse;
+  } catch (error) {
+    _handleError(error);
+    rethrow;
+  }
+}
 
-      Map<String, dynamic> loginResponse =
-          msStaff.loginStaffReponseDTO(response.data);
 
-      if (loginResponse['statusCode'] == 200) {
-        // redirect to another page
-        String userId = loginResponse['userId'];
-        String username = loginResponse['username'];
-        return [200, userId, username];
-      } else {
-        return [400, loginResponse['message']];
-      }
-    } catch (error) {
-      return [400, 'Unexpected error occurred: $error'];
-    }
+  void _printDebugInfo(String label, dynamic data) {
+    print('$label: $data');
+  }
+
+  void _handleError(dynamic error) {
+    print('Error occurred: $error');
   }
 }
