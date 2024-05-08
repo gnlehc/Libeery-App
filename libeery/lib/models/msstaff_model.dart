@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class MsStaff {
   String nis;
   String staffPassword;
@@ -18,12 +20,51 @@ class MsStaff {
     );
   }
 
-  Map<String, dynamic> loginStaffReponseDTO(Map<String, dynamic> json) {
-    return {
-      'statusCode': json['statuscode'],
-      'message': json['message'],
-      'userId': json['userid'],
-      'username': json["staff_name"]
+  
+}
+
+class LoginStaffResponseDTO{
+  int? statusCode;
+  String? message;
+  String? userId;
+  String? username;
+  LoginStaffResponseDTO({
+    this.statusCode,
+    this.message,
+    this.userId,
+    this.username,
+  });
+
+  factory LoginStaffResponseDTO.fromJson(Map<String, dynamic> json) {
+    return LoginStaffResponseDTO(
+        message: json['message'],
+        statusCode: json['statuscode'],
+        userId: json['userid'],
+        username: json['username']);
+  }
+
+  @override
+  String toString() {
+    return 'LoginMhsResponseDTO(statusCode: $statusCode, message: $message, userId: $userId, username: $username)';
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'statusCode': statusCode,
+      'message': message,
+      'userId': userId,
+      'username': username,
     };
   }
+
+  factory LoginStaffResponseDTO.fromMap(Map<String, dynamic> map) {
+    return LoginStaffResponseDTO(
+      statusCode: map['statusCode'] != null ? map['statusCode'] as int : null,
+      message: map['message'] != null ? map['message'] as String : null,
+      userId: map['userId'] != null ? map['userId'] as String : null,
+      username: map['username'] != null ? map['username'] as String : null,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
 }
