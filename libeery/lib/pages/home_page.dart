@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:libeery/models/msuser_model.dart';
 import 'package:libeery/models/mssession_model.dart';
 import 'package:libeery/services/msuser_service.dart';
@@ -88,37 +89,36 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   const SizedBox(height: 100),
                   GreetUser(username: widget.username),
-                  Container(
-                    height: 250,
-                    padding: const EdgeInsets.all(20.0),
-                    child: isLoading
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxHeight: 250),
+                      child: isLoading
                         ? const CircularProgressIndicator()
                         : booked.data != null
-                            ? SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    for (var i in booked.data!)
-                                      Column(
-                                        children: [
-                                          OngoingSession(
-                                            loker: i.lokerID!,
-                                            periode: getSessionTime(i.sessionID!),
-                                            startSession: sessions.firstWhere((session) => session.sessionID == i.sessionID).startSession,
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          )
-                                        ],
-                                      ),
-                                  ],
-                                ),
-                              )
-                            : const Center(
-                                child: Text('No data available'),
+                          ? SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  for (var i in booked.data!)
+                                    Column(
+                                      children: [
+                                        OngoingSession(
+                                          loker: i.lokerID!,
+                                          periode: getSessionTime(i.sessionID!),
+                                          startSession: sessions.firstWhere((session) => session.sessionID == i.sessionID).startSession,
+                                        ),
+                                      ],
+                                    ),
+                                ],
                               ),
-                    // const OngoingSession(
-                    //     loker: , periode: "09:00 - 10:00"),
+                            )
+                          : const Center(
+                              child: Text('No data available'),
+                            ),
+                    ),
                   ),
+                  const SizedBox(height: 20),
                   const AddNewBookCard(),
                 ],
               ),
