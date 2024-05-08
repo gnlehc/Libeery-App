@@ -7,6 +7,9 @@ class MsMhsService {
   Future<LoginMhsResponseDTO> loginMhs(
       String nomorInduk, String password) async {
     try {
+      _dio.options.validateStatus = (status) {
+        return true;
+      };
       final msMhs = MsMhs(nim: nomorInduk, mhsPassword: password);
       final request = msMhs.toJson();
       _printDebugInfo('Request Data', request);
@@ -18,17 +21,12 @@ class MsMhsService {
       );
 
       _printDebugInfo('Response Status Code', response.statusCode);
-
-      if (response.statusCode == 200) {
-        _printDebugInfo('Response Data', response.data);
-
-        final loginResponse = LoginMhsResponseDTO.fromJson(response.data);
-        _printDebugInfo('Parsed Response', loginResponse);
-
-        return loginResponse;
-      } else {
-        throw Exception('Failed to login: ${response.statusCode}');
-      }
+      _printDebugInfo('Response Data', response.data);
+      final loginResponse = LoginMhsResponseDTO.fromJson(response.data);
+      _printDebugInfo('Parsed Response', loginResponse);
+      
+      return loginResponse;
+    
     } catch (error) {
       _handleError(error);
       rethrow;
