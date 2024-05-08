@@ -125,11 +125,12 @@ class _BookingPageOneState extends State<BookingPageOne> {
           fit: BoxFit.cover,
         ), 
         backgroundColor: Colors.transparent,
-        title: Padding(
-          padding: const EdgeInsets.only(top: 23.0),
+        title: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
+            
             children: [
+              // const SizedBox(height: 6.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -139,11 +140,12 @@ class _BookingPageOneState extends State<BookingPageOne> {
                   buildProgressIndicator(4),
                 ],
               ),
+              const SizedBox(height: 4.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(12.0, 10.0, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(12.0, 0, 0, 0),
                     child: IconButton(
                       onPressed: (){
                         Navigator.of(context).pop();
@@ -159,200 +161,203 @@ class _BookingPageOneState extends State<BookingPageOne> {
   
       ),
 
-      body: Container(
-        color: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(45.0, 20.0, 45.0, 5.0),
-              child: Text(
-                'Pilih Jadwal Kunjunganmu!',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16.0,
-                  color: color1,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(45.0, 2.0, 45.0, 5.0),
-              child: Text(
-                'Kamu dapat memilih apakah kamu akan mengunjungi LKC untuk saat ini atau untuk beberapa jam kedepan. Pastikan jadwal yang kamu pilih sehingga tidak mengganggu jam kuliahmu.',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  color: color1,
-                  fontWeight: FontWeight.w300,
-                  fontSize: 11.0,
-                ),
-                textAlign: TextAlign.justify,
-              ),
-            ),
-            const SizedBox(height: 10.0),
-            Center(
-              child: GestureDetector(
-                onTap: () {
-                  changeCard1();
-                },
-                child: Card(
-                  elevation: 3,
-                  margin: const EdgeInsets.all(10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    side: const BorderSide(
-                      color: Color.fromRGBO(187, 187, 187, 1), 
-                      width: 1)
+      body: Center(
+        child: Container(
+          color: Colors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(45.0, 0, 45.0, 0),
+                child: Text(
+                  'Pilih Jadwal Kunjunganmu!',
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16.0,
+                    color: color1,
                   ),
-                  color:  cardColor1,
-                  child: SizedBox(
-                    width: widthCard1,
-                    height: heightCard1,
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20.0, 10.0, 5.0, 10.0),
-                          child: SizedBox(
-                            height: 107,
-                            width: 96,
-                            child: Image.asset('assets/image/libeery1-bookfornow.png'),
+                ),
+              ),
+              const SizedBox(height: 5.0),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(45.0, 0, 45.0, 0),
+                child: Text(
+                  'Kamu dapat memilih apakah kamu akan mengunjungi LKC untuk saat ini atau untuk beberapa jam kedepan. Pastikan jadwal yang kamu pilih sehingga tidak mengganggu jam kuliahmu.',
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    color: color1,
+                    fontWeight: FontWeight.w300,
+                    fontSize: 11.0,
+                  ),
+                  textAlign: TextAlign.justify,
+                ),
+              ),
+              const SizedBox(height: 10.0),
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    changeCard1();
+                  },
+                  child: Card(
+                    elevation: 3,
+                    margin: const EdgeInsets.all(10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      side: const BorderSide(
+                        color: Color.fromRGBO(187, 187, 187, 1), 
+                        width: 1)
+                    ),
+                    color:  cardColor1,
+                    child: SizedBox(
+                      width: widthCard1,
+                      height: heightCard1,
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(20.0, 10.0, 5.0, 10.0),
+                            child: SizedBox(
+                              height: 107,
+                              width: 96,
+                              child: Image.asset('assets/image/libeery1-bookfornow.png'),
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 0, 20.0, 5.0),
-                                child: Text(
-                                  'Butuh Sekarang Nih...',
-                                  style: TextStyle(
-                                    fontSize: 12.0,
-                                    fontFamily: 'Montserrat',
-                                    color: textCard1,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  textAlign: TextAlign.right,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 0, 20.0, 0),
-                                child: Text(
-                                  'Aku ingin mengunjungi perpustakaan sekarang karena ada kepentingan mendadak.',
-                                  style: TextStyle(
-                                      fontSize: 8.70,
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(0, 0, 20.0, 5.0),
+                                  child: Text(
+                                    'Butuh Sekarang Nih...',
+                                    style: TextStyle(
+                                      fontSize: 12.0,
                                       fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w300,
                                       color: textCard1,
-                                      overflow: TextOverflow.clip
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    textAlign: TextAlign.right,
                                   ),
-                                  textAlign: TextAlign.right,
                                 ),
-                              ),
-                            ],
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(0, 0, 20.0, 0),
+                                  child: Text(
+                                    'Aku ingin mengunjungi perpustakaan sekarang karena ada kepentingan mendadak.',
+                                    style: TextStyle(
+                                        fontSize: 8.70,
+                                        fontFamily: 'Montserrat',
+                                        fontWeight: FontWeight.w300,
+                                        color: textCard1,
+                                        overflow: TextOverflow.clip
+                                    ),
+                                    textAlign: TextAlign.right,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-        
-            Center(
-              child: GestureDetector(
-                onTap: () {
-                  changeCard2();
-                },
-                child: Card(
-                  elevation: 3,
-                  margin: const EdgeInsets.all(10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    side: const BorderSide(
-                      color: Color.fromRGBO(187, 187, 187, 1), 
-                      width: 1)
-                  ),
-                  color:  cardColor2,
-                  child: SizedBox(
-                    width: widthCard2,
-                    height: heightCard2,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(20.0, 0, 2.0, 5.0),
-                                child: Text(
-                                  'Untuk Nanti Deh...',
-                                  style: TextStyle(
-                                    fontSize: 13.0,
-                                    fontFamily: 'Montserrat',
-                                    color: textCard2,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(20.0, 0, 2.0, 0),
-                                child: Text(
-                                  'Aku ingin mereservasi slot loker dulu untuk kunjunganku nanti, aku pasti akan datang kok.',
-                                  style: TextStyle(
-                                      fontSize: 8.50,
+          
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    changeCard2();
+                  },
+                  child: Card(
+                    elevation: 3,
+                    margin: const EdgeInsets.all(10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      side: const BorderSide(
+                        color: Color.fromRGBO(187, 187, 187, 1), 
+                        width: 1)
+                    ),
+                    color:  cardColor2,
+                    child: SizedBox(
+                      width: widthCard2,
+                      height: heightCard2,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(20.0, 0, 2.0, 5.0),
+                                  child: Text(
+                                    'Untuk Nanti Deh...',
+                                    style: TextStyle(
+                                      fontSize: 13.0,
                                       fontFamily: 'Montserrat',
                                       color: textCard2,
-                                      fontWeight: FontWeight.w300,
-                                      overflow: TextOverflow.clip
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    textAlign: TextAlign.left,
                                   ),
-                                  textAlign: TextAlign.left,
                                 ),
-                              ),
-                            ],
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(20.0, 0, 2.0, 0),
+                                  child: Text(
+                                    'Aku ingin mereservasi slot loker dulu untuk kunjunganku nanti, aku pasti akan datang kok.',
+                                    style: TextStyle(
+                                        fontSize: 8.50,
+                                        fontFamily: 'Montserrat',
+                                        color: textCard2,
+                                        fontWeight: FontWeight.w300,
+                                        overflow: TextOverflow.clip
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(5.0, 10.0, 20.0, 10.0),
-                          child: SizedBox(
-                            height: 107,
-                            width: 96,
-                            child: Image.asset('assets/image/libeery2-bookforlater.png'),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(5.0, 10.0, 20.0, 10.0),
+                            child: SizedBox(
+                              height: 107,
+                              width: 96,
+                              child: Image.asset('assets/image/libeery2-bookforlater.png'),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 10.0),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  navigateToNextPage(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: color3,
-                  fixedSize: const Size(136, 33),
-                  elevation: 5,
-                ),
-                child: const Text(
-                    'Selanjutnya',
-                    style: TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                      fontFamily: 'Montserrat',
-                    ),
+              const SizedBox(height: 10.0),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    navigateToNextPage(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: color3,
+                    fixedSize: const Size(136, 33),
+                    elevation: 5,
+                  ),
+                  child: const Text(
+                      'Selanjutnya',
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                        fontFamily: 'Montserrat',
+                      ),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

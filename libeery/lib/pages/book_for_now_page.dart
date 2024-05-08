@@ -136,8 +136,8 @@ class _BookForNowState extends State<BookForNow> {
           fit: BoxFit.cover,
         ), 
         backgroundColor: Colors.transparent,
-        title: Padding(
-          padding: const EdgeInsets.only(top: 23.0),
+        title: Center(
+          // padding: const EdgeInsets.only(top: 23.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -150,11 +150,12 @@ class _BookForNowState extends State<BookForNow> {
                   buildProgressIndicator(4),
                 ],
               ),
+              const SizedBox(height: 4.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(12.0, 10.0, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(12.0, 0, 0, 0),
                     child: IconButton(
                       onPressed: (){
                         Navigator.of(context).pop();
@@ -226,28 +227,32 @@ class _BookForNowState extends State<BookForNow> {
                         itemExtent: 75,
                         looping: true,
                         scrollController: FixedExtentScrollController(
-                          initialItem: selectedHour
+                          initialItem: selectedHour - 8,
+                          
                         ),
                         onSelectedItemChanged: (hourIndex){
                           setState(() {
-                            selectedHour = hourIndex ;
+                            selectedHour = hourIndex + 8 ;
                           });
                         },
-                        children: List.generate(24, (index){
-                          final hour = index;
+                        children: List.generate(
+                          11, (index){
+                          final hour = 8 + index ;
                           final hourText = hour < 10 ? '0$hour' : '$hour';
-                          return Center(
+                          return   Center(
                             child: Text(
                               hourText,
                               style: const TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w500,
-                                color: Colors.black,
+                                color:  Colors.black ,
                                 fontSize: 36.0,
                                 ),
                             ),
                           );
+                          
                         }), 
+                        
                       ),
                     ),
                   ),
@@ -350,6 +355,7 @@ class _BookForNowState extends State<BookForNow> {
             Center(
               child: ElevatedButton(
                 onPressed: () async{
+                  
                   DateTime startSessionTime = DateTime(
                     DateTime.now().year,
                     DateTime.now().month,
@@ -357,8 +363,7 @@ class _BookForNowState extends State<BookForNow> {
                     startTime.hour,
                     startTime.minute,
                   );
-
-                  DateTime endSessionTime = DateTime(
+                    DateTime endSessionTime = DateTime(
                     DateTime.now().year,
                     DateTime.now().month,
                     DateTime.now().day,
@@ -366,8 +371,12 @@ class _BookForNowState extends State<BookForNow> {
                     selectedMinute,
                   );
 
-
-                  SessionVisitTime sessionVisitTime = SessionVisitTime(
+                  if (endSessionTime.isBefore(startSessionTime)){
+                    setState(() {
+                      errorMessage = 'The selected time has passed';
+                    });
+                  }else{
+                    SessionVisitTime sessionVisitTime = SessionVisitTime(
                     userID: '102b1784-5575-41e0-9175-795fc92455db',
                     startSession: startSessionTime.toIso8601String(),
                     endSession: endSessionTime.toIso8601String(),
@@ -388,6 +397,7 @@ class _BookForNowState extends State<BookForNow> {
                       logger.d('Gagal post ke API: $error');
                     });
                   });
+                  }
 
                 },
                 style: ElevatedButton.styleFrom(
@@ -406,6 +416,20 @@ class _BookForNowState extends State<BookForNow> {
                 ),
               ),
             ),
+            const SizedBox(height: 8.0),
+            errorMessage != null
+              ? Center(
+                    child: Text(
+                      errorMessage!,
+                      style: const TextStyle(
+                        color: Colors.red,
+                        fontSize: 12.0,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                )
+              : const SizedBox(),
             const SizedBox(height: 10.0),
             Center(
               child: GestureDetector(

@@ -235,12 +235,14 @@ class _BookForLaterState extends State<BookForLater> {
           fit: BoxFit.cover,
         ), 
         backgroundColor: Colors.transparent,
-        title: Padding(
-          padding: const EdgeInsets.only(top: 23.0),
+        title: Center(
+          
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              // const SizedBox(height: 6.0),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   buildProgressIndicator(1),
@@ -249,11 +251,12 @@ class _BookForLaterState extends State<BookForLater> {
                   buildProgressIndicator(4),
                 ],
               ),
+              const SizedBox(height: 4.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(12.0, 10.0, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(12.0,0, 0, 0),
                     child: IconButton(
                       onPressed: (){
                         Navigator.of(context).pop();
@@ -304,14 +307,12 @@ class _BookForLaterState extends State<BookForLater> {
                   child: FutureBuilder<List<Session>>(
                     future: getSessionfromAPI(),
                     builder: (context, AsyncSnapshot<List<Session>> snapshot){
-                      if(snapshot.connectionState == ConnectionState.waiting){
-                        return const CircularProgressIndicator();
-                      }else if(snapshot.hasError){
+                      if(snapshot.hasError){
                         return Text('Error: ${snapshot.error}');
                       }else{
                          sessions = snapshot.data;
                         if(sessions == null || sessions!.isEmpty){
-                          return const Text('No data available');
+                          return const SizedBox.shrink();
                         }else{
                         return ListView.builder(
                           shrinkWrap: true,
@@ -324,6 +325,16 @@ class _BookForLaterState extends State<BookForLater> {
                             final endTimeFormatted = endTime.toString().padLeft(2, '0');
                             final rangetime = '$startTimeFormatted.00 - $endTimeFormatted.00';
 
+                              // Periksa apakah sesi sudah lewat
+                              final currentTime = DateTime.now();
+                              final sessionTime = DateTime(
+                                currentTime.year,
+                                currentTime.month,
+                                currentTime.day,
+                                endTime,
+                              );
+
+                              final isSessionExpired = sessionTime.isBefore(currentTime);
                             return SizedBox(
                               width: 290,
                               height: 42,
@@ -372,10 +383,9 @@ class _BookForLaterState extends State<BookForLater> {
                                       }),
                                        controlAffinity: ListTileControlAffinity.trailing,
                                        value: selectedSlots.contains(rangetime),
-                                       onChanged: (value){
+                                       onChanged: isSessionExpired ? null : (value){
                                         setState(() {
                                           if(value != null && value){
-                                            
                                               final newSlot = '$startTimeFormatted.00 - $endTimeFormatted.00';
                                               // Hapus waktu kunjungan sebelumnya jika ada
                                               selectedSlots.removeWhere((slot) {
