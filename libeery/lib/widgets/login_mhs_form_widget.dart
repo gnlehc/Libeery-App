@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:libeery/arguments/user_argument.dart';
+import 'package:libeery/models/msmhs_model.dart';
 import 'package:libeery/services/msmhs_service.dart';
 
 class LoginMhsForm extends StatefulWidget {
@@ -215,17 +216,19 @@ class LoginMhsFormState extends State<LoginMhsForm> {
 
   Future<void> loginMhs(BuildContext context) async {
     try {
-      List<dynamic> response = await MsMhsService.loginMhs(
+      MsMhsService mhsService = MsMhsService();
+      LoginMhsResponseDTO response = await mhsService.loginMhs(
         nomorIndukController.text,
         passwordController.text,
       );
 
-      if (response[0] == 200) {
-        Navigator.pushNamed(context, '/home',
-            arguments: UserArguments(response[1], response[2]));
+      if (response.statusCode == 200) {
+        print('Navigation to home screen...');
+        Navigator.of(context).pushNamed('/home',
+            arguments: UserArguments(response.userId!, response.username!));
       } else {
         setState(() {
-          errorMessage = response[1];
+          errorMessage = response.message;
         });
       }
     } catch (error) {

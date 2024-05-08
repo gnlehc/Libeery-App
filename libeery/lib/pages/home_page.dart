@@ -6,9 +6,9 @@ import 'package:libeery/widgets/booked_session_widget.dart';
 import 'package:libeery/widgets/user_greetings_widget.dart';
 
 class HomePage extends StatefulWidget {
-  String? userId;
-  String? username;
-  HomePage({super.key, required this.userId, required this.username});
+  final String? userId;
+  final String? username;
+  const HomePage({super.key, required this.userId, required this.username});
 
   @override
   State<HomePage> createState() => _HomePageState();
