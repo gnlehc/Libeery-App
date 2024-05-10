@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
+import 'package:libeery/pages/booking_page_three.dart';
 
 
 void main() {
@@ -136,8 +136,8 @@ class _BookForNowState extends State<BookForNow> {
           fit: BoxFit.cover,
         ), 
         backgroundColor: Colors.transparent,
-        title: Center(
-          // padding: const EdgeInsets.only(top: 23.0),
+        title: Padding(
+          padding: const EdgeInsets.only(top: 23.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -150,12 +150,11 @@ class _BookForNowState extends State<BookForNow> {
                   buildProgressIndicator(4),
                 ],
               ),
-              const SizedBox(height: 4.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(12.0, 0, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(12.0, 10.0, 0, 0),
                     child: IconButton(
                       onPressed: (){
                         Navigator.of(context).pop();
@@ -177,13 +176,13 @@ class _BookForNowState extends State<BookForNow> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Padding(
-              padding: EdgeInsets.fromLTRB(45.0, 20.0, 45.0, 5.0),
+              padding: EdgeInsets.fromLTRB(45.0, 20.0, 0, 5.0),
               child: Text(
                 'Pilih Waktu Akhir Kunjunganmu!',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16.0,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 17.0,
                   color: Colors.black,
                 ),
               ),
@@ -195,8 +194,8 @@ class _BookForNowState extends State<BookForNow> {
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   color: color1,
-                  fontWeight: FontWeight.w300,
-                  fontSize: 11.0,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12.0,
                 ),
                 textAlign: TextAlign.justify,
               ),
@@ -227,32 +226,28 @@ class _BookForNowState extends State<BookForNow> {
                         itemExtent: 75,
                         looping: true,
                         scrollController: FixedExtentScrollController(
-                          initialItem: selectedHour - 8,
-                          
+                          initialItem: selectedHour + 9
                         ),
                         onSelectedItemChanged: (hourIndex){
                           setState(() {
-                            selectedHour = hourIndex + 8 ;
+                            selectedHour = hourIndex + 9 ;
                           });
                         },
-                        children: List.generate(
-                          11, (index){
-                          final hour = 8 + index ;
+                        children: List.generate(10, (index){
+                          final hour = index + 9;
                           final hourText = hour < 10 ? '0$hour' : '$hour';
-                          return   Center(
+                          return Center(
                             child: Text(
                               hourText,
                               style: const TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w500,
-                                color:  Colors.black ,
+                                color: Colors.black,
                                 fontSize: 36.0,
                                 ),
                             ),
                           );
-                          
                         }), 
-                        
                       ),
                     ),
                   ),
@@ -277,15 +272,15 @@ class _BookForNowState extends State<BookForNow> {
                       itemExtent: 75,
                       looping: true,
                       scrollController: FixedExtentScrollController(
-                        initialItem: selectedMinute ~/30
+                        initialItem: selectedMinute
                       ),
                       onSelectedItemChanged: (minuteIndex){
                         setState(() {
-                          selectedMinute = (minuteIndex% 2)* 30;
+                          selectedMinute = minuteIndex;
                         });
                       }, 
-                      children: List.generate(2, (index){
-                        final minute = index * 30;
+                      children: List.generate(1, (index){
+                        final minute = index*0;
                         final minuteText = minute < 10 ? '0$minute' : '$minute';
                         return Center(
                           child: Text(
@@ -355,7 +350,6 @@ class _BookForNowState extends State<BookForNow> {
             Center(
               child: ElevatedButton(
                 onPressed: () async{
-                  
                   DateTime startSessionTime = DateTime(
                     DateTime.now().year,
                     DateTime.now().month,
@@ -363,7 +357,10 @@ class _BookForNowState extends State<BookForNow> {
                     startTime.hour,
                     startTime.minute,
                   );
-                    DateTime endSessionTime = DateTime(
+
+                  
+
+                  DateTime endSessionTime = DateTime(
                     DateTime.now().year,
                     DateTime.now().month,
                     DateTime.now().day,
@@ -371,35 +368,41 @@ class _BookForNowState extends State<BookForNow> {
                     selectedMinute,
                   );
 
-                  if (endSessionTime.isBefore(startSessionTime)){
+                  if(endSessionTime.isBefore(startSessionTime)){
                     setState(() {
-                      errorMessage = 'The selected time has passed';
+                      errorMessage = "Waktu sesi sudah lewat";
                     });
-                  }else{
-                    SessionVisitTime sessionVisitTime = SessionVisitTime(
-                    userID: '102b1784-5575-41e0-9175-795fc92455db',
-                    startSession: startSessionTime.toIso8601String(),
-                    endSession: endSessionTime.toIso8601String(),
-                    lokerID: 40,
-
-                  );
-
-                  logger.d('startTime : $startSessionTime');
-                  logger.d('endTime : $endSessionTime');
-
-                  
-                  postSessionVisitTime(sessionVisitTime)
-                  .then((_) {
-                    logger.d('Berhasil post ke API');
-                  })
-                  .catchError((error) {
-                    setState(() {
-                      logger.d('Gagal post ke API: $error');
-                    });
-                  });
                   }
+                  else{
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const BookingPage3()),
+                    );
 
+                    SessionVisitTime sessionVisitTime = SessionVisitTime(
+                      userID: '102b1784-5575-41e0-9175-795fc92455db',
+                      startSession: startSessionTime.toIso8601String(),
+                      endSession: endSessionTime.toIso8601String(),
+                      lokerID: 40,
+                    );
+
+                    logger.d('startTime : $startSessionTime');
+                    logger.d('endTime : $endSessionTime');
+
+                    
+                    postSessionVisitTime(sessionVisitTime)
+                    .then((_) {
+                      logger.d('Berhasil post ke API');
+                    })
+                    .catchError((error) {
+                      setState(() {
+                        logger.d('Gagal post ke API: $error');
+                      });
+                    });
+
+                  }
                 },
+
                 style: ElevatedButton.styleFrom(
                   backgroundColor: color3,
                   fixedSize: const Size(136, 33),
@@ -416,25 +419,27 @@ class _BookForNowState extends State<BookForNow> {
                 ),
               ),
             ),
-            const SizedBox(height: 8.0),
-            errorMessage != null
-              ? Center(
-                    child: Text(
+            const SizedBox(height: 10.0),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: Center(
+                child: errorMessage != null 
+                  ? Text(
                       errorMessage!,
                       style: const TextStyle(
-                        color: Colors.red,
-                        fontSize: 12.0,
                         fontFamily: 'Montserrat',
+                        fontSize: 12.0,
                         fontWeight: FontWeight.w400,
+                        color: Colors.red
                       ),
-                    ),
-                )
-              : const SizedBox(),
-            const SizedBox(height: 10.0),
+                  )
+                  : const SizedBox(),
+              ),
+            ),
             Center(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/bookingone');
                 }, 
                 child: const Text(
                   'Sebelumnya...',
@@ -455,4 +460,3 @@ class _BookForNowState extends State<BookForNow> {
     );
   }
 }
-

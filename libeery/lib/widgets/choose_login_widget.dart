@@ -1,6 +1,6 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
-import 'package:libeery/widgets/login_options_button.dart';
+import 'package:libeery/widgets/login_options_button_widget.dart';
 
 class ChooseLoginWidget extends StatefulWidget {
   const ChooseLoginWidget({super.key});

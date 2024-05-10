@@ -1,53 +1,21 @@
-import 'dart:convert';
 import 'dart:core';
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
+import 'package:libeery/arguments/user_argument.dart';
+import 'package:libeery/models/msmhs_model.dart';
+import 'package:libeery/services/msmhs_service.dart';
 
-class LoginStaffForm extends StatefulWidget {
-  const LoginStaffForm({super.key});
+class LoginMhsForm extends StatefulWidget {
+  const LoginMhsForm({super.key});
 
   @override
-  LoginStaffFormState createState() => LoginStaffFormState();
+  LoginMhsFormState createState() => LoginMhsFormState();
 }
 
-class LoginStaffFormState extends State<LoginStaffForm> {
+class LoginMhsFormState extends State<LoginMhsForm> {
   final TextEditingController nomorIndukController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool _isObscure = true;
   String? errorMessage;
-
-  Future<String?> loginStaff(String nomorInduk, String password) async {
-    try {
-      final dio = Dio();
-      dio.options.validateStatus = (status) {
-        return true; // Always return true to prevent Dio from throwing exceptions
-      };
-
-      Map<String, dynamic> data = {
-        'NIS': nomorInduk,
-        'Password': password,
-      };
-
-      Response response = await dio.post(
-        'https://libeery-api-production.up.railway.app/api/public/loginstaff',
-        data: json.encode(data),
-        options: Options(headers: {
-          'Content-Type': 'application/json',
-        }),
-      );
-      if (response.statusCode == 200) {
-        // print('Login successful: ${response.data}');
-        return null;
-        // redirect to another page
-      } else if (response.statusCode == 400) {
-        return response.data['Message'];
-      } else {
-        return response.data['Message'] ?? 'Unknown error occurred.';
-      }
-    } catch (error) {
-      return 'Unexpected error occurred: $error';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +39,7 @@ class LoginStaffFormState extends State<LoginStaffForm> {
         ),
         const SizedBox(height: 8),
         const Text(
-          "Sebelum masuk ke dalam LKC BINUS, harap memasukkan NIS dan kata sandi BinusMaya kamu ya!",
+          "Sebelum masuk ke dalam LKC BINUS, harap memasukkan NIM dan kata sandi BinusMaya kamu ya!",
           style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w400,
@@ -119,7 +87,7 @@ class LoginStaffFormState extends State<LoginStaffForm> {
               const SizedBox(height: 10),
               const Align(
                 alignment: Alignment.centerLeft,
-                child: Text("NIS",
+                child: Text("NIM",
                     style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
@@ -129,7 +97,7 @@ class LoginStaffFormState extends State<LoginStaffForm> {
               TextFormField(
                 controller: nomorIndukController,
                 decoration: InputDecoration(
-                  hintText: 'Masukkan NIS kamu...',
+                  hintText: 'Masukkan NIM kamu...',
                   hintStyle: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
@@ -143,11 +111,15 @@ class LoginStaffFormState extends State<LoginStaffForm> {
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20.0),
                     borderSide: const BorderSide(
-                      color: Color(
-                          0xFF0097DA), // Set the border color when focused
+                      color: Color(0xFF0097DA),
                     ),
                   ),
                 ),
+                onChanged: (_) {
+                  setState(() {
+                    errorMessage = null;
+                  });
+                },
               ),
               const SizedBox(height: 18),
               const Align(
@@ -194,6 +166,11 @@ class LoginStaffFormState extends State<LoginStaffForm> {
                     },
                   ),
                 ),
+                onChanged: (_) {
+                  setState(() {
+                    errorMessage = null;
+                  });
+                },
               ),
               const SizedBox(height: 24),
               ElevatedButton(
@@ -201,23 +178,11 @@ class LoginStaffFormState extends State<LoginStaffForm> {
                   if (nomorIndukController.text == "" ||
                       passwordController.text == "") {
                     setState(() {
-                      this.errorMessage =
-                          "Harap mengisi kolom NIS dan Password";
+                      errorMessage = "Harap mengisi kolom NIM dan Password";
                     });
                     return;
                   }
-
-                  String? errorMessage = await loginStaff(
-                    nomorIndukController.text,
-                    passwordController.text,
-                  );
-                  if (errorMessage == null) {
-                    // print("Success");
-                  } else {
-                    setState(() {
-                      this.errorMessage = errorMessage;
-                    });
-                  }
+                  loginMhs(context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFF18700),
@@ -244,9 +209,32 @@ class LoginStaffFormState extends State<LoginStaffForm> {
 
   @override
   void dispose() {
-    // Clean up the controller when the widget is disposed.
     nomorIndukController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+
+  Future<void> loginMhs(BuildContext context) async {
+    try {
+      MsMhsService mhsService = MsMhsService();
+      LoginMhsResponseDTO response = await mhsService.loginMhs(
+        nomorIndukController.text,
+        passwordController.text,
+      );
+
+      if (response.statusCode == 200) {
+        print('Navigation to home screen...');
+        Navigator.of(context).pushNamed('/home',
+            arguments: UserArguments(response.userId!, response.username!));
+      } else {
+        setState(() {
+          errorMessage = response.message;
+        });
+      }
+    } catch (error) {
+      setState(() {
+        errorMessage = 'Unexpected error occurred: $error';
+      });
+    }
   }
 }

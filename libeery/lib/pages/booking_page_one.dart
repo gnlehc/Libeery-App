@@ -39,13 +39,13 @@ class _BookingPageOneState extends State<BookingPageOne> {
   Color textCard2 = const Color.fromRGBO(51, 51, 51, 1);
 
   double heightCard1 = 123;
-  double widthCard1 = 285;
+  double widthCard1 = 290;
 
   double heightCard2 = 123;
-  double widthCard2 = 285;
+  double widthCard2 = 290;
 
   double heightCard = 130;
-  double widthCard = 300;
+  double widthCard = 305;
 
   void changeCard1(){
     setState(() {
@@ -61,7 +61,7 @@ class _BookingPageOneState extends State<BookingPageOne> {
       cardColor2 = color2;
       textCard2 = color1;
       heightCard2 = 123;
-      widthCard2 = 285;
+      widthCard2 = 290;
     });
   }
 
@@ -78,7 +78,7 @@ class _BookingPageOneState extends State<BookingPageOne> {
       cardColor1 = color2;
       textCard1 = color1;
       heightCard1 = 123;
-      widthCard1 = 285;
+      widthCard1 = 290;
     });
   }
 
@@ -174,8 +174,8 @@ class _BookingPageOneState extends State<BookingPageOne> {
                   'Pilih Jadwal Kunjunganmu!',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16.0,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 18.0,
                     color: color1,
                   ),
                 ),
@@ -188,8 +188,8 @@ class _BookingPageOneState extends State<BookingPageOne> {
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     color: color1,
-                    fontWeight: FontWeight.w300,
-                    fontSize: 11.0,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12.0,
                   ),
                   textAlign: TextAlign.justify,
                 ),
@@ -216,7 +216,7 @@ class _BookingPageOneState extends State<BookingPageOne> {
                       child: Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(20.0, 10.0, 5.0, 10.0),
+                            padding: const EdgeInsets.fromLTRB(15.0, 10.0, 2.0, 10.0),
                             child: SizedBox(
                               height: 107,
                               width: 96,
@@ -233,10 +233,10 @@ class _BookingPageOneState extends State<BookingPageOne> {
                                   child: Text(
                                     'Butuh Sekarang Nih...',
                                     style: TextStyle(
-                                      fontSize: 12.0,
+                                      fontSize: 13.0,
                                       fontFamily: 'Montserrat',
                                       color: textCard1,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w700,
                                     ),
                                     textAlign: TextAlign.right,
                                   ),
@@ -246,9 +246,9 @@ class _BookingPageOneState extends State<BookingPageOne> {
                                   child: Text(
                                     'Aku ingin mengunjungi perpustakaan sekarang karena ada kepentingan mendadak.',
                                     style: TextStyle(
-                                        fontSize: 8.70,
+                                        fontSize: 11.0,
                                         fontFamily: 'Montserrat',
-                                        fontWeight: FontWeight.w300,
+                                        fontWeight: FontWeight.w400,
                                         color: textCard1,
                                         overflow: TextOverflow.clip
                                     ),
@@ -298,7 +298,7 @@ class _BookingPageOneState extends State<BookingPageOne> {
                                       fontSize: 13.0,
                                       fontFamily: 'Montserrat',
                                       color: textCard2,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w700,
                                     ),
                                     textAlign: TextAlign.left,
                                   ),
@@ -308,10 +308,10 @@ class _BookingPageOneState extends State<BookingPageOne> {
                                   child: Text(
                                     'Aku ingin mereservasi slot loker dulu untuk kunjunganku nanti, aku pasti akan datang kok.',
                                     style: TextStyle(
-                                        fontSize: 8.50,
+                                        fontSize: 11.0,
                                         fontFamily: 'Montserrat',
                                         color: textCard2,
-                                        fontWeight: FontWeight.w300,
+                                        fontWeight: FontWeight.w400,
                                         overflow: TextOverflow.clip
                                     ),
                                     textAlign: TextAlign.left,
@@ -321,7 +321,7 @@ class _BookingPageOneState extends State<BookingPageOne> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(5.0, 10.0, 20.0, 10.0),
+                            padding: const EdgeInsets.fromLTRB(5.0, 10.0, 15.0, 10.0),
                             child: SizedBox(
                               height: 107,
                               width: 96,
