@@ -67,6 +67,7 @@ class _BookForLaterState extends State<BookForLater> {
   late List<String> selectedSlots;
   late int? selectedSessionID;
   String? errorMessage;
+  String? errorMessage2;
 
   final Logger logger = Logger(
     printer: PrettyPrinter(), // Printer untuk menata keluaran log
@@ -271,9 +272,11 @@ class _BookForLaterState extends State<BookForLater> {
 
                                               if (endSessionTime.isBefore(now)) {
                                                 setState(() {
-                                                  errorMessage = 'Session telah lewat';
+                                                  errorMessage2 = 'Session telah lewat';
                                                 });
                                                 return;
+                                              }else{
+                                                errorMessage = null;
                                               }
                                               if (value != null && value) {
                                                 final newSlot ='$startTimeFormatted.00 - $endTimeFormatted.00';
@@ -435,9 +438,9 @@ class _BookForLaterState extends State<BookForLater> {
               Padding(
               padding: const EdgeInsets.only(bottom: 10.0),
               child: Center(
-                child: errorMessage != null 
+                child: errorMessage2 != null 
                   ? Text(
-                      errorMessage!,
+                      errorMessage2!,
                       style: const TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 12.0,
