@@ -83,7 +83,10 @@ flutter:
     - assets/image/libeery2-bookforlater.png
     - assets/image/libeery1-bookfornow.png
     - assets/image/whitebackground.png
-    - assets/images/acara-sample-image.jpg
+    - assets/icons/Home.png
+    - assets/icons/Books.png
+    - assets/icons/Profile.png
+    - assets/icons/Pointer.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

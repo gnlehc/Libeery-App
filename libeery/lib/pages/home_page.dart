@@ -3,11 +3,11 @@ import 'package:libeery/models/msuser_model.dart';
 import 'package:libeery/models/mssession_model.dart';
 import 'package:libeery/services/msuser_service.dart';
 import 'package:libeery/services/mssession_service.dart';
-import 'package:libeery/widgets/acara_card_widget.dart';
 import 'package:libeery/widgets/acara_widget.dart';
 import 'package:libeery/widgets/book_session_widget.dart';
 import 'package:libeery/widgets/booked_session_widget.dart';
 import 'package:libeery/widgets/user_greetings_widget.dart';
+import 'package:libeery/widgets/navbar_widget.dart';
 
 class HomePage extends StatefulWidget {
   final String? userId;
@@ -24,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   late AllUserBookedSession booked = AllUserBookedSession();
   List<MsSession> sessions = [];
   bool isLoading = true;
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -74,11 +75,31 @@ class _HomePageState extends State<HomePage> {
     return '$formattedStartTime - $formattedEndTime WIB';
   }
 
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    if (_selectedIndex == 0) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage(
+            userId: widget.userId,
+            username: widget.username,
+          ),
+        ),
+      );
+    } else if (_selectedIndex == 1) {
+      // Navigate to Books Page
+    } else if (_selectedIndex == 2) {
+      // Navigate to Profile Page
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-      child: Column(
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Stack(
@@ -92,42 +113,41 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   const SizedBox(height: 100),
                   GreetUser(username: widget.username),
-                  Container(
-                    height: 250,
-                    padding: const EdgeInsets.all(20.0),
-                    child: isLoading
-                        ? const CircularProgressIndicator()
-                        : booked.data != null
-                            ? SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    for (var i in booked.data!)
-                                      Column(
-                                        children: [
-                                          OngoingSession(
-                                            loker: i.lokerID!,
-                                            periode:
-                                                getSessionTime(i.sessionID!),
-                                            startSession: sessions
-                                                .firstWhere((session) =>
-                                                    session.sessionID ==
-                                                    i.sessionID)
-                                                .startSession,
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          )
-                                        ],
-                                      ),
-                                  ],
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxHeight: 250),
+                      child: isLoading
+                          ? const CircularProgressIndicator()
+                          : booked.data != null
+                              ? SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      for (var i in booked.data!)
+                                        Column(
+                                          children: [
+                                            OngoingSession(
+                                              loker: i.lokerID!,
+                                              periode:
+                                                  getSessionTime(i.sessionID!),
+                                              startSession: sessions
+                                                  .firstWhere((session) =>
+                                                      session.sessionID ==
+                                                      i.sessionID)
+                                                  .startSession,
+                                            ),
+                                          ],
+                                        ),
+                                    ],
+                                  ),
+                                )
+                              : const Center(
+                                  child: Text('No data available'),
                                 ),
-                              )
-                            : const Center(
-                                child: Text('No data available'),
-                              ),
-                    // const OngoingSession(
-                    //     loker: , periode: "09:00 - 10:00"),
+                    ),
                   ),
+                  const SizedBox(height: 20),
                   const AddNewBookCard(),
                 ],
               ),
@@ -137,20 +157,21 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.all(22),
             child: Column(
               children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Acara",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                  ),
+                Text(
+                  "Acara",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                 ),
-                SizedBox(height: 15),
-                AcaraListWidget()
+                SizedBox(height: 16),
+                AcaraListWidget(),
               ],
             ),
           )
         ],
       ),
-    ));
+      bottomNavigationBar: NavBar(
+        selectedIndex: _selectedIndex,
+        onItemTapped: _onItemTapped,
+      ),
+    );
   }
 }

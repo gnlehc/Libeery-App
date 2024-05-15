@@ -3,10 +3,6 @@ import 'package:libeery/models/msloker_model.dart';
 import 'package:libeery/pages/book_for_now_page.dart';
 import 'package:libeery/services/msloker_service.dart';
 
-void main() {
-  runApp(const BookingPage3());
-}
-
 class Loker {
   bool dipilih;
   Color color;
@@ -15,21 +11,23 @@ class Loker {
 }
 
 class BookingPage3 extends StatefulWidget {
-  const BookingPage3({super.key});
+  final Widget previousPage;
+
+  const BookingPage3({Key? key, required this.previousPage}) : super(key: key);
 
   @override
   BookingPage3State createState() => BookingPage3State();
 }
 
 class BookingPage3State extends State<BookingPage3> {
-  List<dynamic> listLoker = [];
+  GetAllMsLokerData listLoker = GetAllMsLokerData();
   List<bool> progressStatus = [false, false, true, false];
 
-  void getLoker() async {
+  void getLoker() {
+    LokerService lokerService = LokerService();
     try {
-      final List<dynamic> result = await LokerService.getLoker();
-      setState(() {
-        listLoker = result;
+      setState(() async {
+        listLoker = await lokerService.getLoker();
       });
     } catch (e) {
       e.toString();
@@ -58,7 +56,7 @@ class BookingPage3State extends State<BookingPage3> {
   void updateSelectedLocker(int rowIndex, int columnIndex) {
     setState(() {
       // Check locker's availability
-      final MsLoker selectedLoker = listLoker.firstWhere(
+      final MsLoker? selectedLoker = listLoker.data?.firstWhere(
         (element) =>
             element.rowNumber == rowIndex + 1 &&
             element.columnNumber == columnIndex + 1,
@@ -71,7 +69,7 @@ class BookingPage3State extends State<BookingPage3> {
       );
 
       // if booked, return because the color already set to be red
-      if (selectedLoker.availability == 'Booked') {
+      if (selectedLoker == null || selectedLoker.availability == 'Booked') {
         return;
       }
 
@@ -108,7 +106,7 @@ class BookingPage3State extends State<BookingPage3> {
         ? const Color.fromRGBO(241, 135, 0, 1)
         : const Color.fromRGBO(197, 197, 197, 1);
     return Container(
-      width: 90,
+      width: 80,
       height: 4,
       margin: const EdgeInsets.symmetric(horizontal: 1),
       decoration: BoxDecoration(
@@ -153,7 +151,7 @@ class BookingPage3State extends State<BookingPage3> {
             children: [
               Container(
                 height: 120,
-                padding: const EdgeInsets.symmetric(horizontal: 25),
+                padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -176,7 +174,7 @@ class BookingPage3State extends State<BookingPage3> {
               ),
               Container(
                 height: 30,
-                padding: const EdgeInsets.symmetric(horizontal: 25),
+                padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -198,7 +196,7 @@ class BookingPage3State extends State<BookingPage3> {
               SizedBox(
                 height: 300,
                 child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: Row(
                       children: [
                         const SizedBox(
@@ -220,20 +218,24 @@ class BookingPage3State extends State<BookingPage3> {
                             itemBuilder: (context, columnIndex) {
                               return Column(
                                 children: List.generate(5, (rowIndex) {
-                                  final MsLoker loker = listLoker.firstWhere(
-                                    (element) =>
-                                        element.rowNumber == rowIndex + 1 &&
-                                        element.columnNumber == columnIndex + 1,
-                                    orElse: () => MsLoker(
-                                        lockerID: 0,
-                                        rowNumber: 0,
-                                        columnNumber: 0,
-                                        availability: 'Active',
-                                        stsrc: ''),
-                                  );
+                                  MsLoker? loker;
+                                  if (listLoker.data != null) {
+                                    loker = listLoker.data!.firstWhere(
+                                      (element) =>
+                                          element.rowNumber == rowIndex + 1 &&
+                                          element.columnNumber ==
+                                              columnIndex + 1,
+                                      orElse: () => MsLoker(
+                                          lockerID: 0,
+                                          rowNumber: 0,
+                                          columnNumber: 0,
+                                          availability: 'Active',
+                                          stsrc: ''),
+                                    );
+                                  }
 
                                   Color color;
-                                  if (loker.availability == 'Booked') {
+                                  if (loker?.availability == 'Booked') {
                                     color = const Color(0xffC75E5E);
                                   } else {
                                     if (lokerUser[rowIndex][columnIndex]
@@ -269,7 +271,7 @@ class BookingPage3State extends State<BookingPage3> {
               Container(
                 height: 60,
                 padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 40),
                 child: Column(children: [
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -277,7 +279,7 @@ class BookingPage3State extends State<BookingPage3> {
                         const Text("Loker yang dipilih"),
                         if (selectedRow != -1 && selectedColumn != -1)
                           Text(
-                            listLoker
+                            listLoker.data!
                                 .firstWhere((loker) =>
                                     loker.rowNumber == selectedRow + 1 &&
                                     loker.columnNumber == selectedColumn + 1)
