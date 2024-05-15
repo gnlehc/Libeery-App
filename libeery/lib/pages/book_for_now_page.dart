@@ -176,13 +176,13 @@ class _BookForNowState extends State<BookForNow> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Padding(
-              padding: EdgeInsets.fromLTRB(45.0, 20.0, 45.0, 5.0),
+              padding: EdgeInsets.fromLTRB(45.0, 20.0, 0, 5.0),
               child: Text(
                 'Pilih Waktu Akhir Kunjunganmu!',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16.0,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 17.0,
                   color: Colors.black,
                 ),
               ),
@@ -194,8 +194,8 @@ class _BookForNowState extends State<BookForNow> {
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   color: color1,
-                  fontWeight: FontWeight.w300,
-                  fontSize: 11.0,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12.0,
                 ),
                 textAlign: TextAlign.justify,
               ),
@@ -226,15 +226,15 @@ class _BookForNowState extends State<BookForNow> {
                         itemExtent: 75,
                         looping: true,
                         scrollController: FixedExtentScrollController(
-                          initialItem: selectedHour
+                          initialItem: selectedHour + 9
                         ),
                         onSelectedItemChanged: (hourIndex){
                           setState(() {
-                            selectedHour = hourIndex ;
+                            selectedHour = hourIndex + 9 ;
                           });
                         },
-                        children: List.generate(24, (index){
-                          final hour = index;
+                        children: List.generate(10, (index){
+                          final hour = index + 9;
                           final hourText = hour < 10 ? '0$hour' : '$hour';
                           return Center(
                             child: Text(
@@ -272,15 +272,15 @@ class _BookForNowState extends State<BookForNow> {
                       itemExtent: 75,
                       looping: true,
                       scrollController: FixedExtentScrollController(
-                        initialItem: selectedMinute ~/30
+                        initialItem: selectedMinute
                       ),
                       onSelectedItemChanged: (minuteIndex){
                         setState(() {
-                          selectedMinute = (minuteIndex% 2)* 30;
+                          selectedMinute = minuteIndex;
                         });
                       }, 
-                      children: List.generate(2, (index){
-                        final minute = index * 30;
+                      children: List.generate(1, (index){
+                        final minute = index*0;
                         final minuteText = minute < 10 ? '0$minute' : '$minute';
                         return Center(
                           child: Text(
@@ -358,10 +358,7 @@ class _BookForNowState extends State<BookForNow> {
                     startTime.minute,
                   );
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const BookingPage3()),
-                  );
+                  
 
                   DateTime endSessionTime = DateTime(
                     DateTime.now().year,
@@ -371,30 +368,41 @@ class _BookForNowState extends State<BookForNow> {
                     selectedMinute,
                   );
 
-
-                  SessionVisitTime sessionVisitTime = SessionVisitTime(
-                    userID: '102b1784-5575-41e0-9175-795fc92455db',
-                    startSession: startSessionTime.toIso8601String(),
-                    endSession: endSessionTime.toIso8601String(),
-                    lokerID: 40,
-
-                  );
-
-                  logger.d('startTime : $startSessionTime');
-                  logger.d('endTime : $endSessionTime');
-
-                  
-                  postSessionVisitTime(sessionVisitTime)
-                  .then((_) {
-                    logger.d('Berhasil post ke API');
-                  })
-                  .catchError((error) {
+                  if(endSessionTime.isBefore(startSessionTime)){
                     setState(() {
-                      logger.d('Gagal post ke API: $error');
+                      errorMessage = "Waktu sesi sudah lewat";
                     });
-                  });
+                  }
+                  else{
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const BookingPage3()),
+                    );
 
+                    SessionVisitTime sessionVisitTime = SessionVisitTime(
+                      userID: '102b1784-5575-41e0-9175-795fc92455db',
+                      startSession: startSessionTime.toIso8601String(),
+                      endSession: endSessionTime.toIso8601String(),
+                      lokerID: 40,
+                    );
+
+                    logger.d('startTime : $startSessionTime');
+                    logger.d('endTime : $endSessionTime');
+
+                    
+                    postSessionVisitTime(sessionVisitTime)
+                    .then((_) {
+                      logger.d('Berhasil post ke API');
+                    })
+                    .catchError((error) {
+                      setState(() {
+                        logger.d('Gagal post ke API: $error');
+                      });
+                    });
+
+                  }
                 },
+
                 style: ElevatedButton.styleFrom(
                   backgroundColor: color3,
                   fixedSize: const Size(136, 33),
@@ -412,6 +420,22 @@ class _BookForNowState extends State<BookForNow> {
               ),
             ),
             const SizedBox(height: 10.0),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: Center(
+                child: errorMessage != null 
+                  ? Text(
+                      errorMessage!,
+                      style: const TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.red
+                      ),
+                  )
+                  : const SizedBox(),
+              ),
+            ),
             Center(
               child: GestureDetector(
                 onTap: () {
@@ -436,4 +460,3 @@ class _BookForNowState extends State<BookForNow> {
     );
   }
 }
-
