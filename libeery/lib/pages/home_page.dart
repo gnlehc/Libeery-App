@@ -3,6 +3,8 @@ import 'package:libeery/models/msuser_model.dart';
 import 'package:libeery/models/mssession_model.dart';
 import 'package:libeery/services/msuser_service.dart';
 import 'package:libeery/services/mssession_service.dart';
+import 'package:libeery/widgets/acara_card_widget.dart';
+import 'package:libeery/widgets/acara_widget.dart';
 import 'package:libeery/widgets/book_session_widget.dart';
 import 'package:libeery/widgets/booked_session_widget.dart';
 import 'package:libeery/widgets/user_greetings_widget.dart';
@@ -10,8 +12,9 @@ import 'package:libeery/widgets/user_greetings_widget.dart';
 class HomePage extends StatefulWidget {
   final String? userId;
   final String? username;
-  
-  const HomePage({Key? key, required this.userId, required this.username}) : super(key: key);
+
+  const HomePage({Key? key, required this.userId, required this.username})
+      : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -31,7 +34,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _loadData() async {
     try {
       booked = await MsUserService().usersBookedSessions(widget.userId);
-      
+
       final loadedSessions = await MsSessionService.getSessionfromAPI();
       setState(() {
         sessions = loadedSessions;
@@ -43,19 +46,17 @@ class _HomePageState extends State<HomePage> {
   }
 
   bool isValidSession(int sessionID) {
-    return sessions.any((session) =>
-        session.sessionID == sessionID);
+    return sessions.any((session) => session.sessionID == sessionID);
   }
 
   String getSessionTime(int sessionID) {
-    final session = sessions.firstWhere(
-      (session) => session.sessionID == sessionID,
-      orElse: () => MsSession(
-        sessionID: -1,
-        startSession: DateTime.now(),
-        endSession: DateTime.now(),
-      )
-    );
+    final session =
+        sessions.firstWhere((session) => session.sessionID == sessionID,
+            orElse: () => MsSession(
+                  sessionID: -1,
+                  startSession: DateTime.now(),
+                  endSession: DateTime.now(),
+                ));
 
     if (session.sessionID != -1) {
       return parseTime(session.startSession, session.endSession);
@@ -65,8 +66,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   String parseTime(DateTime startTime, DateTime endTime) {
-    final String formattedStartTime = '${startTime.hour.toString().padLeft(2, '0')}:${startTime.minute.toString().padLeft(2, '0')}';
-    final String formattedEndTime = '${endTime.hour.toString().padLeft(2, '0')}:${endTime.minute.toString().padLeft(2, '0')}';
+    final String formattedStartTime =
+        '${startTime.hour.toString().padLeft(2, '0')}:${startTime.minute.toString().padLeft(2, '0')}';
+    final String formattedEndTime =
+        '${endTime.hour.toString().padLeft(2, '0')}:${endTime.minute.toString().padLeft(2, '0')}';
 
     return '$formattedStartTime - $formattedEndTime WIB';
   }
@@ -74,7 +77,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+        body: SingleChildScrollView(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Stack(
@@ -102,8 +106,13 @@ class _HomePageState extends State<HomePage> {
                                         children: [
                                           OngoingSession(
                                             loker: i.lokerID!,
-                                            periode: getSessionTime(i.sessionID!),
-                                            startSession: sessions.firstWhere((session) => session.sessionID == i.sessionID).startSession,
+                                            periode:
+                                                getSessionTime(i.sessionID!),
+                                            startSession: sessions
+                                                .firstWhere((session) =>
+                                                    session.sessionID ==
+                                                    i.sessionID)
+                                                .startSession,
                                           ),
                                           const SizedBox(
                                             height: 10,
@@ -128,15 +137,20 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.all(22),
             child: Column(
               children: <Widget>[
-                Text(
-                  "Acara",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Acara",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                  ),
                 ),
+                SizedBox(height: 15),
+                AcaraListWidget()
               ],
             ),
           )
         ],
       ),
-    );
+    ));
   }
 }
