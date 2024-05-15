@@ -1,3 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:libeery/outputs/baseoutput_model.dart';
+
 class MsLoker {
   final int lockerID;
   final int rowNumber;
@@ -15,21 +18,29 @@ class MsLoker {
 
   factory MsLoker.fromJson(Map<String, dynamic> json) {
     return MsLoker(
-      lockerID: json['LockerID'],
-      rowNumber: json['RowNumber'],
-      columnNumber: json['ColumnNumber'],
-      availability: json['Availability'],
-      stsrc: json['Stsrc'],
+      lockerID: json['LokerID'] ?? 0,
+      rowNumber: json['RowNumber'] ?? 0,
+      columnNumber: json['ColumnNumber'] ?? 0,
+      availability: json['Availability'] ?? "",
+      stsrc: json['Stsrc'] ?? "",
     );
   }
+}
 
-  Map<String, dynamic> lokerResponseDTO(Map<String, dynamic> json) {
-    return {
-      'lockerID': json['LockerID'],
-      'rowNumber': json['RowNumber'],
-      'columnNumber': json['ColumnNumber'],
-      'availability': json['Availability'],
-      'stsrc': json['Stsrc'],
-    };
+class GetAllMsLokerData {
+  List<MsLoker>? data;
+  BaseOutput? baseOutput;
+  GetAllMsLokerData({
+    this.data,
+    this.baseOutput,
+  });
+
+  
+  factory GetAllMsLokerData.fromJson(Map<String, dynamic> json) {
+    return GetAllMsLokerData(
+      data: List<MsLoker>.from(
+          json["Data"].map((x) => MsLoker.fromJson(x))),
+      baseOutput: BaseOutput.fromJson(json['BaseOutput']),
+    );
   }
 }

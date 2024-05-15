@@ -358,8 +358,6 @@ class _BookForNowState extends State<BookForNow> {
                     startTime.minute,
                   );
 
-                  
-
                   DateTime endSessionTime = DateTime(
                     DateTime.now().year,
                     DateTime.now().month,
