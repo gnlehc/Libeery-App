@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
               ModalRoute.of(context)!.settings.arguments as UserArguments;
           final String username = args.username;
           final String userId = args.userId;
-          return HomePage(userId: userId, username: username);
+          return HomePage(userId: userId, username: username, selectedIndex: 0);
         },
         '/chooselogin': (context) => const ChooseLoginPage(),
         '/loginstaff': (context) =>

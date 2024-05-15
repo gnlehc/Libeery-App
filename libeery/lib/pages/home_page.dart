@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:libeery/models/msuser_model.dart';
 import 'package:libeery/models/mssession_model.dart';
+import 'package:libeery/pages/books_page.dart';
 import 'package:libeery/services/msuser_service.dart';
 import 'package:libeery/services/mssession_service.dart';
 import 'package:libeery/widgets/book_session_widget.dart';
@@ -11,8 +12,9 @@ import 'package:libeery/widgets/navbar_widget.dart';
 class HomePage extends StatefulWidget {
   final String? userId;
   final String? username;
+  final int selectedIndex;
   
-  const HomePage({Key? key, required this.userId, required this.username}) : super(key: key);
+  const HomePage({Key? key, required this.userId, required this.username, required this.selectedIndex}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -27,6 +29,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    _selectedIndex = widget.selectedIndex;
     _loadData();
   }
 
@@ -78,17 +81,18 @@ class _HomePageState extends State<HomePage> {
       _selectedIndex = index;
     });
     if (_selectedIndex == 0) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomePage(
-            userId: widget.userId,
-            username: widget.username,
-          ),
-        ),
-      );
+      // stay on this page
     } else if (_selectedIndex == 1) {
-      // Navigate to Books Page
+      Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BooksPage(
+          userId: widget.userId,
+          username: widget.username,
+          selectedIndex: 1,
+        ),
+      ),
+    );
     } else if (_selectedIndex == 2) {
       // Navigate to Profile Page
     }
