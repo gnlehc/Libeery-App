@@ -8,9 +8,13 @@ import 'package:libeery/pages/login_page.dart';
 import 'package:libeery/pages/splashscreen_page.dart';
 import 'package:libeery/widgets/login_mhs_form_widget.dart';
 import 'package:libeery/widgets/login_staff_form_widget.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
 
 void main() {
-  runApp(const MyApp());
+  initializeDateFormatting('id', null).then((_) {
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
