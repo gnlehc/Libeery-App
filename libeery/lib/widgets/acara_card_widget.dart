@@ -82,7 +82,7 @@ class AcaraCard extends StatelessWidget {
                       const Icon(Icons.date_range,
                           color: Color(0xFF0097DA), size: 10),
                       const SizedBox(width: 4.0),
-                      Text(formatDateTime(acara.acaraDate),
+                      Text(formatDateTime(acara.acaraDate.toString()),
                           style: const TextStyle(
                               color: Color(0xFF333333),
                               fontSize: 10,
@@ -96,8 +96,8 @@ class AcaraCard extends StatelessWidget {
                           color: Color(0xFF0097DA), size: 10),
                       const SizedBox(width: 4.0),
                       Text(
-                          formatTimeRange(
-                              acara.acaraStartTime, acara.acaraEndTime),
+                          formatTimeRange(acara.acaraStartTime.toString(),
+                              acara.acaraEndTime.toString()),
                           style: const TextStyle(
                               color: Color(0xFF333333),
                               fontSize: 10,

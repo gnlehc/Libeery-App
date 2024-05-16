@@ -119,7 +119,13 @@ class _HomePageState extends State<HomePage> {
                     child: ConstrainedBox(
                       constraints: const BoxConstraints(maxHeight: 250),
                       child: isLoading
-                          ? const CircularProgressIndicator()
+                          ? const Center(
+                              child: SizedBox(
+                                width: 30.0,
+                                height: 30.0,
+                                child: CircularProgressIndicator(),
+                              ),
+                            )
                           : booked.data != null
                               ? SingleChildScrollView(
                                   child: Column(

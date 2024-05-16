@@ -1,11 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:libeery/models/msacara_model.dart';
 import 'package:libeery/services/msacara_service.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-
 
 class AcaraDetailPage extends StatefulWidget {
   const AcaraDetailPage({super.key});
@@ -15,16 +12,14 @@ class AcaraDetailPage extends StatefulWidget {
 }
 
 class _AcaraDetailPage extends State<AcaraDetailPage> {
-
-void _launchURL(String url) async {
-  try {
-    final Uri uri = Uri.parse(url);
-    await launchUrl(uri);
-  } catch (e) {
-    throw 'Could not launch $url';
+  void _launchURL(String url) async {
+    try {
+      final Uri uri = Uri.parse(url);
+      await launchUrl(uri);
+    } catch (e) {
+      throw 'Could not launch $url';
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -35,294 +30,283 @@ void _launchURL(String url) async {
         flexibleSpace: const Image(
           image: AssetImage('assets/image/whitebackground.png'),
           fit: BoxFit.cover,
-        ), 
+        ),
         backgroundColor: Colors.transparent,
         title: Padding(
           padding: const EdgeInsets.only(top: 25.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            
-                children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: IconButton(
-                        onPressed: (){
-                          Navigator.of(context).pop();
-                        }, 
-                        icon: const Icon(Icons.arrow_back_ios),
-                        iconSize: 15,
-                      ),
-                    ),
-                    const Text(
-                      'Tentang Acara',
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18.0,
-                        color: Colors.black,
-                      ),
-                    ),
-                ],
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: const Icon(Icons.arrow_back_ios),
+                  iconSize: 15,
+                ),
+              ),
+              const Text(
+                'Tentang Acara',
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18.0,
+                  color: Colors.black,
+                ),
+              ),
+            ],
           ),
         ),
       ),
-      
       body: FutureBuilder<MsAcara>(
-        future: MsAcaraServices.fetchAcaraDetails(),
-        builder: (context, snapshot){
-          if(snapshot.connectionState == ConnectionState.waiting){
-            return const Center (child: CircularProgressIndicator());
-          }else if(snapshot.hasError){
-            return Center(child: Text('Error: ${snapshot.error}'));
-          }else{
-            final acara = snapshot.data!;
-            
-            return SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20.0),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Image.network(acara.acaraImage),
-                  ),
-                  const SizedBox(height: 20.0),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(40.0, 0, 40.0, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        const Text(
-                          'WEBINAR',
-                          style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14.0,
-                            color: Color.fromRGBO(241, 135, 0, 1),
-                          ),
-                        ),
-                        const SizedBox(height: 10.0),
-                        Text(
-                          acara.acaraName,
-                          style: const TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w600,
-                            fontSize: 19.0,
-                            color: Colors.black,
-                          ),
-                        ),  
-                      ] 
+          future: MsAcaraServices.fetchAcaraDetails(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else {
+              final acara = snapshot.data!;
+
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 20.0),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Image.network(acara.acaraImage),
                     ),
-                  ),
-                  const SizedBox(height: 10.0),
-                  const Padding(
-                    padding:  EdgeInsets.only(left: 40.0),
-                    child:  Text(
-                      'TIME & DATE',
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14.0,
-                        color: Color.fromRGBO(241, 135, 0, 1),
-                      ), 
+                    const SizedBox(height: 20.0),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(40.0, 0, 40.0, 0),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Text(
+                              'WEBINAR',
+                              style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.0,
+                                color: Color.fromRGBO(241, 135, 0, 1),
+                              ),
+                            ),
+                            const SizedBox(height: 10.0),
+                            Text(
+                              acara.acaraName,
+                              style: const TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.w600,
+                                fontSize: 19.0,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ]),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 25.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        IconButton(
-                          alignment: Alignment.topCenter,
-                          onPressed: (){}, 
-                          icon: const Icon(Icons.access_time),
-                          iconSize: 25,
-                          color: Colors.blue,
-                          ),
-                        Text(
-                          '${DateFormat('HH:mm').format(acara.acaraStartTime)} - ${DateFormat('HH:mm').format(acara.acaraEndTime)}',
-                          style: const TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12.0,
-                            color: Colors.black,
-                          ),
-                        ),
-                        const SizedBox(width: 30.0),
-                        IconButton(
-                          alignment: Alignment.topCenter,
-                          onPressed: (){}, 
-                          icon: const Icon(Icons.date_range),
-                          iconSize: 25,
-                          color: Colors.blue,
-                          ),
-                        Text(
-                          dateFormat.format(acara.acaraDate),
-                          style: const TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12.0,
-                            color: Colors.black,
-                          ),
-                        )
-                        ],
-                    ),
-                  ),
-                  const Padding(
-                    padding:  EdgeInsets.only(left: 40.0),
-                    child:  Text(
-                      'SPEAKER',
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14.0,
-                        color: Color.fromRGBO(241, 135, 0, 1),
-                      ), 
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 25.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        IconButton(
-                          alignment: Alignment.topCenter,
-                          onPressed: (){}, 
-                          icon: const Icon(Icons.person_outlined),
-                          iconSize: 25,
-                          color: Colors.blue,
-                          ),
-                        Text(
-                          acara.speakerName,
-                          style: const TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12.0,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Padding(
-                    padding:  EdgeInsets.only(left: 40.0),
-                    child:  Text(
-                      'LOCATION',
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14.0,
-                        color: Color.fromRGBO(241, 135, 0, 1),
-                      ), 
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 25.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        IconButton(
-                          alignment: Alignment.topCenter,
-                          onPressed: (){}, 
-                          icon: const Icon(Icons.location_on_outlined),
-                          iconSize: 25,
-                          color: Colors.blue,
-                          ),
-                        Text(
-                          acara.acaraLocation,
-                          style: const TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12.0,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Padding(
-                    padding:  EdgeInsets.only(left: 40.0),
-                    child:  Column(
-                      children: [
-                        Text(
-                          'EVENT DETAILS',
-                          style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14.0,
-                            color: Color.fromRGBO(241, 135, 0, 1),
-                          ), 
-                        ),
-                        
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10.0),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(40.0, 0, 40.0, 0),
-                    child: Text(
-                      acara.acaraDetails,
-                      style: const TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12.0,
-                        color: Colors.black,
-                      ),
-                      textAlign: TextAlign.justify,
-                    ),
-                  ),
-                  const SizedBox(height: 20.0),
-                  
-                  Center(
-                    child: Container(
-                      height: 27,
-                      width: 152,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color.fromRGBO(241, 135, 0, 1),
-                            Color.fromRGBO(241, 135, 0, 1),
-                            Color.fromRGBO(246, 179, 94, 1),
-                          ],
-                          stops: [0.0, 0.8, 1.0],
-                          begin: Alignment.centerLeft,
-                          end: Alignment.topRight,
+                    const SizedBox(height: 10.0),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 40.0),
+                      child: Text(
+                        'TIME & DATE',
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14.0,
+                          color: Color.fromRGBO(241, 135, 0, 1),
                         ),
                       ),
-                      child: ElevatedButton(
-                        onPressed: (){
-                          _launchURL(acara.registerLink);
-                        }, 
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 25.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          IconButton(
+                            alignment: Alignment.topCenter,
+                            onPressed: () {},
+                            icon: const Icon(Icons.access_time),
+                            iconSize: 25,
+                            color: Colors.blue,
+                          ),
+                          Text(
+                            '${DateFormat('HH:mm').format(acara.acaraStartTime)} - ${DateFormat('HH:mm').format(acara.acaraEndTime)}',
+                            style: const TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12.0,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(width: 30.0),
+                          IconButton(
+                            alignment: Alignment.topCenter,
+                            onPressed: () {},
+                            icon: const Icon(Icons.date_range),
+                            iconSize: 25,
+                            color: Colors.blue,
+                          ),
+                          Text(
+                            dateFormat.format(acara.acaraDate),
+                            style: const TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12.0,
+                              color: Colors.black,
+                            ),
                           )
-                        ),
-                        child: const Text(
-                          'Join Here',
-                          style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white
-                          ),
-                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          }
-        }
-      ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 40.0),
+                      child: Text(
+                        'SPEAKER',
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14.0,
+                          color: Color.fromRGBO(241, 135, 0, 1),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 25.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          IconButton(
+                            alignment: Alignment.topCenter,
+                            onPressed: () {},
+                            icon: const Icon(Icons.person_outlined),
+                            iconSize: 25,
+                            color: Colors.blue,
+                          ),
+                          Text(
+                            acara.speakerName,
+                            style: const TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12.0,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 40.0),
+                      child: Text(
+                        'LOCATION',
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14.0,
+                          color: Color.fromRGBO(241, 135, 0, 1),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 25.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          IconButton(
+                            alignment: Alignment.topCenter,
+                            onPressed: () {},
+                            icon: const Icon(Icons.location_on_outlined),
+                            iconSize: 25,
+                            color: Colors.blue,
+                          ),
+                          Text(
+                            acara.acaraLocation,
+                            style: const TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12.0,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 40.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'EVENT DETAILS',
+                            style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.0,
+                              color: Color.fromRGBO(241, 135, 0, 1),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10.0),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(40.0, 0, 40.0, 0),
+                      child: Text(
+                        acara.acaraDetails,
+                        style: const TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12.0,
+                          color: Colors.black,
+                        ),
+                        textAlign: TextAlign.justify,
+                      ),
+                    ),
+                    const SizedBox(height: 20.0),
+                    Center(
+                      child: Container(
+                        height: 27,
+                        width: 152,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          gradient: const LinearGradient(
+                            colors: [
+                              Color.fromRGBO(241, 135, 0, 1),
+                              Color.fromRGBO(241, 135, 0, 1),
+                              Color.fromRGBO(246, 179, 94, 1),
+                            ],
+                            stops: [0.0, 0.8, 1.0],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.topRight,
+                          ),
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            _launchURL(acara.registerLink);
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              )),
+                          child: const Text(
+                            'Join Here',
+                            style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+          }),
     );
   }
-  
 }
-
-

@@ -8,14 +8,14 @@ class AcaraListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<MsAcara>>(
-      future: AcaraService.getAcaraForHomePage(),
+    return FutureBuilder<GetListAcara>(
+      future: MsAcaraServices.getAcaraForHomePage(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+        } else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
           return const Center(child: Text('No data available'));
         } else {
           return Column(
@@ -23,16 +23,16 @@ class AcaraListWidget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  for (int i = 0; i < snapshot.data!.length; i += 2)
-                    AcaraCard(acara: snapshot.data![i]),
+                  for (int i = 0; i < snapshot.data!.data!.length; i += 2)
+                    AcaraCard(acara: snapshot.data!.data![i]),
                 ],
               ),
               const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  for (int i = 1; i < snapshot.data!.length; i += 2)
-                    AcaraCard(acara: snapshot.data![i]),
+                  for (int i = 1; i < snapshot.data!.data!.length; i += 2)
+                    AcaraCard(acara: snapshot.data!.data![i]),
                 ],
               ),
             ],
