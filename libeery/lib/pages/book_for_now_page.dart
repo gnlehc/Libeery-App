@@ -370,7 +370,8 @@ class _BookForNowState extends State<BookForNow> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const BookingPage3()),
+                            builder: (context) =>
+                                const BookingPage3(previousPage: BookForNow())),
                       );
 
                       SessionVisitTime sessionVisitTime = SessionVisitTime(
