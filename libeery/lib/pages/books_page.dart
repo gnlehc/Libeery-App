@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:libeery/models/book_model.dart';
+import 'package:libeery/models/msbooks_model.dart';
+import 'package:libeery/services/msbooks_service.dart';
 import 'package:libeery/pages/home_page.dart';
 import 'package:libeery/widgets/list_books_widget.dart';
 import 'package:libeery/widgets/navbar_widget.dart';
@@ -15,12 +16,7 @@ class BooksPage extends StatefulWidget {
 }
 
 class _BooksPageState extends State<BooksPage> {
-  final List<Book> books = [
-    Book("978-3-16-148410-0", "Flutter Development", "John Doe", "Tech Press", "1st", "2020", 2),
-    Book("978-1-4028-9462-6", "Advanced Dart", "Jane Smith", "Code Books", "2nd", "2019", 3),
-  ];
-
-  List<Book> filteredBooks = [];
+  List<MsBook> booksData = []; 
   TextEditingController editingController = TextEditingController();
   int _selectedIndex = 0;
 
@@ -28,31 +24,18 @@ class _BooksPageState extends State<BooksPage> {
   void initState() {
     super.initState();
     _selectedIndex = widget.selectedIndex;
-    filteredBooks = books;
+    getBooks(); 
   }
 
-  void filterSearchResults(String query) {
-    List<Book> dummySearchList = books;
-    if (query.isNotEmpty) {
-      List<Book> dummyListData = [];
-      dummySearchList.forEach((item) {
-        if (item.title.toLowerCase().contains(query.toLowerCase()) ||
-            item.author.toLowerCase().contains(query.toLowerCase()) ||
-            item.isbn.toLowerCase().contains(query.toLowerCase()) ||
-            item.publisher.toLowerCase().contains(query.toLowerCase()) ||
-            item.edition.toLowerCase().contains(query.toLowerCase()) ||
-            item.year.toLowerCase().contains(query.toLowerCase())) {
-          dummyListData.add(item);
-        }
-      });
+  void getBooks() async {
+    try {
+      final BookService bookService = BookService();
+      GetAllMsBookData result = await bookService.getBook();
       setState(() {
-        filteredBooks = dummyListData;
+        booksData = result.data ?? [];
       });
-      return;
-    } else {
-      setState(() {
-        filteredBooks = books;
-      });
+    } catch (e) {
+      e.toString();
     }
   }
 
@@ -75,6 +58,24 @@ class _BooksPageState extends State<BooksPage> {
       // stay on this page
     } else if (_selectedIndex == 2) {
       // Navigate to Profile Page
+    }
+  }
+
+  void filterSearchResults(String query) {
+    if (query.isNotEmpty) {
+      setState(() {
+        booksData = booksData.where((item) =>
+          item.title.toLowerCase().contains(query.toLowerCase()) ||
+          item.author.toLowerCase().contains(query.toLowerCase()) ||
+          item.isbn.toLowerCase().contains(query.toLowerCase()) ||
+          item.publisher.toLowerCase().contains(query.toLowerCase()) ||
+          item.edition.toLowerCase().contains(query.toLowerCase()) ||
+          item.year.toString().contains(query)).toList();
+      });
+    } else {
+      setState(() {
+        getBooks();
+      });
     }
   }
 
@@ -134,6 +135,7 @@ class _BooksPageState extends State<BooksPage> {
                         filled: true,
                         fillColor: Colors.white,
                         contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
+                        hintStyle: TextStyle(color: Color(0xFF7E7E7E), fontWeight: FontWeight.w200),
                       ),
                     ),
                   ],
@@ -141,7 +143,7 @@ class _BooksPageState extends State<BooksPage> {
               ),
             ],
           ),
-          BookList(filteredBooks: filteredBooks),
+          BookList(filteredBooks: booksData),
         ],
       ),
       bottomNavigationBar: NavBar(

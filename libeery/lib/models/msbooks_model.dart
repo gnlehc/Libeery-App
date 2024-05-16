@@ -25,10 +25,10 @@ class MsBook {
 
   factory MsBook.fromJson(Map<String, dynamic> json) {
     return MsBook(
-      bookID: json['LokerID'] ?? 0,
-      isbn: json['RowNumber'] ?? "",
-      title: json['ColumnNumber'] ?? "",
-      author: json['Availability'] ?? "",
+      bookID: json['BookID'] ?? 0,
+      isbn: json['ISBN'] ?? "",
+      title: json['Title'] ?? "",
+      author: json['Author'] ?? "",
       publisher: json['Publisher'] ?? "",
       edition: json['Edition'] ?? "",
       year: json['Year'] ?? 0,
@@ -38,20 +38,20 @@ class MsBook {
   }
 }
 
-// class GetAllMsBookData {
-//   List<MsBook>? data;
-//   BaseOutput? baseOutput;
-//   GetAllMsBookData({
-//     this.data,
-//     this.baseOutput,
-//   });
+class GetAllMsBookData {
+  List<MsBook>? data;
+  BaseOutput? baseOutput;
+  GetAllMsBookData({
+    this.data,
+    this.baseOutput,
+  });
 
   
-//   factory GetAllMsBookData.fromJson(Map<String, dynamic> json) {
-//     return GetAllMsBookData(
-//       data: List<MsBook>.from(
-//           json["Data"].map((x) => MsBook.fromJson(x))),
-//       baseOutput: BaseOutput.fromJson(json['BaseOutput']),
-//     );
-//   }
-// }
+  factory GetAllMsBookData.fromJson(Map<String, dynamic> json) {
+    return GetAllMsBookData(
+      data: List<MsBook>.from(
+          json["Data"].map((x) => MsBook.fromJson(x))),
+      baseOutput: BaseOutput.fromJson(json['BaseOutput']),
+    );
+  }
+}

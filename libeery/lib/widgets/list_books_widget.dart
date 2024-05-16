@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:libeery/models/book_model.dart';
+import 'package:libeery/models/msbooks_model.dart';
 
 class BookList extends StatelessWidget {
-  final List<Book> filteredBooks;
+  final List<MsBook> filteredBooks;
 
   const BookList({Key? key, required this.filteredBooks}) : super(key: key);
 
