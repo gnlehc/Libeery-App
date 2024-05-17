@@ -21,15 +21,15 @@ class AcaraListWidget extends StatelessWidget {
           return Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   for (int i = 0; i < snapshot.data!.data!.length; i += 2)
                     AcaraCard(acara: snapshot.data!.data![i]),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 20),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   for (int i = 1; i < snapshot.data!.data!.length; i += 2)
                     AcaraCard(acara: snapshot.data!.data![i]),

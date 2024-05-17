@@ -1,4 +1,3 @@
-// acara card
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:libeery/models/msacara_model.dart';
@@ -19,7 +18,7 @@ class AcaraCard extends StatelessWidget {
   Widget build(BuildContext context) {
     double height = 75.0;
     return Container(
-      constraints: BoxConstraints(maxWidth: height * 2.2438, maxHeight: 370),
+      constraints: BoxConstraints(maxWidth: height * 2.2438, maxHeight: 280),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -50,7 +49,7 @@ class AcaraCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("WEBINAR",
+                  const Text("SEMINAR",
                       style: TextStyle(
                           color: Color(0xFFF18700),
                           fontSize: 10,
@@ -104,54 +103,54 @@ class AcaraCard extends StatelessWidget {
                               fontWeight: FontWeight.normal)),
                     ],
                   ),
-                  const SizedBox(height: 10),
-                  const Text("SPEAKER",
-                      style: TextStyle(
-                          color: Color(0xFFF18700),
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600)),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: [
-                      const Icon(Icons.person,
-                          color: Color(0xFF0097DA), size: 10),
-                      const SizedBox(width: 4.0),
-                      SizedBox(
-                        width: 130,
-                        child: Text(
-                          acara.speakerName,
-                          style: const TextStyle(
-                            color: Color(0xFF333333),
-                            fontSize: 10,
-                            fontWeight: FontWeight.normal,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: false,
-                        ),
-                      ),
-                      //
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  const Text("LOCATION",
-                      style: TextStyle(
-                          color: Color(0xFFF18700),
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600)),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: [
-                      const Icon(Icons.location_pin,
-                          color: Color(0xFF0097DA), size: 10),
-                      const SizedBox(width: 4.0),
-                      Text(acara.acaraLocation,
-                          style: const TextStyle(
-                              color: Color(0xFF333333),
-                              fontSize: 10,
-                              fontWeight: FontWeight.normal))
-                    ],
-                  ),
+                  // const SizedBox(height: 10),
+                  // const Text("SPEAKER",
+                  //     style: TextStyle(
+                  //         color: Color(0xFFF18700),
+                  //         fontSize: 10,
+                  //         fontWeight: FontWeight.w600)),
+                  // const SizedBox(height: 6),
+                  // Row(
+                  //   children: [
+                  //     const Icon(Icons.person,
+                  //         color: Color(0xFF0097DA), size: 10),
+                  //     const SizedBox(width: 4.0),
+                  //     SizedBox(
+                  //       width: 130,
+                  //       child: Text(
+                  //         acara.speakerName,
+                  //         style: const TextStyle(
+                  //           color: Color(0xFF333333),
+                  //           fontSize: 10,
+                  //           fontWeight: FontWeight.normal,
+                  //         ),
+                  //         maxLines: 1,
+                  //         overflow: TextOverflow.ellipsis,
+                  //         softWrap: false,
+                  //       ),
+                  //     ),
+                  //     //
+                  //   ],
+                  // ),
+                  // const SizedBox(height: 10),
+                  // const Text("LOCATION",
+                  //     style: TextStyle(
+                  //         color: Color(0xFFF18700),
+                  //         fontSize: 10,
+                  //         fontWeight: FontWeight.w600)),
+                  // const SizedBox(height: 6),
+                  // Row(
+                  //   children: [
+                  //     const Icon(Icons.location_pin,
+                  //         color: Color(0xFF0097DA), size: 10),
+                  //     const SizedBox(width: 4.0),
+                  //     Text(acara.acaraLocation,
+                  //         style: const TextStyle(
+                  //             color: Color(0xFF333333),
+                  //             fontSize: 10,
+                  //             fontWeight: FontWeight.normal))
+                  //   ],
+                  // ),
                   const SizedBox(height: 20),
                   Center(
                     child: GestureDetector(
