@@ -99,74 +99,80 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              Container(
-                color: const Color(0xFF333333),
-                height: 250,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 100),
-                  GreetUser(username: widget.username),
-                  const SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxHeight: 250),
-                      child: isLoading
-                          ? const CircularProgressIndicator()
-                          : booked.data != null
-                              ? SingleChildScrollView(
-                                  child: Column(
-                                    children: [
-                                      for (var i in booked.data!)
-                                        Column(
-                                          children: [
-                                            OngoingSession(
-                                              loker: i.lokerID!,
-                                              periode:
-                                                  getSessionTime(i.sessionID!),
-                                              startSession: sessions
-                                                  .firstWhere((session) =>
-                                                      session.sessionID ==
-                                                      i.sessionID)
-                                                  .startSession,
-                                            ),
-                                          ],
-                                        ),
-                                    ],
-                                  ),
-                                )
-                              : const Center(
-                                  child: Text('No data available'),
-                                ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const AddNewBookCard(),
-                ],
-              ),
-            ],
-          ),
-          const Padding(
-            padding: EdgeInsets.all(22),
-            child: Column(
-              children: <Widget>[
-                Text(
-                  "Acara",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                Container(
+                  color: const Color(0xFF333333),
+                  height: 250,
                 ),
-                SizedBox(height: 16),
-                AcaraListWidget(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(height: 100),
+                    GreetUser(username: widget.username),
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxHeight: 250),
+                        child: isLoading
+                            ? const CircularProgressIndicator()
+                            : booked.data != null
+                                ? SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        for (var i in booked.data!)
+                                          Column(
+                                            children: [
+                                              OngoingSession(
+                                                loker: i.lokerID!,
+                                                periode: getSessionTime(
+                                                    i.sessionID!),
+                                                startSession: sessions
+                                                    .firstWhere((session) =>
+                                                        session.sessionID ==
+                                                        i.sessionID)
+                                                    .startSession,
+                                              ),
+                                            ],
+                                          ),
+                                      ],
+                                    ),
+                                  )
+                                : const Center(
+                                    child: Text('No data available'),
+                                  ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    const AddNewBookCard(),
+                  ],
+                ),
               ],
             ),
-          )
-        ],
+            const Padding(
+              padding: EdgeInsets.all(22),
+              child: Column(
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      "Acara",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  AcaraListWidget(),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
       bottomNavigationBar: NavBar(
         selectedIndex: _selectedIndex,
