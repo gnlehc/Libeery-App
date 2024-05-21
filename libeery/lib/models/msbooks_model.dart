@@ -8,7 +8,9 @@ class MsBook {
   final String publisher;
   final String edition;
   final int year;
+  final String abstract;
   final int stock;
+  final String photo;
   final String stsrc;
 
   MsBook({
@@ -19,7 +21,9 @@ class MsBook {
     required this.publisher,
     required this.edition,
     required this.year,
+    required this.abstract,
     required this.stock,
+    required this.photo,
     required this.stsrc,
   });
 
@@ -32,7 +36,9 @@ class MsBook {
       publisher: json['Publisher'] ?? "",
       edition: json['Edition'] ?? "",
       year: json['Year'] ?? 0,
+      abstract: json['Abstract'],
       stock: json['Stock'] ?? 0,
+      photo: json['Photo'],
       stsrc: json['Stsrc'] ?? "",
     );
   }

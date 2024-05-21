@@ -82,7 +82,9 @@ class _BooksPageState extends State<BooksPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
+        
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Stack(
@@ -102,7 +104,7 @@ class _BooksPageState extends State<BooksPage> {
                       style: TextStyle(
                         fontFamily: "Montserrat",
                         color: Colors.white,
-                        fontSize: 28.0,
+                        fontSize: 22.0,
                         fontWeight: FontWeight.bold
                       ),
                     ),
@@ -114,6 +116,7 @@ class _BooksPageState extends State<BooksPage> {
                         fontSize: 15.0,
                         fontWeight: FontWeight.w300
                       ),
+                      textAlign: TextAlign.justify,
                     ),
                     const SizedBox(height: 15),
                     TextField(
