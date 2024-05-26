@@ -22,9 +22,10 @@ The Libeery mobile app is available for both iOS and Android devices. You can do
 
 1. **Sign Up/Login**: Create an account or log in to your existing Libeery account.
 2. **Locker Booking**: Book library sessions and check locker availability for each session.
-3. **Book Search**: Search for specific books within the library's collection.
-4. **Event Registration**: Register for events organized by Binus University.
-5. **Stocktaking Assistance**: Assist library staff in the stocktaking process by managing locker keys.
+3. **Check-In & Check-Out Session**: Allow users to check-in to and check-out from library sessions, ensuring efficient use of library resources and space.
+4. **Book Search**: Search for specific books within the library's collection.
+5. **Event Registration**: Register for events organized by Binus University.
+6. **Stocktaking Assistance**: Assist library staff in the stocktaking process by managing locker keys.
 
 ## Group Members
 
