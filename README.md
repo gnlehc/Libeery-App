@@ -28,11 +28,11 @@ The Libeery mobile app is available for both iOS and Android devices. You can do
 
 ## Group Members
 
-- **Chelsea Ng (2602057652)**: Project Manager
+- **Chelsea Ng (2602057652)**: Scrum Master
 - **Jesslyn Amanda Mulyawan (2602053515)**: Software Developer
-- **Nicholas Owen Sentosa (2602062652)**: UI/UX Designer
-- **Christopher Verrell (2602063560)**: Backend Developer
-- **Verena Vynne Sentosa (2602063831)**: Quality Assurance Engineer
+- **Nicholas Owen Sentosa (2602062652)**: Software Developer
+- **Christopher Verrell (2602063560)**: Software Developer
+- **Verena Vynne Sentosa (2602063831)**: Software Developer
 
 ## Support
 
