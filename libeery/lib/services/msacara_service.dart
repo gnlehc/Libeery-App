@@ -1,26 +1,54 @@
 import 'package:dio/dio.dart';
 import 'package:libeery/models/msacara_model.dart';
 
-class AcaraService {
-  static const baseUrl =
-      'https://libeery-api-development.up.railway.app/api/private/acara';
+class MsAcaraServices {
+  final dio = Dio();
 
-  static Future<List<MsAcara>> getAcaraForHomePage() async {
+  static Future<GetListAcara> getAcaraForHomePage() async {
+    const baseUrl =
+        'https://libeery-api-development.up.railway.app/api/private/acara';
     try {
       final dio = Dio();
       const url = '$baseUrl?page=1&take=4';
-      Response response = await dio.get(url);
+      final response = await dio.get(url);
+      GetListAcara result = GetListAcara.fromJson(response.data);
+      return result;
+    } catch (e) {
+      throw Exception('Failed to load event: $e');
+    }
+  }
+
+  static Future<GetListAcara> getAcaraForAcaraPage(int page) async {
+    const baseUrl =
+        'https://libeery-api-development.up.railway.app/api/private/acara';
+    try {
+      final dio = Dio();
+      final url = '$baseUrl?page=$page&take=6';
+      final response = await dio.get(url);
+      GetListAcara result = GetListAcara.fromJson(response.data);
+      return result;
+    } catch (e) {
+      throw Exception('Failed to load event: $e');
+    }
+  }
+
+  static Future<MsAcara> fetchAcaraDetails(int id) async {
+    final url =
+        'https://libeery-api-development.up.railway.app/api/private/acara-detail?id=$id';
+
+    try {
+      final dio = Dio();
+      final response = await dio.get(url);
 
       if (response.statusCode == 200) {
-        List<dynamic> jsonData = response.data['Data'];
-        List<MsAcara> tempAcara =
-            jsonData.map((json) => MsAcara.fromJson(json)).toList();
-        return tempAcara;
+        Map<String, dynamic> data = response.data;
+        MsAcara acaraDetail = MsAcara.fromJson(data['Data']);
+        return acaraDetail;
       } else {
-        throw Exception('Failed to load acara data: ${response.statusCode}');
+        throw Exception('Failed to load event: ${response.statusCode}');
       }
     } catch (e) {
-      throw Exception(e.toString());
+      throw Exception('Failed to load event: $e');
     }
   }
 }

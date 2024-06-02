@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:libeery/arguments/user_argument.dart';
 import 'package:libeery/models/msmhs_model.dart';
@@ -16,6 +17,7 @@ class LoginMhsFormState extends State<LoginMhsForm> {
   final TextEditingController passwordController = TextEditingController();
   bool _isObscure = true;
   String? errorMessage;
+  MsMhsService mhsService = MsMhsService();
 
   @override
   Widget build(BuildContext context) {
@@ -175,14 +177,40 @@ class LoginMhsFormState extends State<LoginMhsForm> {
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () async {
-                  if (nomorIndukController.text == "" ||
-                      passwordController.text == "") {
+                  if (nomorIndukController.text.isNotEmpty &&
+                      passwordController.text.isNotEmpty) {
+                    try {
+                      LoginMhsResponseDTO response =
+                          await mhsService.loginMahasiswa(
+                        nomorIndukController.text,
+                        passwordController.text,
+                      );
+
+                      if (response.statusCode == 200) {
+                        print('Login successful, navigating to home screen...');
+                        Navigator.of(context).pushNamed(
+                          '/home',
+                          arguments: UserArguments(
+                            response.userId!,
+                            response.username!,
+                          ),
+                        );
+                      } else {
+                        print('Login failed: ${response.message}');
+                        setState(() {
+                          errorMessage = 'Login failed: ${response.message}';
+                        });
+                      }
+                    } on DioException catch (e) {
+                      throw e.message.toString();
+                    }
+                  } else {
+                    // One or both fields are empty, show error message
                     setState(() {
                       errorMessage = "Harap mengisi kolom NIM dan Password";
                     });
-                    return;
                   }
-                  loginMhs(context);
+                  return;
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFF18700),
@@ -217,21 +245,27 @@ class LoginMhsFormState extends State<LoginMhsForm> {
   Future<void> loginMhs(BuildContext context) async {
     try {
       MsMhsService mhsService = MsMhsService();
-      LoginMhsResponseDTO response = await mhsService.loginMhs(
+      print('Attempting login with NIM: ${nomorIndukController.text}');
+      LoginMhsResponseDTO response = await mhsService.loginMahasiswa(
         nomorIndukController.text,
         passwordController.text,
       );
 
+      print('Login response status code: ${response.statusCode}');
       if (response.statusCode == 200) {
-        print('Navigation to home screen...');
-        Navigator.of(context).pushNamed('/home',
-            arguments: UserArguments(response.userId!, response.username!));
+        print('Login successful, navigating to home screen...');
+        Navigator.of(context).pushNamed(
+          '/home',
+          arguments: UserArguments(response.userId!, response.username!),
+        );
       } else {
+        print('Login failed: ${response.message}');
         setState(() {
           errorMessage = response.message;
         });
       }
     } catch (error) {
+      print('Unexpected error occurred: $error');
       setState(() {
         errorMessage = 'Unexpected error occurred: $error';
       });

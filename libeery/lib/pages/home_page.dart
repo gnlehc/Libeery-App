@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:libeery/models/msuser_model.dart';
 import 'package:libeery/models/mssession_model.dart';
+import 'package:libeery/pages/books_page.dart';
 import 'package:libeery/services/msuser_service.dart';
 import 'package:libeery/services/mssession_service.dart';
-import 'package:libeery/widgets/acara_widget.dart';
+import 'package:libeery/widgets/acara_homepage_widget.dart';
 import 'package:libeery/widgets/book_session_widget.dart';
 import 'package:libeery/widgets/booked_session_widget.dart';
 import 'package:libeery/widgets/user_greetings_widget.dart';
@@ -12,9 +13,14 @@ import 'package:libeery/widgets/navbar_widget.dart';
 class HomePage extends StatefulWidget {
   final String? userId;
   final String? username;
+  final int selectedIndex;
 
-  const HomePage({Key? key, required this.userId, required this.username})
-      : super(key: key);
+  const HomePage({
+    Key? key,
+    required this.userId,
+    required this.username,
+    required this.selectedIndex,
+  }) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -29,6 +35,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    _selectedIndex = widget.selectedIndex;
     _loadData();
   }
 
@@ -51,13 +58,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   String getSessionTime(int sessionID) {
-    final session =
-        sessions.firstWhere((session) => session.sessionID == sessionID,
-            orElse: () => MsSession(
-                  sessionID: -1,
-                  startSession: DateTime.now(),
-                  endSession: DateTime.now(),
-                ));
+    final session = sessions.firstWhere(
+      (session) => session.sessionID == sessionID,
+      orElse: () => MsSession(
+        sessionID: -1,
+        startSession: DateTime.now(),
+        endSession: DateTime.now(),
+      ),
+    );
 
     if (session.sessionID != -1) {
       return parseTime(session.startSession, session.endSession);
@@ -80,17 +88,18 @@ class _HomePageState extends State<HomePage> {
       _selectedIndex = index;
     });
     if (_selectedIndex == 0) {
-      Navigator.push(
+      // stay on this page
+    } else if (_selectedIndex == 1) {
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => HomePage(
+          builder: (context) => BooksPage(
             userId: widget.userId,
             username: widget.username,
+            selectedIndex: 1,
           ),
         ),
       );
-    } else if (_selectedIndex == 1) {
-      // Navigate to Books Page
     } else if (_selectedIndex == 2) {
       // Navigate to Profile Page
     }
@@ -120,7 +129,13 @@ class _HomePageState extends State<HomePage> {
                       child: ConstrainedBox(
                         constraints: const BoxConstraints(maxHeight: 250),
                         child: isLoading
-                            ? const CircularProgressIndicator()
+                            ? const Center(
+                                child: SizedBox(
+                                  width: 30.0,
+                                  height: 30.0,
+                                  child: CircularProgressIndicator(),
+                                ),
+                              )
                             : booked.data != null
                                 ? SingleChildScrollView(
                                     child: Column(
@@ -154,20 +169,36 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            const Padding(
-              padding: EdgeInsets.all(22),
+            Padding(
+              padding: const EdgeInsets.all(30),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "Acara",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                    ),
+                  Row(
+                    children: [
+                      const Expanded(
+                        child: Text(
+                          "Acara",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 24),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/acara');
+                        },
+                        child: const Text(
+                          "Lihat lebih lanjut..",
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 12,
+                              color: Color(0xFF0097DA),
+                              decoration: TextDecoration.underline),
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 16),
-                  AcaraListWidget(),
+                  const AcaraListHomePageWidget(),
                 ],
               ),
             )

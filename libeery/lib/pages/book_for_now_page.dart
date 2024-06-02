@@ -362,17 +362,16 @@ class _BookForNowState extends State<BookForNow> {
                       selectedMinute,
                     );
 
-                    if (endSessionTime.isBefore(startSessionTime)) {
-                      setState(() {
-                        errorMessage = "Waktu sesi sudah lewat";
-                      });
-                    } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const BookingPage3(previousPage: BookForNow())),
-                      );
+                  if(endSessionTime.isBefore(startSessionTime)){
+                    setState(() {
+                      errorMessage = "Waktu sesi sudah lewat";
+                    });
+                  }
+                  else{
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const BookingPage3(previousPage: BookForNow(),)),
+                    );
 
                       SessionVisitTime sessionVisitTime = SessionVisitTime(
                         userID: '102b1784-5575-41e0-9175-795fc92455db',

@@ -1,13 +1,14 @@
-// acara card
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:libeery/models/msacara_model.dart';
+import 'package:libeery/pages/acara_detail_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AcaraCard extends StatelessWidget {
   final MsAcara acara;
 
-  const AcaraCard({super.key, required this.acara});
+  const AcaraCard({Key? key, required this.acara}) : super(key: key);
+
   _launchGoogleForm() async {
     final Uri url = Uri.parse(acara.registerLink);
     if (!await launchUrl(url)) {
@@ -17,47 +18,59 @@ class AcaraCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double height = 75.0;
-    return Container(
-      constraints: BoxConstraints(maxWidth: height * 2.2438, maxHeight: 370),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 7,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Container(
-            height: height,
-            decoration: BoxDecoration(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(10.0)),
-              image: DecorationImage(
-                image: NetworkImage(acara.acaraImage),
-                fit: BoxFit.cover,
+    DateFormat dateFormat = DateFormat('d MMMM yyyy', 'id');
+    double deviceWidth = MediaQuery.of(context).size.width;
+    double cardWidth = deviceWidth * 0.55;
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => AcaraDetailPage(id: acara.acaraID)),
+        );
+      },
+      child: Container(
+        width: cardWidth,
+        height: 180,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 7,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Container(
+              height: 75.0,
+              decoration: BoxDecoration(
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(10.0)),
+                image: DecorationImage(
+                  image: NetworkImage(acara.acaraImage),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-          Padding(
+            Padding(
               padding: const EdgeInsets.all(12.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("WEBINAR",
+                  const Text("SEMINAR",
                       style: TextStyle(
                           color: Color(0xFFF18700),
                           fontSize: 10,
                           fontWeight: FontWeight.w600)),
                   const SizedBox(height: 4),
                   SizedBox(
-                    width: 130,
+                    width: cardWidth * 0.6,
                     child: Text(
                       acara.acaraName,
                       style: const TextStyle(
@@ -82,7 +95,8 @@ class AcaraCard extends StatelessWidget {
                       const Icon(Icons.date_range,
                           color: Color(0xFF0097DA), size: 10),
                       const SizedBox(width: 4.0),
-                      Text(formatDateTime(acara.acaraDate),
+                      Text(dateFormat.format(acara.acaraDate),
+                          // formatDateTime(acara.acaraDate.toString()),
                           style: const TextStyle(
                               color: Color(0xFF333333),
                               fontSize: 10,
@@ -92,64 +106,16 @@ class AcaraCard extends StatelessWidget {
                   const SizedBox(height: 10),
                   Row(
                     children: [
-                      const Icon(Icons.timer,
+                      const Icon(Icons.access_time,
                           color: Color(0xFF0097DA), size: 10),
                       const SizedBox(width: 4.0),
                       Text(
-                          formatTimeRange(
-                              acara.acaraStartTime, acara.acaraEndTime),
+                          formatTimeRange(acara.acaraStartTime.toString(),
+                              acara.acaraEndTime.toString()),
                           style: const TextStyle(
                               color: Color(0xFF333333),
                               fontSize: 10,
                               fontWeight: FontWeight.normal)),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  const Text("SPEAKER",
-                      style: TextStyle(
-                          color: Color(0xFFF18700),
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600)),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: [
-                      const Icon(Icons.person,
-                          color: Color(0xFF0097DA), size: 10),
-                      const SizedBox(width: 4.0),
-                      SizedBox(
-                        width: 130,
-                        child: Text(
-                          acara.speakerName,
-                          style: const TextStyle(
-                            color: Color(0xFF333333),
-                            fontSize: 10,
-                            fontWeight: FontWeight.normal,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: false,
-                        ),
-                      ),
-                      //
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  const Text("LOCATION",
-                      style: TextStyle(
-                          color: Color(0xFFF18700),
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600)),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: [
-                      const Icon(Icons.location_pin,
-                          color: Color(0xFF0097DA), size: 10),
-                      const SizedBox(width: 4.0),
-                      Text(acara.acaraLocation,
-                          style: const TextStyle(
-                              color: Color(0xFF333333),
-                              fontSize: 10,
-                              fontWeight: FontWeight.normal))
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -180,19 +146,18 @@ class AcaraCard extends StatelessWidget {
                     ),
                   )
                 ],
-              ))
-        ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   String formatDateTime(String dateTimeString) {
     DateTime dateTime = DateTime.parse(dateTimeString);
-    DateFormat formatter = DateFormat('EEEE, dd MMMM yyyy');
-
-    String formattedDateTime = formatter.format(dateTime);
-
-    return formattedDateTime;
+    DateFormat formatter = DateFormat('dd MMMM yyyy');
+    return formatter.format(dateTime);
   }
 
   String formatTimeRange(String startTimeString, String endTimeString) {
@@ -200,7 +165,6 @@ class AcaraCard extends StatelessWidget {
     DateTime endTime = DateTime.parse(endTimeString);
     String formattedStartTime = DateFormat.Hm().format(startTime);
     String formattedEndTime = DateFormat.Hm().format(endTime);
-    String formattedTimeRange = 'Pukul $formattedStartTime - $formattedEndTime';
-    return formattedTimeRange;
+    return 'Pukul $formattedStartTime - $formattedEndTime';
   }
 }
