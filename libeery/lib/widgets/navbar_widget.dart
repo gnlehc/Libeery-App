@@ -37,8 +37,8 @@ class _NavBarState extends State<NavBar> {
             },
             child: Image.asset(
               'assets/icons/Home.png',
-              width: 30,
-              height: 30,
+              width: 25,
+              height: 25,
               color: iconColors[0],
               fit: BoxFit.fill,
             ),
@@ -57,8 +57,8 @@ class _NavBarState extends State<NavBar> {
             },
             child: Image.asset(
               'assets/icons/Books.png',
-              width: 40,
-              height: 30,
+              width: 35,
+              height: 25,
               color: iconColors[1],
             ),
           ),
@@ -76,8 +76,8 @@ class _NavBarState extends State<NavBar> {
             },
             child: Image.asset(
               'assets/icons/Profile.png',
-              width: 30,
-              height: 30,
+              width: 25,
+              height: 25,
               color: iconColors[2],
             ),
           ),
