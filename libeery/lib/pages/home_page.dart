@@ -4,7 +4,7 @@ import 'package:libeery/models/mssession_model.dart';
 import 'package:libeery/pages/books_page.dart';
 import 'package:libeery/services/msuser_service.dart';
 import 'package:libeery/services/mssession_service.dart';
-import 'package:libeery/widgets/acara_widget.dart';
+import 'package:libeery/widgets/acara_homepage_widget.dart';
 import 'package:libeery/widgets/book_session_widget.dart';
 import 'package:libeery/widgets/booked_session_widget.dart';
 import 'package:libeery/widgets/user_greetings_widget.dart';
@@ -145,8 +145,8 @@ class _HomePageState extends State<HomePage> {
                                             children: [
                                               OngoingSession(
                                                 loker: i.lokerID!,
-                                                periode:
-                                                    getSessionTime(i.sessionID!),
+                                                periode: getSessionTime(
+                                                    i.sessionID!),
                                                 startSession: sessions
                                                     .firstWhere((session) =>
                                                         session.sessionID ==
@@ -169,17 +169,36 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            const Padding(
-              padding: EdgeInsets.all(30),
+            Padding(
+              padding: const EdgeInsets.all(30),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
-                    "Acara",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                  Row(
+                    children: [
+                      const Expanded(
+                        child: Text(
+                          "Acara",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 24),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/acara');
+                        },
+                        child: const Text(
+                          "Lihat lebih lanjut..",
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 12,
+                              color: Color(0xFF0097DA),
+                              decoration: TextDecoration.underline),
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 16),
-                  AcaraListWidget(),
+                  const AcaraListHomePageWidget(),
                 ],
               ),
             )
