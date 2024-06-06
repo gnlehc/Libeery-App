@@ -5,7 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AcaraDetailPage extends StatefulWidget {
-  const AcaraDetailPage({super.key});
+  final int id;
+  const AcaraDetailPage({super.key, required this.id});
 
   @override
   State<AcaraDetailPage> createState() => _AcaraDetailPage();
@@ -61,7 +62,7 @@ class _AcaraDetailPage extends State<AcaraDetailPage> {
         ),
       ),
       body: FutureBuilder<MsAcara>(
-          future: MsAcaraServices.fetchAcaraDetails(),
+          future: MsAcaraServices.fetchAcaraDetails(widget.id),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -251,7 +252,7 @@ class _AcaraDetailPage extends State<AcaraDetailPage> {
                     ),
                     const SizedBox(height: 10.0),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(40.0, 0, 40.0, 0),
+                      padding: const EdgeInsets.fromLTRB(40.0, 0, 40.0, 20.0),
                       child: Text(
                         acara.acaraDetails,
                         style: const TextStyle(
@@ -266,19 +267,13 @@ class _AcaraDetailPage extends State<AcaraDetailPage> {
                     const SizedBox(height: 20.0),
                     Center(
                       child: Container(
-                        height: 27,
-                        width: 152,
+                        padding: const EdgeInsets.symmetric(horizontal: 25),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.0),
                           gradient: const LinearGradient(
-                            colors: [
-                              Color.fromRGBO(241, 135, 0, 1),
-                              Color.fromRGBO(241, 135, 0, 1),
-                              Color.fromRGBO(246, 179, 94, 1),
-                            ],
-                            stops: [0.0, 0.8, 1.0],
                             begin: Alignment.centerLeft,
-                            end: Alignment.topRight,
+                            end: Alignment.centerRight,
+                            colors: [Color(0xFFF18700), Color(0xFFF8C17B)],
                           ),
                         ),
                         child: ElevatedButton(
@@ -295,13 +290,14 @@ class _AcaraDetailPage extends State<AcaraDetailPage> {
                             'Join Here',
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
-                                fontSize: 12.0,
+                                fontSize: 16.0,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white),
                           ),
                         ),
                       ),
                     ),
+                    const SizedBox(height: 30.0)
                   ],
                 ),
               );

@@ -18,9 +18,23 @@ class MsAcaraServices {
     }
   }
 
-  static Future<MsAcara> fetchAcaraDetails() async {
-    const url =
-        'https://libeery-api-development.up.railway.app/api/private/acara-detail?id=1';
+  static Future<GetListAcara> getAcaraForAcaraPage(int page) async {
+    const baseUrl =
+        'https://libeery-api-development.up.railway.app/api/private/acara';
+    try {
+      final dio = Dio();
+      final url = '$baseUrl?page=$page&take=6';
+      final response = await dio.get(url);
+      GetListAcara result = GetListAcara.fromJson(response.data);
+      return result;
+    } catch (e) {
+      throw Exception('Failed to load event: $e');
+    }
+  }
+
+  static Future<MsAcara> fetchAcaraDetails(int id) async {
+    final url =
+        'https://libeery-api-development.up.railway.app/api/private/acara-detail?id=$id';
 
     try {
       final dio = Dio();

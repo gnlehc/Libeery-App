@@ -3,8 +3,8 @@ import 'package:libeery/models/msacara_model.dart';
 import 'package:libeery/services/msacara_service.dart';
 import 'package:libeery/widgets/acara_card_widget.dart';
 
-class AcaraListWidget extends StatelessWidget {
-  const AcaraListWidget({Key? key});
+class AcaraListHomePageWidget extends StatelessWidget {
+  const AcaraListHomePageWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,24 +18,18 @@ class AcaraListWidget extends StatelessWidget {
         } else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
           return const Center(child: Text('No data available'));
         } else {
-          return Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  for (int i = 0; i < snapshot.data!.data!.length; i += 2)
-                    AcaraCard(acara: snapshot.data!.data![i]),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  for (int i = 1; i < snapshot.data!.data!.length; i += 2)
-                    AcaraCard(acara: snapshot.data!.data![i]),
-                ],
-              ),
-            ],
+          return GridView.builder(
+            shrinkWrap: true,
+            itemCount: snapshot.data!.data!.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.60,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+            ),
+            itemBuilder: (context, index) {
+              return AcaraCard(acara: snapshot.data!.data![index]);
+            },
           );
         }
       },
