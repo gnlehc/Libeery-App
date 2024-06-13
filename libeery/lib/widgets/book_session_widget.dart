@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:libeery/styles/style.dart';
 
 class AddNewBookCard extends StatefulWidget {
   const AddNewBookCard({super.key});
@@ -21,7 +22,7 @@ class AddNewBookCardState extends State<AddNewBookCard> {
             decoration: BoxDecoration(
               gradient: const LinearGradient(
                 colors: [
-                  Color(0xffFFAF49), 
+                  AppColors.orange, 
                   Color.fromARGB(255, 250, 184, 97), 
                   Color.fromARGB(255, 255, 203, 134), 
                 ],
@@ -42,17 +43,17 @@ class AddNewBookCardState extends State<AddNewBookCard> {
                   child: Center(
                     child: Icon(
                       Icons.add,
-                      size: 20,
-                      color: Color(0xffFFFFFF),
+                      size: FontSizes.subtitle,
+                      color: AppColors.white,
                     ),
                   ),
                 ),
                 Text(
                   'Membuat Booking Loker',
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeights.bold,
                     fontSize: 16,
-                    color: Color(0xffFFFFFF),
+                    color: AppColors.white,
                   ),
                 ),
               ],

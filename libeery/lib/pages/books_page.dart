@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:libeery/models/msbooks_model.dart';
 import 'package:libeery/services/msbooks_service.dart';
 import 'package:libeery/pages/home_page.dart';
+import 'package:libeery/styles/style.dart';
 import 'package:libeery/widgets/list_books_widget.dart';
 import 'package:libeery/widgets/navbar_widget.dart';
 
@@ -16,7 +17,8 @@ class BooksPage extends StatefulWidget {
 }
 
 class _BooksPageState extends State<BooksPage> {
-  List<MsBook> booksData = []; 
+  List<MsBook> booksData = [];
+  List<MsBook> filteredBooks = [];
   TextEditingController editingController = TextEditingController();
   int _selectedIndex = 0;
 
@@ -33,6 +35,7 @@ class _BooksPageState extends State<BooksPage> {
       GetAllMsBookData result = await bookService.getBook();
       setState(() {
         booksData = result.data ?? [];
+        filteredBooks = booksData;
       });
     } catch (e) {
       e.toString();
@@ -64,7 +67,7 @@ class _BooksPageState extends State<BooksPage> {
   void filterSearchResults(String query) {
     if (query.isNotEmpty) {
       setState(() {
-        booksData = booksData.where((item) =>
+        filteredBooks = booksData.where((item) =>
           item.title.toLowerCase().contains(query.toLowerCase()) ||
           item.author.toLowerCase().contains(query.toLowerCase()) ||
           item.isbn.toLowerCase().contains(query.toLowerCase()) ||
@@ -74,7 +77,7 @@ class _BooksPageState extends State<BooksPage> {
       });
     } else {
       setState(() {
-        getBooks();
+        filteredBooks = booksData;
       });
     }
   }
@@ -82,19 +85,18 @@ class _BooksPageState extends State<BooksPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       body: Column(
-        
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Stack(
             children: [
               Container(
-                color: const Color(0xFF333333),
+                color: AppColors.black,
                 height: 250,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: Spacing.large),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -103,22 +105,22 @@ class _BooksPageState extends State<BooksPage> {
                       "Cari Buku",
                       style: TextStyle(
                         fontFamily: "Montserrat",
-                        color: Colors.white,
-                        fontSize: 22.0,
-                        fontWeight: FontWeight.bold
+                        color: AppColors.white,
+                        fontSize: FontSizes.title,
+                        fontWeight: FontWeights.bold
                       ),
                     ),
                     const Text(
                       "Carilah ketersediaan buku yang ingin kamu baca atau pinjam di LKC dengan mengetikkan informasi detil buku tersebut.",
                       style: TextStyle(
                         fontFamily: "Montserrat",
-                        color: Colors.white,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w300
+                        color: AppColors.white,
+                        fontSize: FontSizes.medium,
+                        fontWeight: FontWeights.light,
                       ),
                       textAlign: TextAlign.justify,
                     ),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: Spacing.large),
                     TextField(
                       onChanged: (value) {
                         filterSearchResults(value);
@@ -129,16 +131,16 @@ class _BooksPageState extends State<BooksPage> {
                         prefixIcon: Icon(Icons.search),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          borderSide: BorderSide(color: Colors.grey, width: 2.0),
+                          borderSide: BorderSide(color: AppColors.gray, width: 2.0),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          borderSide: BorderSide(color: Color(0xFF0097DA), width: 2.0),
+                          borderSide: BorderSide(color: AppColors.blue, width: 2.0),
                         ),
                         filled: true,
                         fillColor: Colors.white,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
-                        hintStyle: TextStyle(color: Color(0xFF7E7E7E), fontWeight: FontWeight.w200),
+                        contentPadding: EdgeInsets.symmetric(horizontal: Spacing.medium),
+                        hintStyle: TextStyle(color: AppColors.gray, fontWeight: FontWeights.regular),
                       ),
                     ),
                   ],
@@ -146,7 +148,7 @@ class _BooksPageState extends State<BooksPage> {
               ),
             ],
           ),
-          BookList(filteredBooks: booksData),
+          BookList(filteredBooks: filteredBooks),
         ],
       ),
       bottomNavigationBar: NavBar(

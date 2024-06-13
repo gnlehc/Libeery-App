@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:libeery/styles/style.dart';
 
 class LoginOptionsButton extends StatelessWidget {
   final String buttonText;
@@ -24,10 +25,10 @@ class LoginOptionsButton extends StatelessWidget {
         },
         style: ElevatedButton.styleFrom(
           backgroundColor:
-              isSelected ? const Color(0xFF333333) : const Color(0xFFD9D9D9),
+              isSelected ? AppColors.black : AppColors.lightGray,
           padding: EdgeInsets.symmetric(vertical: isSelected ? 16 * 1.2 : 16),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(Spacing.small),
           ),
           elevation: 0,
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -35,9 +36,9 @@ class LoginOptionsButton extends StatelessWidget {
         child: Text(
           buttonText,
           style: TextStyle(
-            color: isSelected ? Colors.white : const Color(0xFF333333),
+            color: isSelected ? AppColors.white : AppColors.black,
             fontSize: isSelected ? 14 * 1.2 : 14,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeights.bold,
             fontFamily: 'Montserrat',
           ),
         ),

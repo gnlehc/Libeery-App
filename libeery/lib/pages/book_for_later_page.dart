@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:libeery/models/mssession_model.dart';
 import 'package:libeery/pages/booking_page_three.dart';
 import 'package:libeery/services/mssession_service.dart';
+import 'package:libeery/styles/style.dart';
 import 'package:logger/logger.dart';
 
 void main() => runApp(const MaterialApp(
@@ -74,19 +75,17 @@ class _BookForLaterState extends State<BookForLater> {
     level: Level.debug, // Level logging yang digunakan
   );
 
-  Color color1 = const Color.fromRGBO(51, 51, 51, 1);
-  Color color2 = const Color.fromRGBO(217, 217, 217, 1);
-  Color color3 = const Color.fromRGBO(241, 135, 0, 1);
-  Color color4 = const Color.fromRGBO(197, 197, 197, 1);
-  Color color5 = const Color.fromRGBO(0, 151, 218, 1);
+
 
   Widget buildProgressIndicator(int step) {
     // Memeriksa apakah kotak progresif harus diisi atau tidak
     bool filled = progressStatus[step - 1];
     // Warna kotak progresif berdasarkan status
-    Color color = filled ? color3 : color4;
+    Color color = filled
+        ? AppColors.orange
+        : AppColors.lightGray;
     return Container(
-      width: 72,
+      width: 80,
       height: 4,
       margin: const EdgeInsets.symmetric(horizontal: 1),
       decoration: BoxDecoration(
@@ -115,7 +114,7 @@ class _BookForLaterState extends State<BookForLater> {
         ),
         backgroundColor: Colors.transparent,
         title: Padding(
-          padding: const EdgeInsets.only(top: 23.0),
+          padding: const EdgeInsets.only(top: Spacing.small),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -126,20 +125,6 @@ class _BookForLaterState extends State<BookForLater> {
                   buildProgressIndicator(2),
                   buildProgressIndicator(3),
                   buildProgressIndicator(4),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(12.0, 10.0, 0, 0),
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: const Icon(Icons.arrow_back_ios),
-                    ),
-                  ),
                 ],
               ),
             ],
@@ -153,33 +138,33 @@ class _BookForLaterState extends State<BookForLater> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(45.0, 20.0, 45.0, 5.0),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(Spacing.large, Spacing.small, Spacing.large, 0),
                 child: Text(
                   'Pilih Waktu Kunjunganmu!',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18.0,
-                    color: color1,
+                    fontWeight: FontWeights.bold,
+                    fontSize: FontSizes.subtitle,
+                    color: AppColors.black,
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(45.0, 2.0, 45.0, 0),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(Spacing.large, 5.0, Spacing.large, 0),
                 child: Text(
                   'Pastikan kamu memilih waktu yang benar untuk kunjungan. Tips: jika tidak memungkinkan untuk keluar LKC pada waktu yang ada, kamu dapat memilih 2 sesi berturut saja.',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w400,
-                    color: color1,
-                    fontSize: 12.0,
+                    fontWeight: FontWeights.regular,
+                    color: AppColors.black,
+                    fontSize: FontSizes.description,
                   ),
                   textAlign: TextAlign.justify,
                 ),
               ),
               Padding(
-                  padding: const EdgeInsets.fromLTRB(45.0, 20.0, 45.0, 5.0),
+                  padding: const EdgeInsets.fromLTRB(Spacing.large, Spacing.medium, Spacing.large, 0),
                   child: FutureBuilder<List<MsSession>>(
                       future: MsSessionService.getSessionfromAPI(),
                       builder:
@@ -210,7 +195,7 @@ class _BookForLaterState extends State<BookForLater> {
                                     height: 42,
                                     child: PhysicalModel(
                                       color: Colors.transparent,
-                                      borderRadius: BorderRadius.circular(17),
+                                      borderRadius: BorderRadius.circular(15),
                                       shadowColor:
                                           const Color.fromRGBO(237, 237, 237, 1).withOpacity(0.1),
                                       elevation: 5,
@@ -219,40 +204,40 @@ class _BookForLaterState extends State<BookForLater> {
                                         decoration: BoxDecoration(
                                           color: Colors.white,
                                           border: Border.all(
-                                            color: selectedSlots.contains(rangetime)? color5 : const Color.fromRGBO(194, 194, 194, 1).withOpacity(0.3),
+                                            color: selectedSlots.contains(rangetime)? AppColors.blue : const Color.fromRGBO(194, 194, 194, 1).withOpacity(0.3),
                                           ),
-                                          borderRadius:BorderRadius.circular(17),
+                                          borderRadius:BorderRadius.circular(15),
                                         ),
                                         child: CheckboxListTile(
                                           contentPadding: EdgeInsets.zero,
                                           visualDensity: const VisualDensity( horizontal: -4.0, vertical: -4.0),
                                           title: Padding(
                                             padding: const EdgeInsets.only(
-                                                left: 10.0),
+                                                left: Spacing.small),
                                             child: SizedBox(
                                               child: Text(
                                                 rangetime,
                                                 style: const TextStyle(
                                                   fontFamily: 'Montserrat',
-                                                  fontSize: 10.0,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.black,
+                                                  fontSize: FontSizes.description,
+                                                  fontWeight: FontWeights.medium,
+                                                  color: AppColors.black,
                                                 ),
                                               ),
                                             ),
                                           ),
                                           checkboxShape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(20),
+                                                BorderRadius.circular(15),
                                           ),
-                                          checkColor: Colors.blue,
+                                          checkColor: AppColors.blue,
                                           fillColor: MaterialStateProperty.all( Colors.transparent),
                                           side: MaterialStateBorderSide.resolveWith((states) {
                                             if (states.contains(
                                                 MaterialState.selected)) {
-                                              return BorderSide(color: color5);
+                                              return const BorderSide(color: AppColors.blue);
                                             } else {
-                                              return BorderSide(color: color4);
+                                              return const BorderSide(color: AppColors.lightGray);
                                             }
                                           }),
                                           controlAffinity:ListTileControlAffinity.trailing,
@@ -317,22 +302,23 @@ class _BookForLaterState extends State<BookForLater> {
                           }
                         }
                       })),
-              const SizedBox(height: 26.0),
+              const SizedBox(height: Spacing.medium),
               const Padding(
-                padding: EdgeInsets.only(left: 45.0),
+                padding: EdgeInsets.only(left: Spacing.large),
                 child: Text(
                   'Waktu Kunjungan',
                   style: TextStyle(
-                      fontSize: 12.0,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: 'Montserrat'),
+                      fontSize: FontSizes.description,
+                      color: AppColors.black,
+                      fontWeight: FontWeights.regular,
+                      fontFamily: 'Montserrat'
+                      ),
                 ),
               ),
               Visibility(
                   visible: selectedSlots.isNotEmpty,
                   child: Container(
-                    padding: const EdgeInsets.fromLTRB(45.0, 5.0, 45.0, 0),
+                    padding: const EdgeInsets.fromLTRB(Spacing.large, 5.0, Spacing.large, 0),
                     color: Colors.white,
                     child: Column(
                       children: [
@@ -342,24 +328,23 @@ class _BookForLaterState extends State<BookForLater> {
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Padding(padding: EdgeInsets.all(2.0)),
                                 Expanded(
                                   child: Text(
                                       '${group.startTime.hour.toString().padLeft(2, '0')}.00 - ${group.endTime.hour.toString().padLeft(2, '0')}.00 WIB',
                                       style: const TextStyle(
-                                          color: Colors.black,
+                                          color: AppColors.black,
                                           fontFamily: 'Montserrat',
-                                          fontSize: 13.0,
-                                          fontWeight: FontWeight.w500),
+                                          fontSize: FontSizes.medium,
+                                          fontWeight: FontWeights.medium),
                                       textAlign: TextAlign.left),
                                 ),
                                 Expanded(
                                   child: Text('${group.sessions} sesi',
                                       style: const TextStyle(
-                                          color: Colors.black,
+                                          color: AppColors.black,
                                           fontFamily: 'Montserrat',
-                                          fontSize: 13.0,
-                                          fontWeight: FontWeight.w500),
+                                          fontSize: FontSizes.medium,
+                                          fontWeight: FontWeights.medium),
                                       textAlign: TextAlign.right),
                                 )
                               ],
@@ -369,14 +354,14 @@ class _BookForLaterState extends State<BookForLater> {
                       ],
                     ),
                   )),
-              const SizedBox(height: 2.0),
+              const SizedBox(height: 5.0),
               const Divider(
                 thickness: 0.5,
-                color: Colors.black,
-                indent: 45.0,
-                endIndent: 45.0,
+                color: AppColors.black,
+                indent: 30.0,
+                endIndent: 30.0,
               ),
-              const SizedBox(height: 10.0),
+              const SizedBox(height: Spacing.small),
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
@@ -419,40 +404,40 @@ class _BookForLaterState extends State<BookForLater> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: color3,
-                    fixedSize: const Size(136, 33),
+                    backgroundColor: AppColors.orange,
+                    fixedSize: const Size(140, 30),
                     elevation: 5,
                   ),
                   child: const Text(
                     'Selanjutnya',
                     style: TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                      fontSize: FontSizes.medium,
+                      fontWeight: FontWeights.medium,
+                      color: AppColors.white,
                       fontFamily: 'Montserrat',
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 10.0),
+              const SizedBox(height: 2.0),
               Padding(
-              padding: const EdgeInsets.only(bottom: 10.0),
+              padding: const EdgeInsets.only(bottom: Spacing.small),
               child: Center(
                 child: errorMessage2 != null 
                   ? Text(
                       errorMessage2!,
                       style: const TextStyle(
                         fontFamily: 'Montserrat',
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.red
+                        fontSize: FontSizes.description,
+                        fontWeight: FontWeights.regular,
+                        color: AppColors.red
                       ),
                   )
                   : const SizedBox(),
               ),
             ),
               Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
+                padding: const EdgeInsets.only(bottom: Spacing.small),
                 child: Center(
                   child: GestureDetector(
                     onTap: () {
@@ -462,11 +447,11 @@ class _BookForLaterState extends State<BookForLater> {
                       'Sebelumnya..',
                       style: TextStyle(
                         fontFamily: 'Montserrat',
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w400,
+                        fontSize: FontSizes.description,
+                        fontWeight: FontWeights.regular,
                         decoration: TextDecoration.underline,
                         decorationThickness: 0.2,
-                        color: Color.fromRGBO(141, 141, 141, 1),
+                        color: AppColors.oldGray,
                       ),
                     ),
                   ),

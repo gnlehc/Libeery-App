@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:libeery/styles/style.dart';
 
 class GreetUser extends StatelessWidget {
   final String? username;
@@ -7,7 +8,7 @@ class GreetUser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 30, bottom: 10),
+      padding: const EdgeInsets.only(left: Spacing.large, bottom: Spacing.medium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -16,17 +17,17 @@ class GreetUser extends StatelessWidget {
             "Selamat datang,",
             style: TextStyle(
                 fontFamily: "Montserrat",
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w500),
+                color: AppColors.white,
+                fontSize: FontSizes.subtitle,
+                fontWeight: FontWeights.regular),
           ),
           Text(
             '$username',
             style: const TextStyle(
                 fontFamily: "Montserrat",
-                color: Colors.white,
-                fontSize: 28.0,
-                fontWeight: FontWeight.bold),
+                color: AppColors.white,
+                fontSize: FontSizes.header,
+                fontWeight: FontWeights.bold),
           ),
         ],
       ),

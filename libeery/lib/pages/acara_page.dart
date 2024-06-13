@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:libeery/styles/style.dart';
 import 'package:libeery/widgets/acara_list_widget.dart';
 
 class AcaraPage extends StatefulWidget {
@@ -36,11 +37,11 @@ class _AcaraPageState extends State<AcaraPage> {
         ),
         backgroundColor: Colors.transparent,
       ),
-      backgroundColor: Colors.white, // Set background color to white
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
           padding:
-              const EdgeInsets.only(top: 4, left: 30, right: 30, bottom: 20),
+            const EdgeInsets.only(top: 0, left: Spacing.large, right: Spacing.large, bottom: 0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -50,7 +51,7 @@ class _AcaraPageState extends State<AcaraPage> {
                     child: Text(
                       "Acara",
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                        TextStyle(fontWeight: FontWeights.bold, fontSize: FontSizes.title),
                     ),
                   ),
                   Row(
@@ -66,33 +67,33 @@ class _AcaraPageState extends State<AcaraPage> {
                           },
                           child: const Text("<",
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Colors.black26))),
-                      const SizedBox(width: 4),
+                                  fontWeight: FontWeights.bold,
+                                  fontSize: FontSizes.medium,
+                                  color: AppColors.blue))),
+                      const SizedBox(width: Spacing.small),
                       Text(
                         "Page: $page",
                         style: const TextStyle(
-                          fontWeight: FontWeight.normal,
-                          fontSize: 16,
-                          color: Colors.black26,
+                          fontWeight: FontWeights.regular,
+                          fontSize: FontSizes.description,
+                          color: Colors.blue,
                         ),
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: Spacing.small),
                       GestureDetector(
                           onTap: () {
                             incrementPage();
                           },
                           child: const Text(">",
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Colors.black26))),
+                                  fontWeight: FontWeights.bold,
+                                  fontSize: FontSizes.medium,
+                                  color: AppColors.blue))),
                     ],
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: Spacing.medium),
               AcaraListAcaraPageWidget(page: page)
             ],
           ),

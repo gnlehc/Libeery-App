@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:libeery/styles/style.dart';
 import 'package:libeery/widgets/login_options_button_widget.dart';
 
 class ChooseLoginWidget extends StatefulWidget {
@@ -26,21 +27,22 @@ class ChooseLoginWidgetState extends State<ChooseLoginWidget> {
         const Text(
           "Halo, Binusian!",
           style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF333333)),
+              fontSize: FontSizes.subtitle,
+              fontWeight: FontWeights.bold,
+              color: AppColors.black
+          ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: Spacing.small),
         const Text(
-          "Masuk ke dalam akun BINUSmu terlebih dahulu yuk. Kamu seorang mahasiswa atau dosen atau staff nih?",
+          "Masuk ke dalam akun BINUSmu terlebih dahulu yuk. Apakah kamu seorang mahasiswa atau dosen atau staff?",
           style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w400,
-            color: Color(0xFF333333),
+            fontSize: FontSizes.description,
+            fontWeight: FontWeights.regular,
+            color: AppColors.black,
           ),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: Spacing.medium),
         LoginOptionsButton(
           buttonText: 'Mahasiswa',
           isSelected: _selectedButton == 'Mahasiswa',
@@ -52,7 +54,7 @@ class ChooseLoginWidgetState extends State<ChooseLoginWidget> {
             }
           },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: Spacing.medium),
         LoginOptionsButton(
           buttonText: 'Staff',
           isSelected: _selectedButton == 'Staff',
@@ -64,18 +66,20 @@ class ChooseLoginWidgetState extends State<ChooseLoginWidget> {
             }
           },
         ),
-        const SizedBox(height: 24),
-        ElevatedButton(
-          onPressed: () => _navigateToLogin(context),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFF18700), // Button color
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20), // Button corner radius
+        const SizedBox(height: Spacing.large),
+        SizedBox(
+          width: double.infinity, 
+          child: ElevatedButton(
+            onPressed: () => _navigateToLogin(context),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.orange, // Button color
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10), // Button corner radius
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: Spacing.small), // Button padding
             ),
-            padding:
-                const EdgeInsets.only(left: 16, right: 16), // Button padding
+            child: const Text('Pilih', style: TextStyle(color: Colors.white)),
           ),
-          child: const Text('Pilih', style: TextStyle(color: Colors.white)),
         )
       ],
     );

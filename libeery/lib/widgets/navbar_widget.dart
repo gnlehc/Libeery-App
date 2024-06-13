@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:libeery/styles/style.dart';
 
 class NavBar extends StatefulWidget {
   final int selectedIndex;
@@ -22,16 +23,16 @@ class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      unselectedItemColor: const Color(0xffB2B2B2),
-      selectedItemColor: const Color(0xff333333),
+      unselectedItemColor: AppColors.gray,
+      selectedItemColor: AppColors.black,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: GestureDetector(
             onTap: () {
               setState(() {
-                iconColors[0] = const Color(0xff333333);
-                iconColors[1] = const Color(0xffB2B2B2);
-                iconColors[2] = const Color(0xffB2B2B2);
+                iconColors[0] = AppColors.black;
+                iconColors[1] = AppColors.gray;
+                iconColors[2] = AppColors.gray;
               });
               widget.onItemTapped(0);
             },
@@ -49,9 +50,9 @@ class _NavBarState extends State<NavBar> {
           icon: GestureDetector(
             onTap: () {
               setState(() {
-                iconColors[1] = const Color(0xff333333);
-                iconColors[0] = const Color(0xffB2B2B2);
-                iconColors[2] = const Color(0xffB2B2B2);
+                iconColors[1] = AppColors.black;
+                iconColors[0] = AppColors.gray;
+                iconColors[2] = AppColors.gray;
               });
               widget.onItemTapped(1);
             },
@@ -68,9 +69,9 @@ class _NavBarState extends State<NavBar> {
           icon: GestureDetector(
             onTap: () {
               setState(() {
-                iconColors[2] = const Color(0xff333333);
-                iconColors[0] = const Color(0xffB2B2B2);
-                iconColors[1] = const Color(0xffB2B2B2);
+                iconColors[2] = AppColors.black;
+                iconColors[0] = AppColors.gray;
+                iconColors[1] = AppColors.gray;
               });
               widget.onItemTapped(2);
             },

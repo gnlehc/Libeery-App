@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:libeery/models/msbooks_model.dart';
 import 'package:libeery/services/msbooks_service.dart';
+import 'package:libeery/styles/style.dart';
 
 class BookDetailPage extends StatefulWidget {
   final int bookID;
@@ -19,67 +20,64 @@ class _BookDetailPageState extends State<BookDetailPage> {
     super.initState();
     bookDetail = BookService.fetchBookDetails(widget.bookID);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: const Color.fromRGBO(51, 51, 51, 1),
+        backgroundColor: AppColors.black,
+        title: Padding(
+          padding: const EdgeInsets.only(top: Spacing.medium),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: const Icon(Icons.arrow_back_ios),
+                  iconSize: FontSizes.subtitle,
+                  color: AppColors.white,
+                ),
+              ),
+              const Text(
+                'Informasi Buku',
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeights.bold,
+                  fontSize: FontSizes.subtitle,
+                  color: AppColors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
       body: Stack(
         children: [
           Container(
-            color: const Color.fromRGBO(51, 51, 51, 1),
+            color: AppColors.black,
             height: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        icon: const Icon(Icons.arrow_back_ios),
-                        iconSize: 15,
-                        color: Colors.white,
-                      ),
-                      const Text(
-                        'Informasi Buku',
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18.0,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-              ),
           ),
           Positioned(
-            top: 170.0, 
+            top: 120.0, 
             left: 0,
             right: 0,
             child: ClipRRect(
               borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(40.0),
-                topRight: Radius.circular(40.0),
+                topLeft: Radius.circular(50.0),
+                topRight: Radius.circular(50.0),
               ),
               child: Container(
-                color: Colors.white,
+                color: AppColors.white,
                 height: MediaQuery.of(context).size.height, 
-                
               ),
             ),
           ),
           Positioned(
-            top: 75.0,
+            top: 30.0,
             left: 0,
             right: 0,
             child: FutureBuilder<MsBook>(
@@ -107,7 +105,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
             )
             ),
            Positioned(
-            top: 280.0,
+            top: 230.0,
             left: 0,
             right: 0,
             child:  FutureBuilder<MsBook>(
@@ -122,15 +120,15 @@ class _BookDetailPageState extends State<BookDetailPage> {
                 return  SingleChildScrollView(
                   child: Center(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Center(
                           child: Text(
                             book.title,
                             style: const TextStyle(
                               fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.w600,
-                              fontSize: 15.0
+                              fontWeight: FontWeights.bold,
+                              fontSize: FontSizes.subtitle,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -141,97 +139,99 @@ class _BookDetailPageState extends State<BookDetailPage> {
                             book.author,
                             style: const TextStyle(
                               fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12.0
+                                fontWeight: FontWeights.medium,
+                                fontSize: FontSizes.description,
                             ),
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        const SizedBox(height: 25.0),
+                        const SizedBox(height: Spacing.large),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start, 
-                                children: [
-                                  Text(
-                                    book.year.toString(),
-                                    style: const TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black
+                          padding: const EdgeInsets.symmetric(horizontal: Spacing.small),
+                          child: Center(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start, 
+                                  children: [
+                                    Text(
+                                      book.year.toString(),
+                                      style: const TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: FontSizes.description,
+                                        fontWeight: FontWeights.bold,
+                                        color: Colors.black
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 3.0),
-                                  const Text(
-                                    'Tahun Rilis',
-                                    style: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black
+                                    const SizedBox(height: 3.0),
+                                    const Text(
+                                      'Tahun Rilis',
+                                      style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: FontSizes.description,
+                                        fontWeight: FontWeights.regular,
+                                        color: Colors.black
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start, 
+                                  children: [
+                                    Text(
+                                      book.isbn,
+                                      style: const TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: FontSizes.description,
+                                        fontWeight: FontWeights.bold,
+                                        color: Colors.black
+                                      ),
                                     ),
-                                  )
-                                ],
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start, 
-                                children: [
-                                  Text(
-                                    book.isbn,
-                                    style: const TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black
+                                    const SizedBox(height: 3.0),
+                                    const Text(
+                                      'ISBN',
+                                      style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: FontSizes.description,
+                                        fontWeight: FontWeights.regular,
+                                        color: Colors.black
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start, 
+                                  children: [
+                                    Text(
+                                      book.stock > 0 ? 'Tersedia' : 'Tidak Tersedia',
+                                      style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: FontSizes.description,
+                                        fontWeight: FontWeights.bold,
+                                        color: book.stock > 0 ? Colors.green : Colors.red,
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 3.0),
-                                  const Text(
-                                    'ISBN',
-                                    style: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start, 
-                                children: [
-                                  Text(
-                                    book.stock > 0 ? 'Tersedia' : 'Tidak Tersedia',
-                                    style: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w600,
-                                      color: book.stock > 0 ? Colors.green : Colors.red,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 3.0),
-                                  const Text(
-                                    'Ketersediaan',
-                                    style: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black
-                                    ),
-                                  )
-                                ],
-                              )
-                            ],
+                                    const SizedBox(height: 3.0),
+                                    const Text(
+                                      'Ketersediaan',
+                                      style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: FontSizes.description,
+                                        fontWeight: FontWeights.regular,
+                                        color: Colors.black
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 20.0),
+                        const SizedBox(height: Spacing.large),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 45.0, vertical: 20.0),
+                          padding: const EdgeInsets.symmetric(horizontal: Spacing.large),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -239,7 +239,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                               'Abstract',
                               style: TextStyle(
                                 fontFamily: 'Montserrat',
-                                fontSize: 12.0,
+                                fontSize: FontSizes.medium,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.black
                               ),
@@ -249,7 +249,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                               book.abstract,
                               style: const TextStyle(
                                 fontFamily: 'Montserrat',
-                                fontSize: 11.0,
+                                fontSize: FontSizes.medium,
                                 fontWeight: FontWeight.w400,
                                 color: Colors.black
                               ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:libeery/arguments/user_argument.dart';
 import 'package:libeery/models/msstaff_model.dart';
 import 'package:libeery/services/msstaff_service.dart';
+import 'package:libeery/styles/style.dart';
 
 class LoginStaffForm extends StatefulWidget {
   const LoginStaffForm({super.key});
@@ -33,21 +34,22 @@ class LoginStaffFormState extends State<LoginStaffForm> {
         const Text(
           "Halo, Binusian!",
           style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF333333)),
+              fontSize: FontSizes.subtitle,
+              fontWeight: FontWeights.bold,
+              color: AppColors.black,
+          ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: Spacing.small),
         const Text(
           "Sebelum masuk ke dalam LKC BINUS, harap memasukkan NIS dan kata sandi BinusMaya kamu ya!",
           style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w400,
-            color: Color(0xFF333333),
+            fontSize: FontSizes.description,
+            fontWeight: FontWeights.regular,
+            color: AppColors.black,
           ),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: Spacing.small),
         Form(
           child: Column(
             children: <Widget>[
@@ -56,27 +58,27 @@ class LoginStaffFormState extends State<LoginStaffForm> {
                 child: Container(
                   width: double.infinity,
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                  margin: const EdgeInsets.symmetric(vertical: 10),
+                      const EdgeInsets.symmetric(horizontal: Spacing.small, vertical: Spacing.small),
+                  margin: const EdgeInsets.symmetric(vertical: Spacing.small),
                   decoration: BoxDecoration(
                     color: Colors.red[100],
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.red),
+                    border: Border.all(color: AppColors.red),
                   ),
                   child: Row(
                     children: [
                       const Icon(
                         Icons.error,
-                        color: Colors.red,
+                        color: AppColors.red,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: Spacing.small),
                       Expanded(
                         child: Text(
                           errorMessage ?? '',
                           style: const TextStyle(
-                            color: Colors.red,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w400,
+                            color: AppColors.red,
+                            fontSize: FontSizes.description,
+                            fontWeight: FontWeights.regular,
                           ),
                         ),
                       ),
@@ -84,35 +86,34 @@ class LoginStaffFormState extends State<LoginStaffForm> {
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: Spacing.small),
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text("NIS",
                     style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF333333))),
+                        fontSize: FontSizes.medium,
+                        fontWeight: FontWeights.medium,
+                        color: AppColors.black)),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: Spacing.small),
               TextFormField(
                 controller: nomorIndukController,
                 decoration: InputDecoration(
                   hintText: 'Masukkan NIS kamu...',
                   hintStyle: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF333333),
+                    fontSize: FontSizes.description,
+                    fontWeight: FontWeights.regular,
+                    color: AppColors.black,
                   ),
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0),
+                      borderRadius: BorderRadius.circular(10.0),
                       borderSide: const BorderSide(
                           color: Color.fromARGB(0, 221, 221, 221))),
                   contentPadding: const EdgeInsets.all(10.0),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(10.0),
                     borderSide: const BorderSide(
-                      color: Color(
-                          0xFF0097DA), // Set the border color when focused
+                      color: AppColors.blue, // Set the border color when focused
                     ),
                   ),
                 ),
@@ -122,43 +123,43 @@ class LoginStaffFormState extends State<LoginStaffForm> {
                   });
                 },
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: Spacing.medium),
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text("Password",
                     style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF333333))),
+                        fontSize: FontSizes.medium,
+                        fontWeight: FontWeights.medium,
+                        color: AppColors.black)),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: Spacing.small),
               TextFormField(
                 controller: passwordController,
                 obscureText: _isObscure,
                 decoration: InputDecoration(
                   hintText: 'Masukkan password kamu...',
                   hintStyle: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF333333),
+                    fontSize: FontSizes.description,
+                    fontWeight: FontWeights.regular,
+                    color: AppColors.black,
                   ),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(10.0),
                     borderSide: const BorderSide(
                       color: Color.fromARGB(0, 221, 221, 221),
                     ),
                   ),
                   contentPadding: const EdgeInsets.all(10.0),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(10.0),
                     borderSide: const BorderSide(
-                      color: Color(0xFF0097DA),
+                      color: AppColors.blue,
                     ),
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
                       _isObscure ? Icons.visibility_off : Icons.visibility,
-                      color: Colors.grey,
+                      color: AppColors.gray,
                     ),
                     onPressed: () {
                       setState(() {
@@ -173,32 +174,35 @@ class LoginStaffFormState extends State<LoginStaffForm> {
                   });
                 },
               ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () async {
-                  if (nomorIndukController.text == "" ||
-                      passwordController.text == "") {
-                    setState(() {
-                      errorMessage = "Harap mengisi kolom NIS dan Password";
-                    });
-                    return;
-                  }
+              const SizedBox(height: Spacing.medium),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    if (nomorIndukController.text == "" ||
+                        passwordController.text == "") {
+                      setState(() {
+                        errorMessage = "Harap mengisi kolom NIS dan Password";
+                      });
+                      return;
+                    }
 
-                  loginStaff(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFF18700),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    loginStaff(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.orange,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.only(left: Spacing.medium, right: Spacing.medium),
                   ),
-                  padding: const EdgeInsets.only(left: 16, right: 16),
-                ),
-                child: const Text(
-                  'Masuk',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
+                  child: const Text(
+                    'Masuk',
+                    style: TextStyle(
+                      color: AppColors.white,
+                        fontSize: FontSizes.medium,
+                        fontWeight: FontWeights.medium,
+                    ),
                   ),
                 ),
               ),
