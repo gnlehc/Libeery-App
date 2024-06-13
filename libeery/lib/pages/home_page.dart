@@ -8,6 +8,8 @@ import 'package:libeery/styles/style.dart';
 import 'package:libeery/widgets/acara_homepage_widget.dart';
 import 'package:libeery/widgets/book_session_widget.dart';
 import 'package:libeery/widgets/booked_session_widget.dart';
+import 'package:libeery/widgets/check-out-success_popup.dart';
+import 'package:libeery/widgets/check_in_success_popup.dart';
 import 'package:libeery/widgets/user_greetings_widget.dart';
 import 'package:libeery/widgets/navbar_widget.dart';
 
@@ -104,6 +106,24 @@ class _HomePageState extends State<HomePage> {
     } else if (_selectedIndex == 2) {
       // Navigate to Profile Page
     }
+  }
+
+  void _showCheckInSuccessDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const CheckInSuccessPopUp();
+      },
+    );
+  }
+
+  void _showCheckOutSuccessDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const CheckOutSuccessPopUp();
+      },
+    );
   }
 
   @override
@@ -210,6 +230,10 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: NavBar(
         selectedIndex: _selectedIndex,
         onItemTapped: _onItemTapped,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showCheckInSuccessDialog,
+        child: const Icon(Icons.check),
       ),
     );
   }

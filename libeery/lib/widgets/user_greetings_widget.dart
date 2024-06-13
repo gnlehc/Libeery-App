@@ -5,6 +5,17 @@ class GreetUser extends StatelessWidget {
   final String? username;
   const GreetUser({super.key, this.username});
 
+  String _processUsername(String? username) {
+    if (username == null || username.isEmpty) {
+      return "";
+    }
+    List<String> nameParts = username.split(" ");
+    if (nameParts.length > 2) {
+      return "${nameParts[0]} ${nameParts[1]}";
+    }
+    return username;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -22,7 +33,7 @@ class GreetUser extends StatelessWidget {
                 fontWeight: FontWeights.regular),
           ),
           Text(
-            '$username',
+            _processUsername(username),
             style: const TextStyle(
                 fontFamily: "Montserrat",
                 color: AppColors.white,
