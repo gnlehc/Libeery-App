@@ -3,6 +3,7 @@ import 'package:libeery/models/msacara_model.dart';
 import 'package:libeery/services/msacara_service.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:libeery/styles/style.dart';
 
 class AcaraDetailPage extends StatefulWidget {
   final int id;
@@ -34,27 +35,27 @@ class _AcaraDetailPage extends State<AcaraDetailPage> {
         ),
         backgroundColor: Colors.transparent,
         title: Padding(
-          padding: const EdgeInsets.only(top: 25.0),
+          padding: const EdgeInsets.only(top: Spacing.medium),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 10.0),
+                padding: const EdgeInsets.only(left: Spacing.small),
                 child: IconButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                   icon: const Icon(Icons.arrow_back_ios),
-                  iconSize: 15,
+                  iconSize: FontSizes.subtitle,
                 ),
               ),
               const Text(
                 'Tentang Acara',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18.0,
-                  color: Colors.black,
+                  fontWeight: FontWeights.medium,
+                  fontSize: FontSizes.subtitle,
+                  color: AppColors.black,
                 ),
               ),
             ],
@@ -75,14 +76,14 @@ class _AcaraDetailPage extends State<AcaraDetailPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 20.0),
+                    const SizedBox(height: Spacing.small),
                     Align(
                       alignment: Alignment.center,
                       child: Image.network(acara.acaraImage),
                     ),
-                    const SizedBox(height: 20.0),
+                    const SizedBox(height: Spacing.medium),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(40.0, 0, 40.0, 0),
+                      padding: const EdgeInsets.fromLTRB(Spacing.large, 0, Spacing.large, 0),
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -91,38 +92,38 @@ class _AcaraDetailPage extends State<AcaraDetailPage> {
                               'WEBINAR',
                               style: TextStyle(
                                 fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.0,
-                                color: Color.fromRGBO(241, 135, 0, 1),
+                                fontWeight: FontWeights.medium,
+                                fontSize: FontSizes.medium,
+                                color: AppColors.orange,
                               ),
                             ),
-                            const SizedBox(height: 10.0),
+                            const SizedBox(height: Spacing.small),
                             Text(
                               acara.acaraName,
                               style: const TextStyle(
                                 fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w600,
-                                fontSize: 19.0,
-                                color: Colors.black,
+                                fontWeight: FontWeights.bold,
+                                fontSize: FontSizes.subtitle,
+                                color: AppColors.black,
                               ),
                             ),
                           ]),
                     ),
-                    const SizedBox(height: 10.0),
+                    const SizedBox(height: Spacing.small),
                     const Padding(
-                      padding: EdgeInsets.only(left: 40.0),
+                      padding: EdgeInsets.only(left: Spacing.large),
                       child: Text(
                         'TIME & DATE',
                         style: TextStyle(
                           fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14.0,
-                          color: Color.fromRGBO(241, 135, 0, 1),
+                          fontWeight: FontWeights.medium,
+                          fontSize: FontSizes.medium,
+                          color: AppColors.orange,
                         ),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 25.0),
+                      padding: const EdgeInsets.only(left: Spacing.medium),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -130,88 +131,97 @@ class _AcaraDetailPage extends State<AcaraDetailPage> {
                             alignment: Alignment.topCenter,
                             onPressed: () {},
                             icon: const Icon(Icons.access_time),
-                            iconSize: 25,
-                            color: Colors.blue,
+                            iconSize: FontSizes.title,
+                            color: AppColors.blue,
                           ),
                           Text(
                             '${DateFormat('HH:mm').format(acara.acaraStartTime)} - ${DateFormat('HH:mm').format(acara.acaraEndTime)}',
                             style: const TextStyle(
                               fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12.0,
-                              color: Colors.black,
+                              fontWeight: FontWeights.medium,
+                              fontSize: FontSizes.description,
+                              color: AppColors.black,
                             ),
                           ),
-                          const SizedBox(width: 30.0),
+                          const SizedBox(width: Spacing.large),
                           IconButton(
                             alignment: Alignment.topCenter,
                             onPressed: () {},
                             icon: const Icon(Icons.date_range),
-                            iconSize: 25,
-                            color: Colors.blue,
+                            iconSize: FontSizes.title,
+                            color: AppColors.blue,
                           ),
                           Text(
                             dateFormat.format(acara.acaraDate),
                             style: const TextStyle(
                               fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12.0,
-                              color: Colors.black,
+                              fontWeight: FontWeights.medium,
+                              fontSize: FontSizes.description,
+                              color: AppColors.black,
                             ),
                           )
                         ],
                       ),
                     ),
                     const Padding(
-                      padding: EdgeInsets.only(left: 40.0),
+                      padding: EdgeInsets.only(left: Spacing.large),
                       child: Text(
                         'SPEAKER',
                         style: TextStyle(
                           fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14.0,
-                          color: Color.fromRGBO(241, 135, 0, 1),
+                          fontWeight: FontWeights.medium,
+                          fontSize: FontSizes.medium,
+                          color: AppColors.orange,
                         ),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 25.0),
+                      padding: const EdgeInsets.only(left: Spacing.medium),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           IconButton(
                             alignment: Alignment.topCenter,
                             onPressed: () {},
                             icon: const Icon(Icons.person_outlined),
-                            iconSize: 25,
-                            color: Colors.blue,
+                            iconSize: FontSizes.title,
+                            color: AppColors.blue,
                           ),
-                          Text(
-                            acara.speakerName,
-                            style: const TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12.0,
-                              color: Colors.black,
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 15.0),
+                              child: RichText(
+                                text: TextSpan(
+                                  text: acara.speakerName,
+                                  style: const TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeights.medium,
+                                    fontSize: FontSizes.description,
+                                    color: AppColors.black,
+                                  ),
+                                ),
+                                overflow: TextOverflow.visible,
+                                softWrap: true,
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
                     const Padding(
-                      padding: EdgeInsets.only(left: 40.0),
+                      padding: EdgeInsets.only(left: Spacing.large),
                       child: Text(
                         'LOCATION',
                         style: TextStyle(
                           fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14.0,
-                          color: Color.fromRGBO(241, 135, 0, 1),
+                          fontWeight: FontWeights.medium,
+                          fontSize: FontSizes.medium,
+                          color:AppColors.orange,
                         ),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 25.0),
+                      padding: const EdgeInsets.only(left: Spacing.medium),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -219,61 +229,61 @@ class _AcaraDetailPage extends State<AcaraDetailPage> {
                             alignment: Alignment.topCenter,
                             onPressed: () {},
                             icon: const Icon(Icons.location_on_outlined),
-                            iconSize: 25,
-                            color: Colors.blue,
+                            iconSize: FontSizes.title,
+                            color: AppColors.blue,
                           ),
                           Text(
                             acara.acaraLocation,
                             style: const TextStyle(
                               fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12.0,
-                              color: Colors.black,
+                              fontWeight: FontWeights.medium,
+                              fontSize: FontSizes.description,
+                              color: AppColors.black,
                             ),
                           ),
                         ],
                       ),
                     ),
                     const Padding(
-                      padding: EdgeInsets.only(left: 40.0),
+                      padding: EdgeInsets.only(left: Spacing.large),
                       child: Column(
                         children: [
                           Text(
                             'EVENT DETAILS',
                             style: TextStyle(
                               fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.0,
-                              color: Color.fromRGBO(241, 135, 0, 1),
+                              fontWeight: FontWeights.medium,
+                              fontSize: FontSizes.medium,
+                              color: AppColors.orange,
                             ),
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 10.0),
+                    const SizedBox(height: Spacing.small),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(40.0, 0, 40.0, 20.0),
+                      padding: const EdgeInsets.fromLTRB(Spacing.large, 0, Spacing.large, Spacing.medium),
                       child: Text(
                         acara.acaraDetails,
                         style: const TextStyle(
                           fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12.0,
-                          color: Colors.black,
+                          fontWeight: FontWeights.medium,
+                          fontSize: FontSizes.description,
+                          color: AppColors.black,
                         ),
                         textAlign: TextAlign.justify,
                       ),
                     ),
-                    const SizedBox(height: 20.0),
+                    const SizedBox(height: Spacing.medium),
                     Center(
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        padding: const EdgeInsets.symmetric(horizontal: Spacing.medium),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
+                          borderRadius: BorderRadius.circular(Spacing.small),
                           gradient: const LinearGradient(
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
-                            colors: [Color(0xFFF18700), Color(0xFFF8C17B)],
+                            colors: [AppColors.orange, Color(0xFFF8C17B)],
                           ),
                         ),
                         child: ElevatedButton(
@@ -284,20 +294,20 @@ class _AcaraDetailPage extends State<AcaraDetailPage> {
                               backgroundColor: Colors.transparent,
                               elevation: 0,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(Spacing.small),
                               )),
                           child: const Text(
                             'Join Here',
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white),
+                                fontSize: FontSizes.subtitle,
+                                fontWeight: FontWeights.medium,
+                                color: AppColors.white),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 30.0)
+                    const SizedBox(height: Spacing.large)
                   ],
                 ),
               );

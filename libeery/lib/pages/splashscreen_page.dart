@@ -40,7 +40,7 @@ class SplashScreenState extends State<SplashScreen>
           opacity: _fadeAnimation,
           child: const Image(
             image: AssetImage('assets/images/Libeery Regular White.png'),
-            width: 180, // Set the width
+            width: 180,
             height: 180,
           ),
         ),

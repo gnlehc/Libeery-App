@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:libeery/models/msacara_model.dart';
 import 'package:libeery/pages/acara_detail_page.dart';
+import 'package:libeery/styles/style.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AcaraCard extends StatelessWidget {
@@ -65,60 +66,60 @@ class AcaraCard extends StatelessWidget {
                 children: [
                   const Text("SEMINAR",
                       style: TextStyle(
-                          color: Color(0xFFF18700),
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600)),
-                  const SizedBox(height: 4),
+                          color: AppColors.orange,
+                          fontSize: FontSizes.description,
+                          fontWeight: FontWeights.medium)),
+                  const SizedBox(height: 5.0),
                   SizedBox(
                     width: cardWidth * 0.6,
                     child: Text(
                       acara.acaraName,
                       style: const TextStyle(
-                        color: Color(0xFF333333),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
+                        color: AppColors.black,
+                        fontSize: FontSizes.description,
+                        fontWeight: FontWeights.bold,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       softWrap: false,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: Spacing.small),
                   const Text("TIME & DATE",
                       style: TextStyle(
-                          color: Color(0xFFF18700),
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600)),
-                  const SizedBox(height: 6),
+                          color: AppColors.orange,
+                          fontSize: FontSizes.description,
+                          fontWeight: FontWeights.medium)),
+                  const SizedBox(height: 5.0),
                   Row(
                     children: [
                       const Icon(Icons.date_range,
-                          color: Color(0xFF0097DA), size: 10),
-                      const SizedBox(width: 4.0),
+                          color: AppColors.blue, size: FontSizes.description),
+                      const SizedBox(width: 5.0),
                       Text(dateFormat.format(acara.acaraDate),
                           // formatDateTime(acara.acaraDate.toString()),
                           style: const TextStyle(
-                              color: Color(0xFF333333),
-                              fontSize: 10,
-                              fontWeight: FontWeight.normal)),
+                              color: AppColors.black,
+                              fontSize: FontSizes.description,
+                              fontWeight: FontWeights.medium)),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: Spacing.small),
                   Row(
                     children: [
                       const Icon(Icons.access_time,
-                          color: Color(0xFF0097DA), size: 10),
-                      const SizedBox(width: 4.0),
+                          color: Color(0xFF0097DA), size: FontSizes.description),
+                      const SizedBox(width: 5.0),
                       Text(
                           formatTimeRange(acara.acaraStartTime.toString(),
                               acara.acaraEndTime.toString()),
                           style: const TextStyle(
-                              color: Color(0xFF333333),
-                              fontSize: 10,
-                              fontWeight: FontWeight.normal)),
+                              color: AppColors.black,
+                              fontSize: FontSizes.description,
+                              fontWeight: FontWeights.medium)),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: Spacing.medium),
                   Center(
                     child: GestureDetector(
                       onTap: _launchGoogleForm,
@@ -129,17 +130,17 @@ class AcaraCard extends StatelessWidget {
                           gradient: const LinearGradient(
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
-                            colors: [Color(0xFFF18700), Color(0xFFF8C17B)],
+                            colors: [AppColors.orange, Color(0xFFF8C17B)],
                           ),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: const Text(
                           'Join here',
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
+                            color: AppColors.white,
+                            fontSize: FontSizes.description,
                             fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeights.bold,
                           ),
                         ),
                       ),

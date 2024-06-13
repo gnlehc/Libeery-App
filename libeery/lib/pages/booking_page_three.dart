@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:libeery/models/msloker_model.dart';
 import 'package:libeery/pages/book_for_now_page.dart';
 import 'package:libeery/services/msloker_service.dart';
+import 'package:libeery/styles/style.dart';
 
 class Loker {
   bool dipilih;
@@ -109,8 +110,8 @@ class BookingPage3State extends State<BookingPage3> {
     bool filled = progressStatus[step - 1];
     // Warna kotak progresif berdasarkan status
     Color color = filled
-        ? const Color.fromRGBO(241, 135, 0, 1)
-        : const Color.fromRGBO(197, 197, 197, 1);
+        ? AppColors.orange
+        : AppColors.lightGray;
     return Container(
       width: 80,
       height: 4,
@@ -134,7 +135,7 @@ class BookingPage3State extends State<BookingPage3> {
           ),
           backgroundColor: Colors.transparent,
           title: Padding(
-            padding: const EdgeInsets.only(top: 23.0),
+            padding: const EdgeInsets.only(top: Spacing.small),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -158,45 +159,61 @@ class BookingPage3State extends State<BookingPage3> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      height: 120,
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      height: 100,
+                      padding: const EdgeInsets.symmetric(horizontal: Spacing.large),
                       child: const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             "Pilih Lokermu!",
                             style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w600,
+                              fontSize: FontSizes.subtitle,
+                              fontWeight: FontWeights.bold,
+                              color: AppColors.black
                             ),
                           ),
-                          Text(
-                            "Pilih loker yang ingin kamu tempati selama mengunjungi LKC Binus. Angka 1 - 5 menunjukkan letak baris loker, dimana 1 berarti baris teratas dan 5 adalah baris terbawah.",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
+                          Text.rich(
+                            TextSpan(
+                              style: TextStyle(
+                                fontSize: FontSizes.description,
+                                fontWeight: FontWeights.regular,
+                                color: AppColors.black,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: "Pilih loker yang ingin kamu tempati selama mengunjungi LKC Binus. ",
+                                ),
+                                TextSpan(
+                                  text: "Angka 1-5 menunjukkan letak baris loker, dimana 1 berarti baris teratas dan 5 adalah baris terbawah.",
+                                  style: TextStyle(
+                                    fontWeight: FontWeights.medium,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
                             ),
+                            textAlign: TextAlign.justify
                           ),
                         ],
                       ),
                     ),
                     Container(
                       height: 30,
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      padding: const EdgeInsets.symmetric(horizontal: Spacing.large),
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           AvailabilityInfo(
                             information: "Tersedia",
-                            colorInfo: Color(0xff5EC762),
+                            colorInfo: AppColors.green,
                           ),
                           AvailabilityInfo(
                             information: "Tidak Tersedia",
-                            colorInfo: Color(0xffC75E5E),
+                            colorInfo: AppColors.red,
                           ),
                           AvailabilityInfo(
                             information: "Pilihanmu",
-                            colorInfo: Color(0xff0097DA),
+                            colorInfo: AppColors.blue,
                           ),
                         ],
                       ),
@@ -204,7 +221,7 @@ class BookingPage3State extends State<BookingPage3> {
                     SizedBox(
                       height: 300,
                       child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 40),
+                          padding: const EdgeInsets.symmetric(horizontal: Spacing.large),
                           child: Row(
                             children: [
                               const SizedBox(
@@ -246,13 +263,13 @@ class BookingPage3State extends State<BookingPage3> {
 
                                         Color color;
                                         if (loker?.availability == 'Booked') {
-                                          color = const Color(0xffC75E5E);
+                                          color = AppColors.red;
                                         } else {
                                           if (lokerUser[rowIndex][columnIndex]
                                               .dipilih) {
-                                            color = const Color(0xff0097DA);
+                                            color = AppColors.blue;
                                           } else {
-                                            color = const Color(0xff5EC762);
+                                            color = AppColors.green;
                                           }
                                         }
 
@@ -263,7 +280,7 @@ class BookingPage3State extends State<BookingPage3> {
                                             },
                                             child: Padding(
                                               padding: const EdgeInsets.only(
-                                                  top: 16.5, left: 10),
+                                                  top: 16, left: Spacing.small),
                                               child: Container(
                                                 width: 40,
                                                 height: 40,
@@ -281,12 +298,18 @@ class BookingPage3State extends State<BookingPage3> {
                     Container(
                       height: 60,
                       padding:
-                          const EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+                          const EdgeInsets.symmetric(vertical: Spacing.small, horizontal: Spacing.large),
                       child: Column(children: [
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text("Loker yang dipilih"),
+                              const Text(
+                                "Loker yang dipilih",
+                                style: TextStyle(
+                                  color: AppColors.black,
+                                  fontWeight: FontWeights.regular,
+                                  fontSize: FontSizes.medium,
+                                ),),
                               if (selectedRow != -1 && selectedColumn != -1)
                                 Text(
                                   listLoker.data!
@@ -297,43 +320,50 @@ class BookingPage3State extends State<BookingPage3> {
                                       .lockerID
                                       .toString(),
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.w700),
+                                      fontWeight: FontWeights.bold,
+                                      fontSize: FontSizes.medium,
+                                      color: AppColors.black),
                                 ),
                             ]),
                         const Divider(
-                          thickness: 1.0,
-                          color: Color(0xff333333),
-                        )
+                          thickness: 0.5,
+                          color: AppColors.black,
+                        ),
                       ]),
                     ),
                     Container(
                         height: 100,
-                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        padding: const EdgeInsets.symmetric(horizontal: Spacing.large),
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () {}, // redirect to booking page 4
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xffF18700),
-                                    fixedSize: const Size(134, 20),
+                                    backgroundColor: AppColors.orange,
+                                    fixedSize: const Size(140, 30),
+                                    elevation: 5,
                                   ),
                                   child: const Text("Selanjutnya",
-                                      style:
-                                          TextStyle(color: Color(0xffF1F1F1)))),
+                                      style: TextStyle(
+                                        fontSize: FontSizes.medium,
+                                        fontWeight: FontWeights.medium,
+                                        color: AppColors.white,
+                                        fontFamily: 'Montserrat',
+                                      ))),
                               TextButton(
                                   onPressed: () {
                                     Navigator.pop(context, const BookForNow());
                                   },
-                                  child: const Text("Sebelumnya...",
-                                      style: TextStyle(
-                                        fontSize: 12.0,
-                                        fontWeight: FontWeight.w400,
-                                        decoration: TextDecoration.underline,
-                                        color:
-                                            Color.fromRGBO(141, 141, 141, 1),
-                                        decorationThickness: 0.2,
-                                      )))
+                                  child: const Text('Sebelumnya..',
+                                    style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: FontSizes.description,
+                                      fontWeight: FontWeights.regular,
+                                      decoration: TextDecoration.underline,
+                                      decorationThickness: 0.2,
+                                      color: AppColors.oldGray,
+                                    ),))
                             ])),
                   ],
                 ),
@@ -353,9 +383,9 @@ class RowInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(text,
         style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
-          color: Color(0xff333333),
+          fontSize: FontSizes.subtitle,
+          fontWeight: FontWeights.medium,
+          color: AppColors.black,
         ));
   }
 }
@@ -382,12 +412,12 @@ class AvailabilityInfo extends StatelessWidget {
             borderRadius: BorderRadius.circular(3),
           ),
         ),
-        const SizedBox(width: 5),
+        const SizedBox(width: Spacing.small),
         Text(
           information,
           style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
+            fontSize: FontSizes.medium,
+            fontWeight: FontWeights.medium,
             color: colorInfo,
           ),
         ),

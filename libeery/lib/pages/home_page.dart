@@ -4,6 +4,7 @@ import 'package:libeery/models/mssession_model.dart';
 import 'package:libeery/pages/books_page.dart';
 import 'package:libeery/services/msuser_service.dart';
 import 'package:libeery/services/mssession_service.dart';
+import 'package:libeery/styles/style.dart';
 import 'package:libeery/widgets/acara_homepage_widget.dart';
 import 'package:libeery/widgets/book_session_widget.dart';
 import 'package:libeery/widgets/booked_session_widget.dart';
@@ -115,7 +116,7 @@ class _HomePageState extends State<HomePage> {
             Stack(
               children: [
                 Container(
-                  color: const Color(0xFF333333),
+                  color: AppColors.black,
                   height: 250,
                 ),
                 Column(
@@ -125,9 +126,9 @@ class _HomePageState extends State<HomePage> {
                     GreetUser(username: widget.username),
                     const SizedBox(height: 20),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+                      padding: const EdgeInsets.fromLTRB(Spacing.medium, 0, Spacing.medium, 0),
                       child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxHeight: 250),
+                        constraints: BoxConstraints(maxHeight: 250.0 * (booked.data?.length ?? 1)),
                         child: isLoading
                             ? const Center(
                                 child: SizedBox(
@@ -153,6 +154,7 @@ class _HomePageState extends State<HomePage> {
                                                         i.sessionID)
                                                     .startSession,
                                               ),
+                                              const SizedBox(height: Spacing.small),
                                             ],
                                           ),
                                       ],
@@ -163,14 +165,14 @@ class _HomePageState extends State<HomePage> {
                                   ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: Spacing.medium),
                     const AddNewBookCard(),
                   ],
                 ),
               ],
             ),
             Padding(
-              padding: const EdgeInsets.all(30),
+              padding: const EdgeInsets.fromLTRB(Spacing.large, Spacing.large, Spacing.large, 0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -180,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                         child: Text(
                           "Acara",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 24),
+                              fontWeight: FontWeights.bold, fontSize: FontSizes.title, color: AppColors.black),
                         ),
                       ),
                       GestureDetector(
@@ -190,9 +192,9 @@ class _HomePageState extends State<HomePage> {
                         child: const Text(
                           "Lihat lebih lanjut..",
                           style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontSize: 12,
-                              color: Color(0xFF0097DA),
+                              fontWeight: FontWeights.regular,
+                              fontSize: FontSizes.description,
+                              color: AppColors.blue,
                               decoration: TextDecoration.underline),
                         ),
                       ),

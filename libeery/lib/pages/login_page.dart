@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:libeery/styles/style.dart';
 import 'package:libeery/widgets/choose_login_widget.dart';
 
 class ChooseLoginPage extends StatelessWidget {
@@ -8,7 +9,7 @@ class ChooseLoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: const Color(0xFF0097DA), // Set the background color here
+        color: AppColors.blue,
         child: const Center(
             child: SingleChildScrollView(
           child: Column(
@@ -18,9 +19,9 @@ class ChooseLoginPage extends StatelessWidget {
                 image: AssetImage('assets/images/libeery_logo.png'),
                 width: 150,
               ),
-              SizedBox(height: 10),
+              SizedBox(height: Spacing.small),
               Padding(
-                padding: EdgeInsets.all(20.0),
+                padding: EdgeInsets.all(Spacing.medium),
                 child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(
@@ -28,7 +29,7 @@ class ChooseLoginPage extends StatelessWidget {
                     ),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.all(20.0),
+                    padding: EdgeInsets.all(Spacing.medium),
                     child: ChooseLoginWidget(),
                   ),
                 ),

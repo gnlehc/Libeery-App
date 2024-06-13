@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:libeery/styles/style.dart';
 
 class OngoingSession extends StatelessWidget {
   final int loker;
@@ -22,12 +23,12 @@ class OngoingSession extends StatelessWidget {
     final bool isSessionStarted = isSessionStart(DateTime.now(), startSession);
     return Container(
       decoration: BoxDecoration(
-        color: isSessionStarted ? null : Color.fromARGB(255, 214, 214, 214),
+        color: isSessionStarted ? null : AppColors.lightGray,
         gradient: isSessionStarted
             ? const LinearGradient(
                 colors: [
-                  Color(0xFF0097DA),
-                  Color(0xFF0097DA),
+                  AppColors.blue,
+                  AppColors.blue,
                   Color.fromARGB(255, 148, 204, 228),
                 ],
                 begin: Alignment.topLeft,
@@ -51,32 +52,32 @@ class OngoingSession extends StatelessWidget {
                 TextSpan(
                   text: "Lokermu: ",
                   style: TextStyle(
-                    fontSize: 16, 
+                    fontSize: FontSizes.medium, 
                     fontFamily: "Montserrat", 
-                    color: isSessionStarted ? Colors.white : Colors.grey.shade600,
+                    color: isSessionStarted ? AppColors.white : AppColors.oldGray,
                   ),
                 ),
                 TextSpan(
                   text: '$loker',
                   style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                      fontWeight: FontWeights.bold,
+                      fontSize: FontSizes.subtitle,
                       fontFamily: "Montserrat",
-                      color: isSessionStarted ? Colors.white : Colors.grey.shade600),
+                      color: isSessionStarted ? AppColors.white : AppColors.oldGray),
                 )
             ])),
             RichText(
                 text: TextSpan(children: [
               TextSpan(
                 text: "Periode: ",
-                style: TextStyle(fontSize: 16, fontFamily: "Montserrat", color: isSessionStarted ? Colors.white : Colors.grey.shade600),
+                style: TextStyle(fontSize: FontSizes.medium, fontFamily: "Montserrat", color: isSessionStarted ? AppColors.white : AppColors.oldGray),
               ),
               TextSpan(
                 text: '$periode',
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    fontFamily: "Montserrat", color: isSessionStarted ? Colors.white : Colors.grey.shade600),
+                    fontWeight: FontWeights.bold,
+                    fontSize: FontSizes.subtitle,
+                    fontFamily: "Montserrat", color: isSessionStarted ? AppColors.white : AppColors.oldGray),
               )
             ])),
           ],

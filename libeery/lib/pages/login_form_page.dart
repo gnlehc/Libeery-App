@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:libeery/styles/style.dart';
 
 class LoginFormPage extends StatelessWidget {
   final Widget formWidget;
@@ -9,7 +10,7 @@ class LoginFormPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: const Color(0xFF0097DA), // Set the background color here
+        color: AppColors.blue,
         child: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -19,9 +20,9 @@ class LoginFormPage extends StatelessWidget {
                   image: AssetImage('assets/images/libeery_logo.png'),
                   width: 150,
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: Spacing.small),
                 Padding(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.all(Spacing.medium),
                   child: Card(
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(
@@ -29,7 +30,7 @@ class LoginFormPage extends StatelessWidget {
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(20.0),
+                      padding: const EdgeInsets.all(Spacing.medium),
                       child: formWidget, 
                     ),
                   ),
