@@ -87,6 +87,7 @@ flutter:
     - assets/icons/Books.png
     - assets/icons/Profile.png
     - assets/icons/Pointer.png
+    - assets/images/check-in-success.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
