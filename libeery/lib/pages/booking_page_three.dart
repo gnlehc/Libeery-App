@@ -13,8 +13,9 @@ class Loker {
 
 class BookingPage3 extends StatefulWidget {
   final Widget previousPage;
+  final List<int> sessionIds;
 
-  const BookingPage3({Key? key, required this.previousPage}) : super(key: key);
+  const BookingPage3({Key? key, required this.previousPage, required this.sessionIds}) : super(key: key);
 
   @override
   BookingPage3State createState() => BookingPage3State();
