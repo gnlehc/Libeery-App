@@ -1,45 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'dart:convert';
-import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:libeery/pages/booking_page_three.dart';
+import 'package:libeery/models/mssession_model.dart';
+import 'package:libeery/services/mssession_service.dart';
 
 void main() {
   runApp(const BookForNow());
 }
 
-class SessionVisitTime {
-  final String userID;
-  final String startSession;
-  final String endSession;
-  final int lokerID;
+// class SessionVisitTime {
+//   final String userID;
+//   final String startSession;
+//   final String endSession;
+//   final int lokerID;
 
-  SessionVisitTime({
-    required this.userID,
-    required this.startSession,
-    required this.endSession,
-    required this.lokerID,
-  });
+//   SessionVisitTime({
+//     required this.userID,
+//     required this.startSession,
+//     required this.endSession,
+//     required this.lokerID,
+//   });
 
-  factory SessionVisitTime.fromJson(Map<String, dynamic> json) {
-    return SessionVisitTime(
-      userID: json['UserID'],
-      startSession: json['StartSession'],
-      endSession: json['EndSession'],
-      lokerID: json['LokerID'],
-    );
-  }
+//   factory SessionVisitTime.fromJson(Map<String, dynamic> json) {
+//     return SessionVisitTime(
+//       userID: json['UserID'],
+//       startSession: json['StartSession'],
+//       endSession: json['EndSession'],
+//       lokerID: json['LokerID'],
+//     );
+//   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'UserID': userID,
-      'StartSession': startSession,
-      'EndSession': endSession,
-      'LokerID': lokerID,
-    };
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'UserID': userID,
+//       'StartSession': startSession,
+//       'EndSession': endSession,
+//       'LokerID': lokerID,
+//     };
+//   }
+// }
 
 class BookForNow extends StatefulWidget {
   const BookForNow({super.key});
@@ -68,6 +68,8 @@ class _BookForNowState extends State<BookForNow> {
   late int selectedHour;
   late int selectedMinute;
 
+  late List<MsSession> sessions; 
+
   @override
   void initState() {
     super.initState();
@@ -75,6 +77,7 @@ class _BookForNowState extends State<BookForNow> {
     endTime = TimeOfDay(hour: TimeOfDay.now().hour + 1, minute: 00);
     selectedHour = endTime.hour;
     selectedMinute = endTime.minute;
+    fetchSessions();
   }
 
   Widget buildProgressIndicator(int step) {
@@ -93,32 +96,16 @@ class _BookForNowState extends State<BookForNow> {
     );
   }
 
-  Future<String?> postSessionVisitTime(
-      SessionVisitTime sessionVisitTime) async {
-    const url =
-        'https://libeery-api-development.up.railway.app/api/private/bookSession-fornow';
 
-    try {
-      final dio = Dio();
-      dio.options.validateStatus = (status) {
-        return true;
-      };
 
-      Response response = await dio.post(
-        url,
-        data: json.encode(sessionVisitTime.toJson()),
-        options: Options(headers: {
-          'Content-Type': 'application/json',
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        return null;
-      } else {
-        return response.data['Message'] ?? 'Unknown error occured';
-      }
-    } catch (error) {
-      return 'Unexpected error occured: $error';
+  Future<void> fetchSessions() async{
+    try{
+      sessions = await MsSessionService.getSessionfromAPI();
+      setState(() {
+        
+      });
+    }catch(e){
+      print("Failed to fetch sessions: $e");
     }
   }
 
@@ -126,45 +113,31 @@ class _BookForNowState extends State<BookForNow> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        // ini buat ilangin navigationUp dari navigasi bawaan emulator androidnya biar kita bisa pake icon kita sendiri
-        flexibleSpace: const Image(
-          image: AssetImage('assets/image/whitebackground.png'),
-          fit: BoxFit.cover,
-        ),
-        backgroundColor: Colors.transparent,
-        title: Padding(
-          padding: const EdgeInsets.only(top: 23.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  buildProgressIndicator(1),
-                  buildProgressIndicator(2),
-                  buildProgressIndicator(3),
-                  buildProgressIndicator(4),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(12.0, 10.0, 0, 0),
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: const Icon(Icons.arrow_back_ios),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+          automaticallyImplyLeading: false,
+          // ini buat ilangin navigationUp dari navigasi bawaan emulator androidnya biar kita bisa pake icon kita sendiri
+          flexibleSpace: const Image(
+            image: AssetImage('assets/image/whitebackground.png'),
+            fit: BoxFit.cover,
+          ),
+          backgroundColor: Colors.transparent,
+          title: Padding(
+            padding: const EdgeInsets.only(top: 23.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    buildProgressIndicator(1),
+                    buildProgressIndicator(2),
+                    buildProgressIndicator(3),
+                    buildProgressIndicator(4),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
-      ),
       body: Container(
         color: Colors.white,
         child: Column(
@@ -227,7 +200,23 @@ class _BookForNowState extends State<BookForNow> {
                           onSelectedItemChanged: (hourIndex) {
                             setState(() {
                               selectedHour = hourIndex + 9;
+                              errorMessage = null;
                             });
+
+                            DateTime selectedTime = DateTime(
+                              DateTime.now().year,
+                              DateTime.now().month,
+                              DateTime.now().day,
+                              selectedHour,
+                              selectedMinute,
+                            );
+
+                            
+                            if (selectedTime.isBefore(DateTime.now())) {
+                              setState(() {
+                                errorMessage = "Waktu akhir session sudah lewat";
+                              });
+                            }
                           },
                           children: List.generate(10, (index) {
                             final hour = index + 9;
@@ -361,35 +350,51 @@ class _BookForNowState extends State<BookForNow> {
                       selectedHour,
                       selectedMinute,
                     );
-
-                  if(endSessionTime.isBefore(startSessionTime)){
-                    setState(() {
-                      errorMessage = "Waktu sesi sudah lewat";
-                    });
-                  }
-                  else{
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const BookingPage3(previousPage: BookForNow(),)),
-                    );
-
-                      SessionVisitTime sessionVisitTime = SessionVisitTime(
-                        userID: '102b1784-5575-41e0-9175-795fc92455db',
-                        startSession: startSessionTime.toIso8601String(),
-                        endSession: endSessionTime.toIso8601String(),
-                        lokerID: 40,
-                      );
-
-                      logger.d('startTime : $startSessionTime');
-                      logger.d('endTime : $endSessionTime');
-
-                      postSessionVisitTime(sessionVisitTime).then((_) {
-                        logger.d('Berhasil post ke API');
-                      }).catchError((error) {
-                        setState(() {
-                          logger.d('Gagal post ke API: $error');
-                        });
+                  
+                    if(endSessionTime.isBefore(startSessionTime)){
+                      setState(() {
+                        errorMessage = "Waktu akhir session sudah lewat";
                       });
+                      
+                    }else{
+                      errorMessage = null;
+                    }
+                    
+                    List<int> sessionIDs = [];
+
+                    for (var session in sessions) {
+                      // Convert session start and end times to total minutes since midnight
+                      int sessionStartMinutes =
+                          session.startSession.hour * 60 + session.startSession.minute;
+                      int sessionEndMinutes =
+                          session.endSession.hour * 60 + session.endSession.minute;
+
+                      // Convert selected start and end times to total minutes since midnight
+                      int selectedStartMinutes =
+                          startTime.hour * 60 + startTime.minute;
+                      int selectedEndMinutes =
+                          selectedHour * 60 + selectedMinute;
+
+                      // Check if the selected time range overlaps with the session time range
+                      if (selectedStartMinutes < sessionEndMinutes &&
+                          selectedEndMinutes > sessionStartMinutes) {
+                        sessionIDs.add(session.sessionID);
+                        logger.d('Session ${session.sessionID} added');
+                      }
+                    }
+
+                    logger.d('session id yang kepilih: $sessionIDs');
+
+                    if(sessionIDs.isNotEmpty){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BookingPage3(
+                            previousPage: const BookForNow(),
+                            sessionIds: sessionIDs,
+                          ),
+                        ),
+                      );
                     }
                   },
                   style: ElevatedButton.styleFrom(

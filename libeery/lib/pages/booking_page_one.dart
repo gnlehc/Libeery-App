@@ -17,11 +17,7 @@ class BookingPageOne extends StatefulWidget {
 }
 
 class _BookingPageOneState extends State<BookingPageOne> {
-
-
   List<bool> progressStatus = [true, false, false, false];
-// di Page yang lagi dibuka, currentStep ganti ke angkaPage itu (page2 brarti currentStep = 2)
-// dan ProgressStatusnya harus atur true hanya di page yang lagi dibuka
 
   bool card1Clicked = false;
   bool card2Clicked = false;
@@ -116,6 +112,7 @@ class _BookingPageOneState extends State<BookingPageOne> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false, // ini buat ilangin navigationUp dari navigasi bawaan emulator androidnya biar kita bisa pake icon kita sendiri
@@ -127,7 +124,6 @@ class _BookingPageOneState extends State<BookingPageOne> {
         title: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            
             children: [
               // const SizedBox(height: 6.0),
               Row(
@@ -147,7 +143,7 @@ class _BookingPageOneState extends State<BookingPageOne> {
                     padding: const EdgeInsets.fromLTRB(12.0, 0, 0, 0),
                     child: IconButton(
                       onPressed: (){
-                        Navigator.of(context).pop();
+                        Navigator.pop(context); 
                       }, 
                       icon: const Icon(Icons.arrow_back_ios),
                       ),
