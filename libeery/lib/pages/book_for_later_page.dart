@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:libeery/models/mssession_model.dart';
 import 'package:libeery/pages/booking_page_three.dart';
 import 'package:libeery/services/mssession_service.dart';
-import 'package:libeery/styles/style.dart';
 import 'package:logger/logger.dart';
 
 void main() => runApp(const MaterialApp(
@@ -64,28 +63,30 @@ class BookForLater extends StatefulWidget {
 class _BookForLaterState extends State<BookForLater> {
   List<bool> progressStatus = [false, true, false, false];
   List<MsSession>? sessions;
+  late Future<List<MsSession>> futureSessions;
 
   late List<String> selectedSlots;
-  late int? selectedSessionID;
+  List<int> selectedSessionIDs =[];
   String? errorMessage;
-  String? errorMessage2;
 
   final Logger logger = Logger(
-    printer: PrettyPrinter(), // Printer untuk menata keluaran log
-    level: Level.debug, // Level logging yang digunakan
+    printer: PrettyPrinter(), 
+    level: Level.debug, 
   );
 
-
+  Color color1 = const Color.fromRGBO(51, 51, 51, 1);
+  Color color2 = const Color.fromRGBO(217, 217, 217, 1);
+  Color color3 = const Color.fromRGBO(241, 135, 0, 1);
+  Color color4 = const Color.fromRGBO(197, 197, 197, 1);
+  Color color5 = const Color.fromRGBO(0, 151, 218, 1);
 
   Widget buildProgressIndicator(int step) {
     // Memeriksa apakah kotak progresif harus diisi atau tidak
     bool filled = progressStatus[step - 1];
     // Warna kotak progresif berdasarkan status
-    Color color = filled
-        ? AppColors.orange
-        : AppColors.lightGray;
+    Color color = filled ? color3 : color4;
     return Container(
-      width: 80,
+      width: 72,
       height: 4,
       margin: const EdgeInsets.symmetric(horizontal: 1),
       decoration: BoxDecoration(
@@ -99,6 +100,7 @@ class _BookForLaterState extends State<BookForLater> {
   void initState() {
     super.initState();
     selectedSlots = [];
+    futureSessions = MsSessionService.getSessionfromAPI();
   }
 
   @override
@@ -106,31 +108,31 @@ class _BookForLaterState extends State<BookForLater> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        // ini buat ilangin navigationUp dari navigasi bawaan emulator androidnya biar kita bisa pake icon kita sendiri
-        flexibleSpace: const Image(
-          image: AssetImage('assets/image/whitebackground.png'),
-          fit: BoxFit.cover,
-        ),
-        backgroundColor: Colors.transparent,
-        title: Padding(
-          padding: const EdgeInsets.only(top: Spacing.small),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  buildProgressIndicator(1),
-                  buildProgressIndicator(2),
-                  buildProgressIndicator(3),
-                  buildProgressIndicator(4),
-                ],
-              ),
-            ],
+          automaticallyImplyLeading: false,
+          // ini buat ilangin navigationUp dari navigasi bawaan emulator androidnya biar kita bisa pake icon kita sendiri
+          flexibleSpace: const Image(
+            image: AssetImage('assets/image/whitebackground.png'),
+            fit: BoxFit.cover,
+          ),
+          backgroundColor: Colors.transparent,
+          title: Padding(
+            padding: const EdgeInsets.only(top: 23.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    buildProgressIndicator(1),
+                    buildProgressIndicator(2),
+                    buildProgressIndicator(3),
+                    buildProgressIndicator(4),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
-      ),
       body: SingleChildScrollView(
         child: Container(
           color: Colors.white,
@@ -138,35 +140,35 @@ class _BookForLaterState extends State<BookForLater> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.fromLTRB(Spacing.large, Spacing.small, Spacing.large, 0),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(45.0, 20.0, 45.0, 5.0),
                 child: Text(
                   'Pilih Waktu Kunjunganmu!',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
-                    fontWeight: FontWeights.bold,
-                    fontSize: FontSizes.subtitle,
-                    color: AppColors.black,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 18.0,
+                    color: color1,
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.fromLTRB(Spacing.large, 5.0, Spacing.large, 0),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(45.0, 2.0, 45.0, 0),
                 child: Text(
                   'Pastikan kamu memilih waktu yang benar untuk kunjungan. Tips: jika tidak memungkinkan untuk keluar LKC pada waktu yang ada, kamu dapat memilih 2 sesi berturut saja.',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
-                    fontWeight: FontWeights.regular,
-                    color: AppColors.black,
-                    fontSize: FontSizes.description,
+                    fontWeight: FontWeight.w400,
+                    color: color1,
+                    fontSize: 12.0,
                   ),
                   textAlign: TextAlign.justify,
                 ),
               ),
               Padding(
-                  padding: const EdgeInsets.fromLTRB(Spacing.large, Spacing.medium, Spacing.large, 0),
+                  padding: const EdgeInsets.fromLTRB(45.0, 20.0, 45.0, 5.0),
                   child: FutureBuilder<List<MsSession>>(
-                      future: MsSessionService.getSessionfromAPI(),
+                      future: futureSessions,
                       builder:
                           (context, AsyncSnapshot<List<MsSession>> snapshot) {
                         if (snapshot.connectionState ==
@@ -195,7 +197,7 @@ class _BookForLaterState extends State<BookForLater> {
                                     height: 42,
                                     child: PhysicalModel(
                                       color: Colors.transparent,
-                                      borderRadius: BorderRadius.circular(15),
+                                      borderRadius: BorderRadius.circular(17),
                                       shadowColor:
                                           const Color.fromRGBO(237, 237, 237, 1).withOpacity(0.1),
                                       elevation: 5,
@@ -204,40 +206,40 @@ class _BookForLaterState extends State<BookForLater> {
                                         decoration: BoxDecoration(
                                           color: Colors.white,
                                           border: Border.all(
-                                            color: selectedSlots.contains(rangetime)? AppColors.blue : const Color.fromRGBO(194, 194, 194, 1).withOpacity(0.3),
+                                            color: selectedSlots.contains(rangetime)? color5 : const Color.fromRGBO(194, 194, 194, 1).withOpacity(0.3),
                                           ),
-                                          borderRadius:BorderRadius.circular(15),
+                                          borderRadius:BorderRadius.circular(17),
                                         ),
                                         child: CheckboxListTile(
                                           contentPadding: EdgeInsets.zero,
                                           visualDensity: const VisualDensity( horizontal: -4.0, vertical: -4.0),
                                           title: Padding(
                                             padding: const EdgeInsets.only(
-                                                left: Spacing.small),
+                                                left: 10.0),
                                             child: SizedBox(
                                               child: Text(
                                                 rangetime,
                                                 style: const TextStyle(
                                                   fontFamily: 'Montserrat',
-                                                  fontSize: FontSizes.description,
-                                                  fontWeight: FontWeights.medium,
-                                                  color: AppColors.black,
+                                                  fontSize: 10.0,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black,
                                                 ),
                                               ),
                                             ),
                                           ),
                                           checkboxShape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(15),
+                                                BorderRadius.circular(20),
                                           ),
-                                          checkColor: AppColors.blue,
+                                          checkColor: Colors.blue,
                                           fillColor: MaterialStateProperty.all( Colors.transparent),
                                           side: MaterialStateBorderSide.resolveWith((states) {
                                             if (states.contains(
                                                 MaterialState.selected)) {
-                                              return const BorderSide(color: AppColors.blue);
+                                              return BorderSide(color: color5);
                                             } else {
-                                              return const BorderSide(color: AppColors.lightGray);
+                                              return BorderSide(color: color4);
                                             }
                                           }),
                                           controlAffinity:ListTileControlAffinity.trailing,
@@ -257,7 +259,7 @@ class _BookForLaterState extends State<BookForLater> {
 
                                               if (endSessionTime.isBefore(now)) {
                                                 setState(() {
-                                                  errorMessage2 = 'Session telah lewat';
+                                                  errorMessage = 'Session telah lewat';
                                                 });
                                                 return;
                                               }else{
@@ -265,7 +267,7 @@ class _BookForLaterState extends State<BookForLater> {
                                               }
                                               if (value != null && value) {
                                                 final newSlot ='$startTimeFormatted.00 - $endTimeFormatted.00';
-                                                // Hapus waktu kunjungan sebelumnya jika ada
+                                                
                                                 selectedSlots.removeWhere((slot) {
                                                   final parts = slot.split('-');
                                                   final slotStartTime =
@@ -279,17 +281,17 @@ class _BookForLaterState extends State<BookForLater> {
                                                   MsSession selectedSession =sessions!.firstWhere(
                                                     (session) =>session.startSession.hour ==startTime &&session.endSession.hour == endTime,
                                                     orElse: () => MsSession(
-                                                      sessionID: -1, // Provide default values for sessionID, startSession, and endSession
+                                                      sessionID: -1, 
                                                       startSession:DateTime.now(),
                                                       endSession: DateTime.now(),
                                                     ), 
                                                   );
-
-                                                  selectedSessionID = selectedSession.sessionID; // Perbarui selectedSessionID
+                                                  selectedSessionIDs.add(selectedSession.sessionID);
                                                 }
                                               } else {
                                                 selectedSlots.remove('$startTimeFormatted.00 - $endTimeFormatted.00');
-                                                selectedSessionID = null;
+                                                selectedSessionIDs
+                                              .remove(session.sessionID);
                                               }
                                               selectedSlots.sort((a, b) =>int.parse(a.split('.')[0]).compareTo(int.parse( b.split('.')[0])));
                                             });
@@ -302,23 +304,22 @@ class _BookForLaterState extends State<BookForLater> {
                           }
                         }
                       })),
-              const SizedBox(height: Spacing.medium),
+              const SizedBox(height: 26.0),
               const Padding(
-                padding: EdgeInsets.only(left: Spacing.large),
+                padding: EdgeInsets.only(left: 45.0),
                 child: Text(
                   'Waktu Kunjungan',
                   style: TextStyle(
-                      fontSize: FontSizes.description,
-                      color: AppColors.black,
-                      fontWeight: FontWeights.regular,
-                      fontFamily: 'Montserrat'
-                      ),
+                      fontSize: 12.0,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w400,
+                      fontFamily: 'Montserrat'),
                 ),
               ),
               Visibility(
                   visible: selectedSlots.isNotEmpty,
                   child: Container(
-                    padding: const EdgeInsets.fromLTRB(Spacing.large, 5.0, Spacing.large, 0),
+                    padding: const EdgeInsets.fromLTRB(45.0, 5.0, 45.0, 0),
                     color: Colors.white,
                     child: Column(
                       children: [
@@ -328,23 +329,24 @@ class _BookForLaterState extends State<BookForLater> {
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                const Padding(padding: EdgeInsets.all(2.0)),
                                 Expanded(
                                   child: Text(
                                       '${group.startTime.hour.toString().padLeft(2, '0')}.00 - ${group.endTime.hour.toString().padLeft(2, '0')}.00 WIB',
                                       style: const TextStyle(
-                                          color: AppColors.black,
+                                          color: Colors.black,
                                           fontFamily: 'Montserrat',
-                                          fontSize: FontSizes.medium,
-                                          fontWeight: FontWeights.medium),
+                                          fontSize: 13.0,
+                                          fontWeight: FontWeight.w500),
                                       textAlign: TextAlign.left),
                                 ),
                                 Expanded(
                                   child: Text('${group.sessions} sesi',
                                       style: const TextStyle(
-                                          color: AppColors.black,
+                                          color: Colors.black,
                                           fontFamily: 'Montserrat',
-                                          fontSize: FontSizes.medium,
-                                          fontWeight: FontWeights.medium),
+                                          fontSize: 13.0,
+                                          fontWeight: FontWeight.w500),
                                       textAlign: TextAlign.right),
                                 )
                               ],
@@ -354,90 +356,77 @@ class _BookForLaterState extends State<BookForLater> {
                       ],
                     ),
                   )),
-              const SizedBox(height: 5.0),
+              const SizedBox(height: 2.0),
               const Divider(
                 thickness: 0.5,
-                color: AppColors.black,
-                indent: 30.0,
-                endIndent: 30.0,
+                color: Colors.black,
+                indent: 45.0,
+                endIndent: 45.0,
               ),
-              const SizedBox(height: Spacing.small),
+              const SizedBox(height: 10.0),
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
-                    if (selectedSlots.isNotEmpty) {
-                      // Periksa apakah ada slot waktu yang dipilih
-                      if (selectedSessionID != null) {
-                        final postSession = SessionRequestDTO(
-                          userID: 'b93cc732-28b9-44b9-b0ca-cb24b1ec2c58',
-                          sessionID: selectedSessionID!,
-                          lokerID: 1,
-                        );
-
-                        final String? result =
-                            await MsSessionService.postDatatoAPI(postSession);
-
-                        logger.d('Selected SessionID: $selectedSessionID');
-                        if (result == null) {
-                          logger.d('Berhasil post ke API');
+                     if (selectedSlots.isNotEmpty) {
+                      errorMessage = null;
+                        if (selectedSessionIDs.isNotEmpty) {
+                          logger.d('Selected sessionID: $selectedSessionIDs'); 
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const BookingPage3(previousPage: BookForLater())),
+                            MaterialPageRoute(builder: (context) => BookingPage3(
+                              previousPage: const BookForLater(),
+                              sessionIds: selectedSessionIDs,
+                              ),
+                            ),
                           );
                         } else {
+                          logger.d('No sessionIDs selected');
                           setState(() {
-                            logger.e('Gagal post ke API: $result');
-                            errorMessage = result;
+                            errorMessage = 'No sessionID selected';
                           });
                         }
                       } else {
-                        logger.d('No sessionID selected');
+                        logger.d('No session slot selected');
                         setState(() {
-                          errorMessage = 'No sessionID selected';
+                          errorMessage = 'Belum ada session yang dipilih';
                         });
-                      }
-                    } else {
-                      logger.d('No session slot selected');
-                      setState(() {
-                        errorMessage = 'No session slot selected';
-                      });
-                    }
+  }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.orange,
-                    fixedSize: const Size(140, 30),
+                    backgroundColor: color3,
+                    fixedSize: const Size(136, 33),
                     elevation: 5,
                   ),
                   child: const Text(
                     'Selanjutnya',
                     style: TextStyle(
-                      fontSize: FontSizes.medium,
-                      fontWeight: FontWeights.medium,
-                      color: AppColors.white,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
                       fontFamily: 'Montserrat',
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 2.0),
+              const SizedBox(height: 10.0),
               Padding(
-              padding: const EdgeInsets.only(bottom: Spacing.small),
+              padding: const EdgeInsets.only(bottom: 10.0),
               child: Center(
-                child: errorMessage2 != null 
+                child: errorMessage != null 
                   ? Text(
-                      errorMessage2!,
+                      errorMessage!,
                       style: const TextStyle(
                         fontFamily: 'Montserrat',
-                        fontSize: FontSizes.description,
-                        fontWeight: FontWeights.regular,
-                        color: AppColors.red
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.red
                       ),
                   )
                   : const SizedBox(),
               ),
             ),
               Padding(
-                padding: const EdgeInsets.only(bottom: Spacing.small),
+                padding: const EdgeInsets.only(bottom: 20.0),
                 child: Center(
                   child: GestureDetector(
                     onTap: () {
@@ -447,11 +436,11 @@ class _BookForLaterState extends State<BookForLater> {
                       'Sebelumnya..',
                       style: TextStyle(
                         fontFamily: 'Montserrat',
-                        fontSize: FontSizes.description,
-                        fontWeight: FontWeights.regular,
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w400,
                         decoration: TextDecoration.underline,
                         decorationThickness: 0.2,
-                        color: AppColors.oldGray,
+                        color: Color.fromRGBO(141, 141, 141, 1),
                       ),
                     ),
                   ),

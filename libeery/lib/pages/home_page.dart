@@ -10,6 +10,7 @@ import 'package:libeery/widgets/book_session_widget.dart';
 import 'package:libeery/widgets/booked_session_widget.dart';
 import 'package:libeery/widgets/check-out-success_popup.dart';
 import 'package:libeery/widgets/check_in_success_popup.dart';
+import 'package:libeery/widgets/no_session_booked_widget.dart';
 import 'package:libeery/widgets/user_greetings_widget.dart';
 import 'package:libeery/widgets/navbar_widget.dart';
 
@@ -148,7 +149,9 @@ class _HomePageState extends State<HomePage> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(Spacing.medium, 0, Spacing.medium, 0),
                       child: ConstrainedBox(
-                        constraints: BoxConstraints(maxHeight: 250.0 * (booked.data?.length ?? 1)),
+                        constraints: booked.data == null || booked.data!.isEmpty
+                            ? const BoxConstraints()
+                           : BoxConstraints(maxHeight: 250.0 * booked.data!.length),
                         child: isLoading
                             ? const Center(
                                 child: SizedBox(
@@ -157,8 +160,9 @@ class _HomePageState extends State<HomePage> {
                                   child: CircularProgressIndicator(),
                                 ),
                               )
-                            : booked.data != null
-                                ? SingleChildScrollView(
+                              : booked.data == null || booked.data!.isEmpty 
+                              ?  const NoSessionBooked()
+                                : SingleChildScrollView(
                                     child: Column(
                                       children: [
                                         for (var i in booked.data!)
@@ -180,9 +184,7 @@ class _HomePageState extends State<HomePage> {
                                       ],
                                     ),
                                   )
-                                : const Center(
-                                    child: Text('No data available'),
-                                  ),
+                                
                       ),
                     ),
                     const SizedBox(height: Spacing.medium),
