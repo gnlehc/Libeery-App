@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:libeery/styles/style.dart';
 import 'package:logger/logger.dart';
 import 'package:libeery/pages/booking_page_three.dart';
 import 'package:libeery/models/mssession_model.dart';
@@ -26,12 +27,6 @@ class _BookForNowState extends State<BookForNow> {
   );
   String? errorMessage;
 
-  Color color1 = const Color.fromRGBO(51, 51, 51, 1);
-  Color color2 = const Color.fromRGBO(217, 217, 217, 1);
-  Color color3 = const Color.fromRGBO(241, 135, 0, 1);
-  Color color4 = const Color.fromRGBO(197, 197, 197, 1);
-  Color color5 = const Color.fromRGBO(0, 151, 218, 1);
-
   late TimeOfDay startTime;
   late TimeOfDay endTime;
   late int selectedHour;
@@ -53,7 +48,9 @@ class _BookForNowState extends State<BookForNow> {
     // Memeriksa apakah kotak progresif harus diisi atau tidak
     bool filled = progressStatus[step - 1];
     // Warna kotak progresif berdasarkan status
-    Color color = filled ? color3 : color4;
+    Color color = filled 
+        ? AppColors.orange
+        : AppColors.lightGray;
     return Container(
       width: 72,
       height: 4,
@@ -64,8 +61,6 @@ class _BookForNowState extends State<BookForNow> {
           border: Border.all(color: color)),
     );
   }
-
-
 
   Future<void> fetchSessions() async{
     try{
@@ -90,7 +85,7 @@ class _BookForNowState extends State<BookForNow> {
           ),
           backgroundColor: Colors.transparent,
           title: Padding(
-            padding: const EdgeInsets.only(top: 23.0),
+            padding: const EdgeInsets.only(top: Spacing.small),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -114,31 +109,31 @@ class _BookForNowState extends State<BookForNow> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const Padding(
-                padding: EdgeInsets.fromLTRB(45.0, 20.0, 0, 5.0),
+                padding: EdgeInsets.only(left: Spacing.large),
                 child: Text(
                   'Pilih Waktu Akhir Kunjunganmu!',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 17.0,
-                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: FontSizes.subtitle,
+                    color: AppColors.black,
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(45.0, 2.0, 45.0, 5.0),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(Spacing.large, 5.0, Spacing.large, 0),
                 child: Text(
                   'Pastikan kamu memilih waktu yang tepat untuk mengakhiri kunjungan. Tips: jika tidak memungkinkan untuk keluar LKC tepat waktu, kamu dapat melebihi waktunya saja.',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
-                    color: color1,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12.0,
+                    color: AppColors.black,
+                    fontWeight: FontWeights.regular,
+                    fontSize: FontSizes.description,
                   ),
                   textAlign: TextAlign.justify,
                 ),
               ),
-              const SizedBox(height: 26.0),
+              const SizedBox(height: Spacing.medium),
               Padding(
                 padding: const EdgeInsets.all(0),
                 child: Row(
@@ -156,9 +151,9 @@ class _BookForNowState extends State<BookForNow> {
                             decoration: const BoxDecoration(
                                 border: Border(
                               top: BorderSide(
-                                  color: Color.fromRGBO(0, 151, 218, 1)),
+                                  color: AppColors.blue),
                               bottom: BorderSide(
-                                  color: Color.fromRGBO(0, 151, 218, 1)),
+                                  color: AppColors.blue),
                             )),
                           ),
                           backgroundColor: Colors.white,
@@ -195,9 +190,9 @@ class _BookForNowState extends State<BookForNow> {
                                 hourText,
                                 style: const TextStyle(
                                   fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black,
-                                  fontSize: 36.0,
+                                  fontWeight: FontWeights.medium,
+                                  color: AppColors.black,
+                                  fontSize: FontSizes.extraLarge,
                                 ),
                               ),
                             );
@@ -217,11 +212,11 @@ class _BookForNowState extends State<BookForNow> {
                             decoration: const BoxDecoration(
                                 border: Border(
                               top: BorderSide(
-                                  color: Color.fromRGBO(0, 151, 218, 1)),
+                                  color:AppColors.blue),
                               bottom: BorderSide(
-                                  color: Color.fromRGBO(0, 151, 218, 1)),
+                                  color: AppColors.blue),
                               left: BorderSide(
-                                  color: Color.fromRGBO(0, 151, 218, 1),
+                                  color: AppColors.blue,
                                   width: 0.5),
                             )),
                           ),
@@ -244,9 +239,9 @@ class _BookForNowState extends State<BookForNow> {
                                 minuteText,
                                 style: const TextStyle(
                                     fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
-                                    fontSize: 36.0),
+                                    fontWeight: FontWeights.medium,
+                                    color: AppColors.black,
+                                    fontSize: FontSizes.extraLarge),
                               ),
                             );
                           }),
@@ -256,51 +251,51 @@ class _BookForNowState extends State<BookForNow> {
                   ],
                 ),
               ),
-              const SizedBox(height: 26.0),
+              const SizedBox(height: Spacing.medium),
               const Padding(
-                padding: EdgeInsets.fromLTRB(45, 0, 0, 5.0),
+                padding: EdgeInsets.only(left: Spacing.large),
                 child: Text(
                   'Waktu Kunjungan',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12.0,
-                    color: Colors.black,
+                    fontWeight: FontWeights.regular,
+                    fontSize: FontSizes.description,
+                    color: AppColors.black,
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(45.0, 0, 45.0, 0),
+                 padding: const EdgeInsets.fromLTRB(Spacing.large, 5.0, Spacing.large, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'Mulai: ${startTime.hour.toString().padLeft(2, '0')}:${startTime.minute.toString().padLeft(2, '0')} WIB',
                       style: const TextStyle(
-                          color: Colors.black,
+                          color: AppColors.black,
                           fontFamily: 'Montserrat',
-                          fontSize: 13.0,
-                          fontWeight: FontWeight.w500),
+                          fontSize: FontSizes.medium,
+                          fontWeight: FontWeights.medium),
                     ),
                     Text(
                       'Selesai: ${selectedHour.toString().padLeft(2, '0')}:${selectedMinute.toString().padLeft(2, '0')} WIB',
                       style: const TextStyle(
-                          color: Colors.black,
+                          color: AppColors.black,
                           fontFamily: 'Montserrat',
-                          fontSize: 13.0,
-                          fontWeight: FontWeight.w500),
+                          fontSize: FontSizes.medium,
+                          fontWeight: FontWeights.medium),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 2.0),
+              const SizedBox(height: 5.0),
               const Divider(
                 thickness: 0.5,
-                color: Colors.black,
-                indent: 45.0,
-                endIndent: 45.0,
+                color: AppColors.black,
+                indent: 30.0,
+                endIndent: 30.0,
               ),
-              const SizedBox(height: 10.0),
+              const SizedBox(height: Spacing.small),
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
@@ -367,33 +362,33 @@ class _BookForNowState extends State<BookForNow> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: color3,
-                    fixedSize: const Size(136, 33),
+                    backgroundColor: AppColors.orange,
+                    fixedSize: const Size(140, 33),
                     elevation: 5,
                   ),
                   child: const Text(
                     'Selanjutnya',
                     style: TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                      fontSize: FontSizes.medium,
+                      fontWeight: FontWeights.medium,
+                      color: AppColors.white,
                       fontFamily: 'Montserrat',
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 10.0),
+              const SizedBox(height: 2.0),
               Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
+                padding: const EdgeInsets.only(bottom: Spacing.small),
                 child: Center(
                   child: errorMessage != null
                       ? Text(
                           errorMessage!,
                           style: const TextStyle(
                               fontFamily: 'Montserrat',
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.red),
+                              fontSize: FontSizes.description,
+                              fontWeight: FontWeights.regular,
+                              color: AppColors.red),
                         )
                       : const SizedBox(),
                 ),
@@ -407,10 +402,10 @@ class _BookForNowState extends State<BookForNow> {
                     'Sebelumnya...',
                     style: TextStyle(
                       fontFamily: 'Montserrat',
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w400,
+                      fontSize: FontSizes.description,
+                      fontWeight: FontWeights.regular,
                       decoration: TextDecoration.underline,
-                      color: Color.fromRGBO(141, 141, 141, 1),
+                      color: AppColors.oldGray,
                       decorationThickness: 0.2,
                     ),
                   ),

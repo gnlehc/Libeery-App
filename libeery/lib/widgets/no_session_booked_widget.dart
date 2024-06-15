@@ -14,10 +14,10 @@ class NoSessionBooked extends StatelessWidget {
           height: 90,
           decoration: BoxDecoration(
             color: AppColors.lightGray,
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(Spacing.small),
           ),
           child: const Padding(
-            padding:  EdgeInsets.all(8.0),
+            padding:  EdgeInsets.all(Spacing.small),
             child:  Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -26,21 +26,21 @@ class NoSessionBooked extends StatelessWidget {
                   child: Text('Belum Memesan Loker?',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Color.fromARGB(255, 111, 110, 110)
+                    fontSize: FontSizes.medium,
+                    fontWeight: FontWeights.medium,
+                    color: AppColors.black
                   ),
                   ),
                 ),
                 SizedBox(height: 2.0),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  padding: EdgeInsets.symmetric(horizontal: Spacing.large),
                   child: Center(
                     child: Text('Yuk pesan loker dengan memencet tombol di bawah ini!',
                     style: TextStyle(
                       fontFamily: 'Montserrat',
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
+                      fontSize: FontSizes.description,
+                      fontWeight: FontWeights.regular,
                       color: AppColors.oldGray
                     ),
                     textAlign: TextAlign.center,
