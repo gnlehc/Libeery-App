@@ -52,7 +52,7 @@ class _BookForNowState extends State<BookForNow> {
         ? AppColors.orange
         : AppColors.lightGray;
     return Container(
-      width: 72,
+      width: 80,
       height: 4,
       margin: const EdgeInsets.symmetric(horizontal: 1),
       decoration: BoxDecoration(
@@ -114,7 +114,7 @@ class _BookForNowState extends State<BookForNow> {
                   'Pilih Waktu Akhir Kunjunganmu!',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeights.bold,
                     fontSize: FontSizes.subtitle,
                     color: AppColors.black,
                   ),
@@ -123,7 +123,7 @@ class _BookForNowState extends State<BookForNow> {
               const Padding(
                 padding: EdgeInsets.fromLTRB(Spacing.large, 5.0, Spacing.large, 0),
                 child: Text(
-                  'Pastikan kamu memilih waktu yang tepat untuk mengakhiri kunjungan. Tips: jika tidak memungkinkan untuk keluar LKC tepat waktu, kamu dapat melebihi waktunya saja.',
+                  'Pastikan kamu memilih waktu yang tepat untuk mengakhiri kunjungan. Tips: jika tidak memungkinkan untuk keluar LKC tepat waktu, kamu dapat melebihi durasi kunjunganmu.',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     color: AppColors.black,
@@ -212,7 +212,7 @@ class _BookForNowState extends State<BookForNow> {
                             decoration: const BoxDecoration(
                                 border: Border(
                               top: BorderSide(
-                                  color:AppColors.blue),
+                                  color: AppColors.blue),
                               bottom: BorderSide(
                                   color: AppColors.blue),
                               left: BorderSide(
@@ -363,7 +363,7 @@ class _BookForNowState extends State<BookForNow> {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.orange,
-                    fixedSize: const Size(140, 33),
+                    fixedSize: const Size(140, 30),
                     elevation: 5,
                   ),
                   child: const Text(
@@ -388,7 +388,7 @@ class _BookForNowState extends State<BookForNow> {
                               fontFamily: 'Montserrat',
                               fontSize: FontSizes.description,
                               fontWeight: FontWeights.regular,
-                              color: AppColors.red),
+                              color:AppColors.red),
                         )
                       : const SizedBox(),
                 ),

@@ -84,7 +84,7 @@ class _BookForLaterState extends State<BookForLater> {
         ? AppColors.orange 
         : AppColors.lightGray;
     return Container(
-      width: 72,
+      width: 80,
       height: 4,
       margin: const EdgeInsets.symmetric(horizontal: 1),
       decoration: BoxDecoration(
@@ -164,7 +164,7 @@ class _BookForLaterState extends State<BookForLater> {
                 ),
               ),
               Padding(
-                  padding:  const EdgeInsets.fromLTRB(Spacing.large, Spacing.medium, Spacing.large, 0),
+                  padding: const EdgeInsets.fromLTRB(Spacing.large, Spacing.medium, Spacing.large, 0),
                   child: FutureBuilder<List<MsSession>>(
                       future: futureSessions,
                       builder:
@@ -195,7 +195,7 @@ class _BookForLaterState extends State<BookForLater> {
                                     height: 42,
                                     child: PhysicalModel(
                                       color: Colors.transparent,
-                                      borderRadius: BorderRadius.circular(17),
+                                      borderRadius: BorderRadius.circular(15),
                                       shadowColor:
                                           const Color.fromRGBO(237, 237, 237, 1).withOpacity(0.1),
                                       elevation: 5,
@@ -279,7 +279,7 @@ class _BookForLaterState extends State<BookForLater> {
                                                   MsSession selectedSession =sessions!.firstWhere(
                                                     (session) =>session.startSession.hour ==startTime &&session.endSession.hour == endTime,
                                                     orElse: () => MsSession(
-                                                      sessionID: -1, 
+                                                      sessionID: -1, // Provide default values for sessionID, startSession, and endSession
                                                       startSession:DateTime.now(),
                                                       endSession: DateTime.now(),
                                                     ), 
@@ -311,7 +311,8 @@ class _BookForLaterState extends State<BookForLater> {
                       fontSize: FontSizes.description,
                       color: AppColors.black,
                       fontWeight: FontWeights.regular,
-                      fontFamily: 'Montserrat'),
+                      fontFamily: 'Montserrat'
+                  ),
                 ),
               ),
               Visibility(
@@ -353,7 +354,7 @@ class _BookForLaterState extends State<BookForLater> {
                       ],
                     ),
                   )),
-              const SizedBox(height: 2.0),
+              const SizedBox(height: 5.0),
               const Divider(
                 thickness: 0.5,
                 color: AppColors.black,
@@ -391,7 +392,7 @@ class _BookForLaterState extends State<BookForLater> {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.orange,
-                    fixedSize: const Size(140, 33),
+                    fixedSize: const Size(140, 30),
                     elevation: 5,
                   ),
                   child: const Text(
