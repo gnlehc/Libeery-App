@@ -64,25 +64,24 @@ class BookForLater extends StatefulWidget {
 class _BookForLaterState extends State<BookForLater> {
   List<bool> progressStatus = [false, true, false, false];
   List<MsSession>? sessions;
+  late Future<List<MsSession>> futureSessions;
 
   late List<String> selectedSlots;
-  late int? selectedSessionID;
+  List<int> selectedSessionIDs =[];
   String? errorMessage;
-  String? errorMessage2;
 
   final Logger logger = Logger(
-    printer: PrettyPrinter(), // Printer untuk menata keluaran log
-    level: Level.debug, // Level logging yang digunakan
+    printer: PrettyPrinter(), 
+    level: Level.debug, 
   );
-
 
 
   Widget buildProgressIndicator(int step) {
     // Memeriksa apakah kotak progresif harus diisi atau tidak
     bool filled = progressStatus[step - 1];
     // Warna kotak progresif berdasarkan status
-    Color color = filled
-        ? AppColors.orange
+    Color color = filled 
+        ? AppColors.orange 
         : AppColors.lightGray;
     return Container(
       width: 80,
@@ -99,6 +98,7 @@ class _BookForLaterState extends State<BookForLater> {
   void initState() {
     super.initState();
     selectedSlots = [];
+    futureSessions = MsSessionService.getSessionfromAPI();
   }
 
   @override
@@ -106,31 +106,31 @@ class _BookForLaterState extends State<BookForLater> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        // ini buat ilangin navigationUp dari navigasi bawaan emulator androidnya biar kita bisa pake icon kita sendiri
-        flexibleSpace: const Image(
-          image: AssetImage('assets/image/whitebackground.png'),
-          fit: BoxFit.cover,
-        ),
-        backgroundColor: Colors.transparent,
-        title: Padding(
-          padding: const EdgeInsets.only(top: Spacing.small),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  buildProgressIndicator(1),
-                  buildProgressIndicator(2),
-                  buildProgressIndicator(3),
-                  buildProgressIndicator(4),
-                ],
-              ),
-            ],
+          automaticallyImplyLeading: false,
+          // ini buat ilangin navigationUp dari navigasi bawaan emulator androidnya biar kita bisa pake icon kita sendiri
+          flexibleSpace: const Image(
+            image: AssetImage('assets/image/whitebackground.png'),
+            fit: BoxFit.cover,
+          ),
+          backgroundColor: Colors.transparent,
+          title: Padding(
+            padding: const EdgeInsets.only(top: Spacing.small),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    buildProgressIndicator(1),
+                    buildProgressIndicator(2),
+                    buildProgressIndicator(3),
+                    buildProgressIndicator(4),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
-      ),
       body: SingleChildScrollView(
         child: Container(
           color: Colors.white,
@@ -166,7 +166,7 @@ class _BookForLaterState extends State<BookForLater> {
               Padding(
                   padding: const EdgeInsets.fromLTRB(Spacing.large, Spacing.medium, Spacing.large, 0),
                   child: FutureBuilder<List<MsSession>>(
-                      future: MsSessionService.getSessionfromAPI(),
+                      future: futureSessions,
                       builder:
                           (context, AsyncSnapshot<List<MsSession>> snapshot) {
                         if (snapshot.connectionState ==
@@ -257,7 +257,7 @@ class _BookForLaterState extends State<BookForLater> {
 
                                               if (endSessionTime.isBefore(now)) {
                                                 setState(() {
-                                                  errorMessage2 = 'Session telah lewat';
+                                                  errorMessage = 'Session telah lewat';
                                                 });
                                                 return;
                                               }else{
@@ -265,7 +265,7 @@ class _BookForLaterState extends State<BookForLater> {
                                               }
                                               if (value != null && value) {
                                                 final newSlot ='$startTimeFormatted.00 - $endTimeFormatted.00';
-                                                // Hapus waktu kunjungan sebelumnya jika ada
+                                                
                                                 selectedSlots.removeWhere((slot) {
                                                   final parts = slot.split('-');
                                                   final slotStartTime =
@@ -284,12 +284,12 @@ class _BookForLaterState extends State<BookForLater> {
                                                       endSession: DateTime.now(),
                                                     ), 
                                                   );
-
-                                                  selectedSessionID = selectedSession.sessionID; // Perbarui selectedSessionID
+                                                  selectedSessionIDs.add(selectedSession.sessionID);
                                                 }
                                               } else {
                                                 selectedSlots.remove('$startTimeFormatted.00 - $endTimeFormatted.00');
-                                                selectedSessionID = null;
+                                                selectedSessionIDs
+                                              .remove(session.sessionID);
                                               }
                                               selectedSlots.sort((a, b) =>int.parse(a.split('.')[0]).compareTo(int.parse( b.split('.')[0])));
                                             });
@@ -312,7 +312,7 @@ class _BookForLaterState extends State<BookForLater> {
                       color: AppColors.black,
                       fontWeight: FontWeights.regular,
                       fontFamily: 'Montserrat'
-                      ),
+                  ),
                 ),
               ),
               Visibility(
@@ -365,43 +365,30 @@ class _BookForLaterState extends State<BookForLater> {
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
-                    if (selectedSlots.isNotEmpty) {
-                      // Periksa apakah ada slot waktu yang dipilih
-                      if (selectedSessionID != null) {
-                        final postSession = SessionRequestDTO(
-                          userID: 'b93cc732-28b9-44b9-b0ca-cb24b1ec2c58',
-                          sessionID: selectedSessionID!,
-                          lokerID: 1,
-                        );
-
-                        final String? result =
-                            await MsSessionService.postDatatoAPI(postSession);
-
-                        logger.d('Selected SessionID: $selectedSessionID');
-                        if (result == null) {
-                          logger.d('Berhasil post ke API');
+                     if (selectedSlots.isNotEmpty) {
+                      errorMessage = null;
+                        if (selectedSessionIDs.isNotEmpty) {
+                          logger.d('Selected sessionID: $selectedSessionIDs'); 
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const BookingPage3(previousPage: BookForLater())),
+                            MaterialPageRoute(builder: (context) => BookingPage3(
+                              previousPage: const BookForLater(),
+                              sessionIds: selectedSessionIDs,
+                              ),
+                            ),
                           );
                         } else {
+                          logger.d('No sessionIDs selected');
                           setState(() {
-                            logger.e('Gagal post ke API: $result');
-                            errorMessage = result;
+                            errorMessage = 'No sessionID selected';
                           });
                         }
                       } else {
-                        logger.d('No sessionID selected');
+                        logger.d('No session slot selected');
                         setState(() {
-                          errorMessage = 'No sessionID selected';
+                          errorMessage = 'Belum ada session yang dipilih';
                         });
-                      }
-                    } else {
-                      logger.d('No session slot selected');
-                      setState(() {
-                        errorMessage = 'No session slot selected';
-                      });
-                    }
+  }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.orange,
@@ -423,9 +410,9 @@ class _BookForLaterState extends State<BookForLater> {
               Padding(
               padding: const EdgeInsets.only(bottom: Spacing.small),
               child: Center(
-                child: errorMessage2 != null 
+                child: errorMessage != null 
                   ? Text(
-                      errorMessage2!,
+                      errorMessage!,
                       style: const TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: FontSizes.description,
