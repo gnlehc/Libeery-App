@@ -3,6 +3,7 @@ import 'package:libeery/models/msmhs_model.dart';
 import 'package:libeery/models/msuser_model.dart';
 import 'package:libeery/pages/home_page.dart';
 import 'package:libeery/services/msuser_service.dart';
+import 'package:libeery/styles/style.dart';
 import 'package:libeery/widgets/navbar_widget.dart';
 import 'package:libeery/pages/books_page.dart';
 import 'package:libeery/pages/login_page.dart';
@@ -23,7 +24,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
   late MsMhs msMhs;
   MsUser? _userProfile;
   bool _isLoading = true;
@@ -114,13 +115,23 @@ class _ProfilePageState extends State<ProfilePage> {
                   Text(
                     '${_userProfile?.mhsName}',
                     style: const TextStyle(
-                      fontWeight: FontWeight.bold,
+                      fontSize: FontSizes.title,
+                      fontWeight: FontWeights.bold,
+                      color: AppColors.black
                     ),
                   ),
-                  Text('${_userProfile?.nim}'),
+                  Text(
+                    '${_userProfile?.nim}', 
+                    style: const TextStyle(
+                      fontSize: FontSizes.subtitle,
+                      fontWeight: FontWeights.regular,
+                      color: AppColors.black
+                    ),
+                  ),
+                  const SizedBox(height: Spacing.large),
                   SizedBox(
-                    width: 173,
-                    height: 32,
+                    width: 200,
+                    height: 50,
                     child: ElevatedButton(
                       onPressed: _logout,
                       style: ElevatedButton.styleFrom(
@@ -132,8 +143,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: const Text(
                         'Keluar Akun',
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 11.28,
+                          color: AppColors.white,
+                          fontSize: FontSizes.medium,
+                          fontWeight: FontWeights.medium
                         ),
                       ),
                     ),

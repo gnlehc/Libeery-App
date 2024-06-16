@@ -4,6 +4,7 @@ import 'package:libeery/pages/home_page.dart';
 import 'package:libeery/models/mssession_model.dart';
 import 'package:libeery/services/mssession_service.dart';
 import 'package:libeery/pages/booking_page_three.dart';
+import 'package:libeery/styles/style.dart';
 
 class GroupedTimeSlot {
   final DateTime startTime;
@@ -239,19 +240,18 @@ class _BookingPage4State extends State<BookingPage4> {
   }
 
   Widget buildProgressIndicator(int step) {
+    // Memeriksa apakah kotak progresif harus diisi atau tidak
     bool filled = progressStatus[step - 1];
-    Color color = filled
-        ? const Color.fromRGBO(241, 135, 0, 1)
-        : const Color.fromRGBO(197, 197, 197, 1);
+    // Warna kotak progresif berdasarkan status
+    Color color = filled ? AppColors.orange : AppColors.lightGray;
     return Container(
       width: 80,
       height: 4,
       margin: const EdgeInsets.symmetric(horizontal: 1),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(100),
-        color: color,
-        border: Border.all(color: color),
-      ),
+          borderRadius: BorderRadius.circular(100),
+          color: color,
+          border: Border.all(color: color)),
     );
   }
 
@@ -281,14 +281,19 @@ class _BookingPage4State extends State<BookingPage4> {
         ),
         backgroundColor: Colors.transparent,
         title: Padding(
-          padding: const EdgeInsets.only(top: 23.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          padding: const EdgeInsets.only(top: Spacing.small),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              buildProgressIndicator(1),
-              buildProgressIndicator(2),
-              buildProgressIndicator(3),
-              buildProgressIndicator(4),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  buildProgressIndicator(1),
+                  buildProgressIndicator(2),
+                  buildProgressIndicator(3),
+                  buildProgressIndicator(4),
+                ],
+              ),
             ],
           ),
         ),
@@ -298,8 +303,8 @@ class _BookingPage4State extends State<BookingPage4> {
             ? const CircularProgressIndicator()
             : SingleChildScrollView(
                 child: Container(
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  padding: const EdgeInsets.all(16),
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  padding: const EdgeInsets.all(Spacing.small),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -309,76 +314,87 @@ class _BookingPage4State extends State<BookingPage4> {
                           'Konfirmasi Reservasi',
                           style: TextStyle(
                             fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w600,
-                            fontSize: 25,
+                            fontWeight: FontWeights.bold,
+                            fontSize: FontSizes.title,
+                            color: AppColors.black,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: Spacing.small),
                       const Center(
                         child: Text(
                           'Kamu berada pada tahap akhir peminjaman loker. Pastikan informasi loker yang tertera di bawah ini sudah sesuai dengan pilihanmu.',
                           style: TextStyle(
                             fontFamily: 'Montserrat',
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
+                            fontSize: FontSizes.description,
+                            fontWeight: FontWeights.regular,
+                            color: AppColors.black,
                           ),
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: Spacing.medium),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(5.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text(
                               'Loker yang dipilih ',
                               style: TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w400,
+                                fontSize: FontSizes.medium,
+                                fontWeight: FontWeights.regular,
+                                color: AppColors.black
                               ),
                             ),
                             Text(
                               '${widget.lockerID}',
                               style: const TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w500,
+                                fontSize: FontSizes.medium,
+                                fontWeight: FontWeights.medium,
+                                color: AppColors.black
                               ),
                             ),
                           ],
                         ),
                       ),
-                      const Divider(color: Colors.black),
+                      const Divider(
+                        thickness: 0.5,
+                        color: AppColors.black,
+                      ),
                       const Padding(
-                        padding: EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(5.0),
                         child: Text(
                           'Waktu Kunjungan',
                           textAlign: TextAlign.left,
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: FontSizes.medium,
+                            fontWeight: FontWeights.regular,
+                            color: AppColors.black
                           ),
                         ),
                       ),
                       if (widget.startSession != null &&
                           widget.endSession != null) ...[
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(5.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 'Mulai ${formatTime(widget.startSession)}',
                                 style: const TextStyle(
-                                    fontSize: 12.3,
-                                    fontWeight: FontWeight.w500),
+                                    fontSize: FontSizes.medium,
+                                    fontWeight: FontWeights.medium,
+                                    color: AppColors.black),
                                 textAlign: TextAlign.center,
                               ),
                               Text(
                                 'Selesai ${formatTime(widget.endSession)}',
                                 style: const TextStyle(
-                                    fontSize: 12.3,
-                                    fontWeight: FontWeight.w500),
+                                    fontSize: FontSizes.medium,
+                                    fontWeight: FontWeights.medium,
+                                    color: AppColors.black),
                                 textAlign: TextAlign.center,
                               )
                             ],
@@ -392,7 +408,7 @@ class _BookingPage4State extends State<BookingPage4> {
                           itemBuilder: (context, index) {
                             GroupedTimeSlot slot = groupedSlots[index];
                             return Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(5.0),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -400,16 +416,18 @@ class _BookingPage4State extends State<BookingPage4> {
                                   Text(
                                     '${DateFormat.Hm().format(slot.startTime)} - ${DateFormat.Hm().format(slot.endTime)} WIB',
                                     style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
+                                      fontSize: FontSizes.medium,
+                                      fontWeight: FontWeights.medium,
+                                      color: AppColors.black
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
                                   Text(
                                     '${slot.sessions} sesi',
                                     style: const TextStyle(
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.w500,
+                                      fontSize: FontSizes.medium,
+                                      fontWeight: FontWeights.medium,
+                                      color: AppColors.black
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
@@ -419,49 +437,52 @@ class _BookingPage4State extends State<BookingPage4> {
                           },
                         )
                       ],
-                      const Divider(color: Colors.black),
+                      const Divider(
+                        thickness: 0.5,
+                        color: AppColors.black,
+                      ),
                       const SizedBox(height: 20),
                       Center(
                         child: ElevatedButton(
                           onPressed: () => confirmBooking(),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xffF18700),
-                            fixedSize: const Size(134, 40),
-                          ),
-                          child: const Text(
-                            'Konfirmasi',
-                            style: TextStyle(color: Color(0xffF1F1F1)),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      Center(
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.pop(
-                              context,
-                              BookingPage3(
-                                username: widget.username,
-                                previousPage: widget.previousPage,
-                                sessionIds: widget.sessionIds,
-                                startSession: widget.startSession,
-                                endSession: widget.endSession,
-                                userId: widget.userId,
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.orange,
+                                fixedSize: const Size(140, 30),
+                                elevation: 5,
                               ),
-                            );
-                          },
-                          child: const Text(
-                            'Sebelumnya...',
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.w400,
-                              decoration: TextDecoration.underline,
-                              color: Color.fromRGBO(141, 141, 141, 1),
-                              decorationThickness: 0.2,
+                              child: const Text(
+                                'Selanjutnya',
+                                style: TextStyle(
+                                  fontSize: FontSizes.medium,
+                                  fontWeight: FontWeights.medium,
+                                  color: AppColors.white,
+                                  fontFamily: 'Montserrat',
+                                ),
+                              ),
+                            ),
+                      ),
+                      const SizedBox(height: Spacing.small,),
+                      Padding(
+                          padding: const EdgeInsets.only(bottom: Spacing.small),
+                          child: Center(
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text(
+                                'Sebelumnya..',
+                                style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: FontSizes.description,
+                                  fontWeight: FontWeights.regular,
+                                  decoration: TextDecoration.underline,
+                                  decorationThickness: 0.2,
+                                  color: AppColors.oldGray,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
                     ],
                   ),
                 ),
