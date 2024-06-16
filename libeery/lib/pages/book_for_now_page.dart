@@ -6,13 +6,10 @@ import 'package:libeery/pages/booking_page_three.dart';
 import 'package:libeery/models/mssession_model.dart';
 import 'package:libeery/services/mssession_service.dart';
 
-void main() {
-  runApp(const BookForNow());
-}
-
-
 class BookForNow extends StatefulWidget {
-  const BookForNow({super.key});
+  final String userId;
+  final String username;
+  const BookForNow({super.key, required this.userId, required this.username});
 
   @override
   State<BookForNow> createState() => _BookForNowState();
@@ -32,7 +29,7 @@ class _BookForNowState extends State<BookForNow> {
   late int selectedHour;
   late int selectedMinute;
 
-  late List<MsSession> sessions; 
+  late List<MsSession> sessions;
 
   @override
   void initState() {
@@ -48,9 +45,7 @@ class _BookForNowState extends State<BookForNow> {
     // Memeriksa apakah kotak progresif harus diisi atau tidak
     bool filled = progressStatus[step - 1];
     // Warna kotak progresif berdasarkan status
-    Color color = filled 
-        ? AppColors.orange
-        : AppColors.lightGray;
+    Color color = filled ? AppColors.orange : AppColors.lightGray;
     return Container(
       width: 80,
       height: 4,
@@ -62,13 +57,11 @@ class _BookForNowState extends State<BookForNow> {
     );
   }
 
-  Future<void> fetchSessions() async{
-    try{
+  Future<void> fetchSessions() async {
+    try {
       sessions = await MsSessionService.getSessionfromAPI();
-      setState(() {
-        
-      });
-    }catch(e){
+      setState(() {});
+    } catch (e) {
       print("Failed to fetch sessions: $e");
     }
   }
@@ -77,31 +70,31 @@ class _BookForNowState extends State<BookForNow> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          automaticallyImplyLeading: false,
-          // ini buat ilangin navigationUp dari navigasi bawaan emulator androidnya biar kita bisa pake icon kita sendiri
-          flexibleSpace: const Image(
-            image: AssetImage('assets/image/whitebackground.png'),
-            fit: BoxFit.cover,
-          ),
-          backgroundColor: Colors.transparent,
-          title: Padding(
-            padding: const EdgeInsets.only(top: Spacing.small),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    buildProgressIndicator(1),
-                    buildProgressIndicator(2),
-                    buildProgressIndicator(3),
-                    buildProgressIndicator(4),
-                  ],
-                ),
-              ],
-            ),
+        automaticallyImplyLeading: false,
+        // ini buat ilangin navigationUp dari navigasi bawaan emulator androidnya biar kita bisa pake icon kita sendiri
+        flexibleSpace: const Image(
+          image: AssetImage('assets/image/whitebackground.png'),
+          fit: BoxFit.cover,
+        ),
+        backgroundColor: Colors.transparent,
+        title: Padding(
+          padding: const EdgeInsets.only(top: Spacing.small),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  buildProgressIndicator(1),
+                  buildProgressIndicator(2),
+                  buildProgressIndicator(3),
+                  buildProgressIndicator(4),
+                ],
+              ),
+            ],
           ),
         ),
+      ),
       body: Container(
         color: Colors.white,
         child: Column(
@@ -121,7 +114,8 @@ class _BookForNowState extends State<BookForNow> {
                 ),
               ),
               const Padding(
-                padding: EdgeInsets.fromLTRB(Spacing.large, 5.0, Spacing.large, 0),
+                padding:
+                    EdgeInsets.fromLTRB(Spacing.large, 5.0, Spacing.large, 0),
                 child: Text(
                   'Pastikan kamu memilih waktu yang tepat untuk mengakhiri kunjungan. Tips: jika tidak memungkinkan untuk keluar LKC tepat waktu, kamu dapat melebihi durasi kunjunganmu.',
                   style: TextStyle(
@@ -150,10 +144,8 @@ class _BookForNowState extends State<BookForNow> {
                           selectionOverlay: Container(
                             decoration: const BoxDecoration(
                                 border: Border(
-                              top: BorderSide(
-                                  color: AppColors.blue),
-                              bottom: BorderSide(
-                                  color: AppColors.blue),
+                              top: BorderSide(color: AppColors.blue),
+                              bottom: BorderSide(color: AppColors.blue),
                             )),
                           ),
                           backgroundColor: Colors.white,
@@ -175,10 +167,10 @@ class _BookForNowState extends State<BookForNow> {
                               selectedMinute,
                             );
 
-                            
                             if (selectedTime.isBefore(DateTime.now())) {
                               setState(() {
-                                errorMessage = "Waktu akhir session sudah lewat";
+                                errorMessage =
+                                    "Waktu akhir session sudah lewat";
                               });
                             }
                           },
@@ -211,13 +203,10 @@ class _BookForNowState extends State<BookForNow> {
                           selectionOverlay: Container(
                             decoration: const BoxDecoration(
                                 border: Border(
-                              top: BorderSide(
-                                  color: AppColors.blue),
-                              bottom: BorderSide(
-                                  color: AppColors.blue),
-                              left: BorderSide(
-                                  color: AppColors.blue,
-                                  width: 0.5),
+                              top: BorderSide(color: AppColors.blue),
+                              bottom: BorderSide(color: AppColors.blue),
+                              left:
+                                  BorderSide(color: AppColors.blue, width: 0.5),
                             )),
                           ),
                           backgroundColor: Colors.white,
@@ -265,7 +254,8 @@ class _BookForNowState extends State<BookForNow> {
                 ),
               ),
               Padding(
-                 padding: const EdgeInsets.fromLTRB(Spacing.large, 5.0, Spacing.large, 0),
+                padding: const EdgeInsets.fromLTRB(
+                    Spacing.large, 5.0, Spacing.large, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -314,24 +304,23 @@ class _BookForNowState extends State<BookForNow> {
                       selectedHour,
                       selectedMinute,
                     );
-                  
-                    if(endSessionTime.isBefore(startSessionTime)){
+
+                    if (endSessionTime.isBefore(startSessionTime)) {
                       setState(() {
                         errorMessage = "Waktu akhir session sudah lewat";
                       });
-                      
-                    }else{
+                    } else {
                       errorMessage = null;
                     }
-                    
+
                     List<int> sessionIDs = [];
 
                     for (var session in sessions) {
                       // Convert session start and end times to total minutes since midnight
-                      int sessionStartMinutes =
-                          session.startSession.hour * 60 + session.startSession.minute;
-                      int sessionEndMinutes =
-                          session.endSession.hour * 60 + session.endSession.minute;
+                      int sessionStartMinutes = session.startSession.hour * 60 +
+                          session.startSession.minute;
+                      int sessionEndMinutes = session.endSession.hour * 60 +
+                          session.endSession.minute;
 
                       // Convert selected start and end times to total minutes since midnight
                       int selectedStartMinutes =
@@ -349,16 +338,24 @@ class _BookForNowState extends State<BookForNow> {
 
                     logger.d('session id yang kepilih: $sessionIDs');
 
-                    if(sessionIDs.isNotEmpty){
+                    if (sessionIDs.isNotEmpty) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => BookingPage3(
-                            previousPage: const BookForNow(),
-                            sessionIds: sessionIDs,
+                            username: widget.username,
+                            previousPage: BookForNow(
+                              username: widget.username,
+                              userId: widget.userId,
+                            ),
+                            sessionIds: const [],
+                            startSession: startSessionTime,
+                            endSession: endSessionTime,
+                            userId: widget.userId,
                           ),
                         ),
                       );
+                      errorMessage = null;
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -388,7 +385,7 @@ class _BookForNowState extends State<BookForNow> {
                               fontFamily: 'Montserrat',
                               fontSize: FontSizes.description,
                               fontWeight: FontWeights.regular,
-                              color:AppColors.red),
+                              color: AppColors.red),
                         )
                       : const SizedBox(),
                 ),
@@ -396,7 +393,7 @@ class _BookForNowState extends State<BookForNow> {
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/bookingone');
+                    Navigator.pop(context);
                   },
                   child: const Text(
                     'Sebelumnya...',

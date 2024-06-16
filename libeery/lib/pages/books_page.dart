@@ -11,7 +11,12 @@ class BooksPage extends StatefulWidget {
   final String? username;
   final int selectedIndex;
 
-  const BooksPage({Key? key, required this.userId, required this.username, required this.selectedIndex}) : super(key: key);
+  const BooksPage(
+      {Key? key,
+      required this.userId,
+      required this.username,
+      required this.selectedIndex})
+      : super(key: key);
   @override
   _BooksPageState createState() => _BooksPageState();
 }
@@ -26,7 +31,7 @@ class _BooksPageState extends State<BooksPage> {
   void initState() {
     super.initState();
     _selectedIndex = widget.selectedIndex;
-    getBooks(); 
+    getBooks();
   }
 
   void getBooks() async {
@@ -51,7 +56,7 @@ class _BooksPageState extends State<BooksPage> {
         context,
         MaterialPageRoute(
           builder: (context) => HomePage(
-            userId: widget.userId,
+            userId: widget.userId!,
             username: widget.username,
             selectedIndex: 0,
           ),
@@ -67,13 +72,15 @@ class _BooksPageState extends State<BooksPage> {
   void filterSearchResults(String query) {
     if (query.isNotEmpty) {
       setState(() {
-        filteredBooks = booksData.where((item) =>
-          item.title.toLowerCase().contains(query.toLowerCase()) ||
-          item.author.toLowerCase().contains(query.toLowerCase()) ||
-          item.isbn.toLowerCase().contains(query.toLowerCase()) ||
-          item.publisher.toLowerCase().contains(query.toLowerCase()) ||
-          item.edition.toLowerCase().contains(query.toLowerCase()) ||
-          item.year.toString().contains(query)).toList();
+        filteredBooks = booksData
+            .where((item) =>
+                item.title.toLowerCase().contains(query.toLowerCase()) ||
+                item.author.toLowerCase().contains(query.toLowerCase()) ||
+                item.isbn.toLowerCase().contains(query.toLowerCase()) ||
+                item.publisher.toLowerCase().contains(query.toLowerCase()) ||
+                item.edition.toLowerCase().contains(query.toLowerCase()) ||
+                item.year.toString().contains(query))
+            .toList();
       });
     } else {
       setState(() {
@@ -104,11 +111,10 @@ class _BooksPageState extends State<BooksPage> {
                     const Text(
                       "Cari Buku",
                       style: TextStyle(
-                        fontFamily: "Montserrat",
-                        color: AppColors.white,
-                        fontSize: FontSizes.title,
-                        fontWeight: FontWeights.bold
-                      ),
+                          fontFamily: "Montserrat",
+                          color: AppColors.white,
+                          fontSize: FontSizes.title,
+                          fontWeight: FontWeights.bold),
                     ),
                     const Text(
                       "Carilah ketersediaan buku yang ingin kamu baca atau pinjam di LKC dengan mengetikkan informasi detil buku tersebut.",
@@ -131,16 +137,21 @@ class _BooksPageState extends State<BooksPage> {
                         prefixIcon: Icon(Icons.search),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          borderSide: BorderSide(color: AppColors.gray, width: 2.0),
+                          borderSide:
+                              BorderSide(color: AppColors.gray, width: 2.0),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          borderSide: BorderSide(color: AppColors.blue, width: 2.0),
+                          borderSide:
+                              BorderSide(color: AppColors.blue, width: 2.0),
                         ),
                         filled: true,
                         fillColor: Colors.white,
-                        contentPadding: EdgeInsets.symmetric(horizontal: Spacing.medium),
-                        hintStyle: TextStyle(color: AppColors.gray, fontWeight: FontWeights.regular),
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: Spacing.medium),
+                        hintStyle: TextStyle(
+                            color: AppColors.gray,
+                            fontWeight: FontWeights.regular),
                       ),
                     ),
                   ],

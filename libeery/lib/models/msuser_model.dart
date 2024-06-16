@@ -3,7 +3,19 @@ import 'dart:convert';
 
 import 'package:libeery/outputs/baseoutput_model.dart';
 
-class MsUser {}
+class MsUser {
+  final String nim;
+  final String mhsName;
+
+  MsUser({required this.nim, required this.mhsName});
+
+  factory MsUser.fromJson(Map<String, dynamic> json) {
+    return MsUser(
+      nim: json['NIM'],
+      mhsName: json['MhsName'],
+    );
+  }
+}
 
 class AllUserBookedSession {
   List<UserBookedSession>? data;

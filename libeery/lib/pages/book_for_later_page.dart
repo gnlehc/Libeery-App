@@ -5,10 +5,6 @@ import 'package:libeery/services/mssession_service.dart';
 import 'package:libeery/styles/style.dart';
 import 'package:logger/logger.dart';
 
-void main() => runApp(const MaterialApp(
-      home: BookForLater(),
-    ));
-
 class GroupedTimeSlot {
   final DateTime startTime;
   final DateTime endTime;
@@ -55,7 +51,9 @@ List<GroupedTimeSlot> groupSelectedSlots(List<String> selectedSlots) {
 }
 
 class BookForLater extends StatefulWidget {
-  const BookForLater({super.key});
+  final String userId;
+  final String username;
+  const BookForLater({super.key, required this.userId, required this.username});
 
   @override
   State<BookForLater> createState() => _BookForLaterState();
@@ -67,22 +65,19 @@ class _BookForLaterState extends State<BookForLater> {
   late Future<List<MsSession>> futureSessions;
 
   late List<String> selectedSlots;
-  List<int> selectedSessionIDs =[];
+  List<int> selectedSessionIDs = [];
   String? errorMessage;
 
   final Logger logger = Logger(
-    printer: PrettyPrinter(), 
-    level: Level.debug, 
+    printer: PrettyPrinter(),
+    level: Level.debug,
   );
-
 
   Widget buildProgressIndicator(int step) {
     // Memeriksa apakah kotak progresif harus diisi atau tidak
     bool filled = progressStatus[step - 1];
     // Warna kotak progresif berdasarkan status
-    Color color = filled 
-        ? AppColors.orange 
-        : AppColors.lightGray;
+    Color color = filled ? AppColors.orange : AppColors.lightGray;
     return Container(
       width: 80,
       height: 4,
@@ -106,31 +101,30 @@ class _BookForLaterState extends State<BookForLater> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-          automaticallyImplyLeading: false,
-          // ini buat ilangin navigationUp dari navigasi bawaan emulator androidnya biar kita bisa pake icon kita sendiri
-          flexibleSpace: const Image(
-            image: AssetImage('assets/image/whitebackground.png'),
-            fit: BoxFit.cover,
-          ),
-          backgroundColor: Colors.transparent,
-          title: Padding(
-            padding: const EdgeInsets.only(top: Spacing.small),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    buildProgressIndicator(1),
-                    buildProgressIndicator(2),
-                    buildProgressIndicator(3),
-                    buildProgressIndicator(4),
-                  ],
-                ),
-              ],
-            ),
+        automaticallyImplyLeading: false,
+        flexibleSpace: const Image(
+          image: AssetImage('assets/image/whitebackground.png'),
+          fit: BoxFit.cover,
+        ),
+        backgroundColor: Colors.transparent,
+        title: Padding(
+          padding: const EdgeInsets.only(top: Spacing.small),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  buildProgressIndicator(1),
+                  buildProgressIndicator(2),
+                  buildProgressIndicator(3),
+                  buildProgressIndicator(4),
+                ],
+              ),
+            ],
           ),
         ),
+      ),
       body: SingleChildScrollView(
         child: Container(
           color: Colors.white,
@@ -139,7 +133,8 @@ class _BookForLaterState extends State<BookForLater> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const Padding(
-                padding: EdgeInsets.fromLTRB(Spacing.large, Spacing.small, Spacing.large, 0),
+                padding: EdgeInsets.fromLTRB(
+                    Spacing.large, Spacing.small, Spacing.large, 0),
                 child: Text(
                   'Pilih Waktu Kunjunganmu!',
                   style: TextStyle(
@@ -151,7 +146,8 @@ class _BookForLaterState extends State<BookForLater> {
                 ),
               ),
               const Padding(
-                padding: EdgeInsets.fromLTRB(Spacing.large, 5.0, Spacing.large, 0),
+                padding:
+                    EdgeInsets.fromLTRB(Spacing.large, 5.0, Spacing.large, 0),
                 child: Text(
                   'Pastikan kamu memilih waktu yang benar untuk kunjungan. Tips: jika tidak memungkinkan untuk keluar LKC pada waktu yang ada, kamu dapat memilih 2 sesi berturut saja.',
                   style: TextStyle(
@@ -164,7 +160,8 @@ class _BookForLaterState extends State<BookForLater> {
                 ),
               ),
               Padding(
-                  padding: const EdgeInsets.fromLTRB(Spacing.large, Spacing.medium, Spacing.large, 0),
+                  padding: const EdgeInsets.fromLTRB(
+                      Spacing.large, Spacing.medium, Spacing.large, 0),
                   child: FutureBuilder<List<MsSession>>(
                       future: futureSessions,
                       builder:
@@ -186,9 +183,12 @@ class _BookForLaterState extends State<BookForLater> {
                                   final session = sessions![index];
                                   final startTime = session.startSession.hour;
                                   final endTime = session.endSession.hour;
-                                  final startTimeFormatted = startTime.toString().padLeft(2, '0');
-                                  final endTimeFormatted =endTime.toString().padLeft(2, '0');
-                                  final rangetime ='$startTimeFormatted.00 - $endTimeFormatted.00';
+                                  final startTimeFormatted =
+                                      startTime.toString().padLeft(2, '0');
+                                  final endTimeFormatted =
+                                      endTime.toString().padLeft(2, '0');
+                                  final rangetime =
+                                      '$startTimeFormatted.00 - $endTimeFormatted.00';
 
                                   return SizedBox(
                                     width: 290,
@@ -197,20 +197,28 @@ class _BookForLaterState extends State<BookForLater> {
                                       color: Colors.transparent,
                                       borderRadius: BorderRadius.circular(15),
                                       shadowColor:
-                                          const Color.fromRGBO(237, 237, 237, 1).withOpacity(0.1),
+                                          const Color.fromRGBO(237, 237, 237, 1)
+                                              .withOpacity(0.1),
                                       elevation: 5,
                                       child: Container(
                                         margin: const EdgeInsets.all(1.0),
                                         decoration: BoxDecoration(
                                           color: Colors.white,
                                           border: Border.all(
-                                            color: selectedSlots.contains(rangetime)? AppColors.blue : const Color.fromRGBO(194, 194, 194, 1).withOpacity(0.3),
+                                            color: selectedSlots
+                                                    .contains(rangetime)
+                                                ? AppColors.blue
+                                                : const Color.fromRGBO(
+                                                        194, 194, 194, 1)
+                                                    .withOpacity(0.3),
                                           ),
-                                          borderRadius:BorderRadius.circular(15),
+                                          borderRadius:
+                                              BorderRadius.circular(15),
                                         ),
                                         child: CheckboxListTile(
                                           contentPadding: EdgeInsets.zero,
-                                          visualDensity: const VisualDensity( horizontal: -4.0, vertical: -4.0),
+                                          visualDensity: const VisualDensity(
+                                              horizontal: -4.0, vertical: -4.0),
                                           title: Padding(
                                             padding: const EdgeInsets.only(
                                                 left: Spacing.small),
@@ -219,8 +227,10 @@ class _BookForLaterState extends State<BookForLater> {
                                                 rangetime,
                                                 style: const TextStyle(
                                                   fontFamily: 'Montserrat',
-                                                  fontSize: FontSizes.description,
-                                                  fontWeight: FontWeights.medium,
+                                                  fontSize:
+                                                      FontSizes.description,
+                                                  fontWeight:
+                                                      FontWeights.medium,
                                                   color: AppColors.black,
                                                 ),
                                               ),
@@ -231,23 +241,35 @@ class _BookForLaterState extends State<BookForLater> {
                                                 BorderRadius.circular(15),
                                           ),
                                           checkColor: AppColors.blue,
-                                          fillColor: MaterialStateProperty.all( Colors.transparent),
-                                          side: MaterialStateBorderSide.resolveWith((states) {
+                                          fillColor: MaterialStateProperty.all(
+                                              Colors.transparent),
+                                          side: MaterialStateBorderSide
+                                              .resolveWith((states) {
                                             if (states.contains(
                                                 MaterialState.selected)) {
-                                              return const BorderSide(color: AppColors.blue);
+                                              return const BorderSide(
+                                                  color: AppColors.blue);
                                             } else {
-                                              return const BorderSide(color: AppColors.lightGray);
+                                              return const BorderSide(
+                                                  color: AppColors.lightGray);
                                             }
                                           }),
-                                          controlAffinity:ListTileControlAffinity.trailing,
-                                          value: selectedSlots.contains(rangetime),
+                                          controlAffinity:
+                                              ListTileControlAffinity.trailing,
+                                          value:
+                                              selectedSlots.contains(rangetime),
                                           onChanged: (value) {
                                             setState(() {
                                               final now = DateTime.now();
-                                              final parts = rangetime.split('-');
-                                              final startTime = int.parse(parts[0].trim().split('.')[0]);
-                                              final endTime = int.parse(parts[1].trim().split('.')[0]);
+                                              final parts =
+                                                  rangetime.split('-');
+                                              final startTime = int.parse(
+                                                  parts[0]
+                                                      .trim()
+                                                      .split('.')[0]);
+                                              final endTime = int.parse(parts[1]
+                                                  .trim()
+                                                  .split('.')[0]);
                                               final endSessionTime = DateTime(
                                                 now.year,
                                                 now.month,
@@ -255,43 +277,70 @@ class _BookForLaterState extends State<BookForLater> {
                                                 endTime,
                                               );
 
-                                              if (endSessionTime.isBefore(now)) {
+                                              if (endSessionTime
+                                                  .isBefore(now)) {
                                                 setState(() {
-                                                  errorMessage = 'Session telah lewat';
+                                                  errorMessage =
+                                                      'Session telah lewat';
                                                 });
                                                 return;
-                                              }else{
+                                              } else {
                                                 errorMessage = null;
                                               }
                                               if (value != null && value) {
-                                                final newSlot ='$startTimeFormatted.00 - $endTimeFormatted.00';
-                                                
-                                                selectedSlots.removeWhere((slot) {
+                                                final newSlot =
+                                                    '$startTimeFormatted.00 - $endTimeFormatted.00';
+
+                                                selectedSlots
+                                                    .removeWhere((slot) {
                                                   final parts = slot.split('-');
                                                   final slotStartTime =
-                                                      int.parse(parts[0].trim().split('.')[0]);
-                                                  final slotEndTime = int.parse(parts[1].trim().split('.')[0]);
-                                                  return slotStartTime == startTime && slotEndTime <= endTime;
+                                                      int.parse(parts[0]
+                                                          .trim()
+                                                          .split('.')[0]);
+                                                  final slotEndTime = int.parse(
+                                                      parts[1]
+                                                          .trim()
+                                                          .split('.')[0]);
+                                                  return slotStartTime ==
+                                                          startTime &&
+                                                      slotEndTime <= endTime;
                                                 });
 
                                                 selectedSlots.add(newSlot);
                                                 if (sessions != null) {
-                                                  MsSession selectedSession =sessions!.firstWhere(
-                                                    (session) =>session.startSession.hour ==startTime &&session.endSession.hour == endTime,
+                                                  MsSession selectedSession =
+                                                      sessions!.firstWhere(
+                                                    (session) =>
+                                                        session.startSession
+                                                                .hour ==
+                                                            startTime &&
+                                                        session.endSession
+                                                                .hour ==
+                                                            endTime,
                                                     orElse: () => MsSession(
-                                                      sessionID: -1, // Provide default values for sessionID, startSession, and endSession
-                                                      startSession:DateTime.now(),
-                                                      endSession: DateTime.now(),
-                                                    ), 
+                                                      sessionID:
+                                                          -1, // Provide default values for sessionID, startSession, and endSession
+                                                      startSession:
+                                                          DateTime.now(),
+                                                      endSession:
+                                                          DateTime.now(),
+                                                    ),
                                                   );
-                                                  selectedSessionIDs.add(selectedSession.sessionID);
+                                                  selectedSessionIDs.add(
+                                                      selectedSession
+                                                          .sessionID);
                                                 }
                                               } else {
-                                                selectedSlots.remove('$startTimeFormatted.00 - $endTimeFormatted.00');
+                                                selectedSlots.remove(
+                                                    '$startTimeFormatted.00 - $endTimeFormatted.00');
                                                 selectedSessionIDs
-                                              .remove(session.sessionID);
+                                                    .remove(session.sessionID);
                                               }
-                                              selectedSlots.sort((a, b) =>int.parse(a.split('.')[0]).compareTo(int.parse( b.split('.')[0])));
+                                              selectedSlots.sort((a, b) =>
+                                                  int.parse(a.split('.')[0])
+                                                      .compareTo(int.parse(
+                                                          b.split('.')[0])));
                                             });
                                           },
                                         ),
@@ -311,14 +360,14 @@ class _BookForLaterState extends State<BookForLater> {
                       fontSize: FontSizes.description,
                       color: AppColors.black,
                       fontWeight: FontWeights.regular,
-                      fontFamily: 'Montserrat'
-                  ),
+                      fontFamily: 'Montserrat'),
                 ),
               ),
               Visibility(
                   visible: selectedSlots.isNotEmpty,
                   child: Container(
-                    padding: const EdgeInsets.fromLTRB(Spacing.large, 5.0, Spacing.large, 0),
+                    padding: const EdgeInsets.fromLTRB(
+                        Spacing.large, 5.0, Spacing.large, 0),
                     color: Colors.white,
                     child: Column(
                       children: [
@@ -365,30 +414,38 @@ class _BookForLaterState extends State<BookForLater> {
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
-                     if (selectedSlots.isNotEmpty) {
+                    if (selectedSlots.isNotEmpty) {
                       errorMessage = null;
-                        if (selectedSessionIDs.isNotEmpty) {
-                          logger.d('Selected sessionID: $selectedSessionIDs'); 
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => BookingPage3(
-                              previousPage: const BookForLater(),
-                              sessionIds: selectedSessionIDs,
+                      if (selectedSessionIDs.isNotEmpty) {
+                        logger.d('Selected sessionID: $selectedSessionIDs');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BookingPage3(
+                              username: widget.username,
+                              previousPage: BookForLater(
+                                username: widget.username,
+                                userId: widget.userId,
                               ),
+                              sessionIds: selectedSessionIDs,
+                              startSession: null,
+                              endSession: null,
+                              userId: widget.userId,
                             ),
-                          );
-                        } else {
-                          logger.d('No sessionIDs selected');
-                          setState(() {
-                            errorMessage = 'No sessionID selected';
-                          });
-                        }
+                          ),
+                        );
                       } else {
-                        logger.d('No session slot selected');
+                        logger.d('No sessionIDs selected');
                         setState(() {
-                          errorMessage = 'Belum ada session yang dipilih';
+                          errorMessage = 'No sessionID selected';
                         });
-  }
+                      }
+                    } else {
+                      logger.d('No session slot selected');
+                      setState(() {
+                        errorMessage = 'Belum ada session yang dipilih';
+                      });
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.orange,
@@ -408,21 +465,20 @@ class _BookForLaterState extends State<BookForLater> {
               ),
               const SizedBox(height: 2.0),
               Padding(
-              padding: const EdgeInsets.only(bottom: Spacing.small),
-              child: Center(
-                child: errorMessage != null 
-                  ? Text(
-                      errorMessage!,
-                      style: const TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: FontSizes.description,
-                        fontWeight: FontWeights.regular,
-                        color: AppColors.red
-                      ),
-                  )
-                  : const SizedBox(),
+                padding: const EdgeInsets.only(bottom: Spacing.small),
+                child: Center(
+                  child: errorMessage != null
+                      ? Text(
+                          errorMessage!,
+                          style: const TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: FontSizes.description,
+                              fontWeight: FontWeights.regular,
+                              color: AppColors.red),
+                        )
+                      : const SizedBox(),
+                ),
               ),
-            ),
               Padding(
                 padding: const EdgeInsets.only(bottom: Spacing.small),
                 child: Center(

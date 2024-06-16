@@ -1,17 +1,17 @@
-
 import 'package:flutter/material.dart';
 import 'package:libeery/pages/book_for_now_page.dart';
 import 'package:libeery/pages/book_for_later_page.dart';
 import 'package:libeery/styles/style.dart';
 
-
-void main() {
-  runApp(const BookingPageOne());
-}
-
+// void main() {
+//   runApp(const BookingPageOne());
+// }
 
 class BookingPageOne extends StatefulWidget {
-  const BookingPageOne({super.key});
+  final String userId;
+  final String username;
+  const BookingPageOne(
+      {super.key, required this.userId, required this.username});
 
   @override
   State<BookingPageOne> createState() => _BookingPageOneState();
@@ -43,9 +43,8 @@ class _BookingPageOneState extends State<BookingPageOne> {
   double heightCard = 150;
   double widthCard = 350;
 
-  void changeCard1(){
+  void changeCard1() {
     setState(() {
-
       card1Clicked = true;
       card2Clicked = false;
 
@@ -61,7 +60,7 @@ class _BookingPageOneState extends State<BookingPageOne> {
     });
   }
 
-  void changeCard2(){
+  void changeCard2() {
     setState(() {
       card1Clicked = false;
       card2Clicked = true;
@@ -78,18 +77,25 @@ class _BookingPageOneState extends State<BookingPageOne> {
     });
   }
 
-
 // Untuk navigate di ElevatedButton 'Selanjutnya'
   void navigateToNextPage(BuildContext context) {
     if (card1Clicked) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const BookForNow()), //  NextPage2() ganti jadi class di bookingPageTab2 yg fornow
+        MaterialPageRoute(
+            builder: (context) => BookForNow(
+                  username: widget.username,
+                  userId: widget.userId,
+                )), //  NextPage2() ganti jadi class di bookingPageTab2 yg fornow
       );
     } else if (card2Clicked) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const BookForLater()), //  NextPage3() ganti jadi class di bookingPageTab2 yg forlater
+        MaterialPageRoute(
+            builder: (context) => BookForLater(
+                  username: widget.username,
+                  userId: widget.userId,
+                )), //  NextPage3() ganti jadi class di bookingPageTab2 yg forlater
       );
     }
   }
@@ -98,9 +104,7 @@ class _BookingPageOneState extends State<BookingPageOne> {
     // Memeriksa apakah kotak progresif harus diisi atau tidak
     bool filled = progressStatus[step - 1];
     // Warna kotak progresif berdasarkan status
-    Color color = filled
-        ? AppColors.orange
-        : AppColors.lightGray;
+    Color color = filled ? AppColors.orange : AppColors.lightGray;
     return Container(
       width: 80,
       height: 4,
@@ -114,14 +118,14 @@ class _BookingPageOneState extends State<BookingPageOne> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false, // ini buat ilangin navigationUp dari navigasi bawaan emulator androidnya biar kita bisa pake icon kita sendiri
+        automaticallyImplyLeading:
+            false, // ini buat ilangin navigationUp dari navigasi bawaan emulator androidnya biar kita bisa pake icon kita sendiri
         flexibleSpace: const Image(
           image: AssetImage('assets/image/whitebackground.png'),
           fit: BoxFit.cover,
-        ), 
+        ),
         backgroundColor: Colors.transparent,
         title: Padding(
           padding: const EdgeInsets.only(top: Spacing.large),
@@ -143,19 +147,18 @@ class _BookingPageOneState extends State<BookingPageOne> {
                   Padding(
                     padding: const EdgeInsets.only(left: Spacing.small),
                     child: IconButton(
-                      onPressed: (){
-                        Navigator.pop(context); 
-                      }, 
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                       icon: const Icon(Icons.arrow_back_ios),
-                      ),
                     ),
+                  ),
                 ],
               ),
             ],
           ),
         ),
       ),
-
       body: Center(
         child: Container(
           color: Colors.white,
@@ -164,7 +167,8 @@ class _BookingPageOneState extends State<BookingPageOne> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const Padding(
-                padding: EdgeInsets.fromLTRB(Spacing.large, 0, Spacing.large, 0),
+                padding:
+                    EdgeInsets.fromLTRB(Spacing.large, 0, Spacing.large, 0),
                 child: Text(
                   'Pilih Jadwal Kunjunganmu!',
                   style: TextStyle(
@@ -177,7 +181,8 @@ class _BookingPageOneState extends State<BookingPageOne> {
               ),
               const SizedBox(height: 5.0),
               const Padding(
-                padding: EdgeInsets.fromLTRB(Spacing.large, 0, Spacing.large, 0),
+                padding:
+                    EdgeInsets.fromLTRB(Spacing.large, 0, Spacing.large, 0),
                 child: Text(
                   'Kamu dapat memilih apakah kamu akan mengunjungi LKC untuk saat ini atau untuk beberapa jam kedepan. Pastikan jadwal yang kamu pilih sehingga tidak mengganggu jam kuliahmu.',
                   style: TextStyle(
@@ -199,23 +204,23 @@ class _BookingPageOneState extends State<BookingPageOne> {
                     elevation: 3,
                     margin: const EdgeInsets.all(10),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      side: const BorderSide(
-                        color: AppColors.lightGray, 
-                        width: 1)
-                    ),
-                    color:  cardColor1,
+                        borderRadius: BorderRadius.circular(15),
+                        side: const BorderSide(
+                            color: AppColors.lightGray, width: 1)),
+                    color: cardColor1,
                     child: SizedBox(
                       width: widthCard1,
                       height: heightCard1,
                       child: Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(Spacing.small, Spacing.small, 2.0, Spacing.small),
+                            padding: const EdgeInsets.fromLTRB(Spacing.small,
+                                Spacing.small, 2.0, Spacing.small),
                             child: SizedBox(
                               height: 107,
                               width: 100,
-                              child: Image.asset('assets/image/libeery1-bookfornow.png'),
+                              child: Image.asset(
+                                  'assets/image/libeery1-bookfornow.png'),
                             ),
                           ),
                           Expanded(
@@ -224,7 +229,8 @@ class _BookingPageOneState extends State<BookingPageOne> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.fromLTRB(0, 0, Spacing.medium, 5.0),
+                                  padding: const EdgeInsets.fromLTRB(
+                                      0, 0, Spacing.medium, 5.0),
                                   child: Text(
                                     'Butuh Sekarang Nih...',
                                     style: TextStyle(
@@ -237,7 +243,8 @@ class _BookingPageOneState extends State<BookingPageOne> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(right: Spacing.medium),
+                                  padding: const EdgeInsets.only(
+                                      right: Spacing.medium),
                                   child: Text(
                                     'Aku ingin mengunjungi perpustakaan sekarang karena ada kepentingan mendadak.',
                                     style: TextStyle(
@@ -245,8 +252,7 @@ class _BookingPageOneState extends State<BookingPageOne> {
                                         fontFamily: 'Montserrat',
                                         fontWeight: FontWeights.regular,
                                         color: textCard1,
-                                        overflow: TextOverflow.clip
-                                    ),
+                                        overflow: TextOverflow.clip),
                                     textAlign: TextAlign.right,
                                   ),
                                 ),
@@ -259,7 +265,6 @@ class _BookingPageOneState extends State<BookingPageOne> {
                   ),
                 ),
               ),
-          
               Center(
                 child: GestureDetector(
                   onTap: () {
@@ -269,12 +274,10 @@ class _BookingPageOneState extends State<BookingPageOne> {
                     elevation: 3,
                     margin: const EdgeInsets.all(10),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      side: const BorderSide(
-                        color: AppColors.lightGray, 
-                        width: 1)
-                    ),
-                    color:  cardColor2,
+                        borderRadius: BorderRadius.circular(15),
+                        side: const BorderSide(
+                            color: AppColors.lightGray, width: 1)),
+                    color: cardColor2,
                     child: SizedBox(
                       width: widthCard2,
                       height: heightCard2,
@@ -286,7 +289,8 @@ class _BookingPageOneState extends State<BookingPageOne> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.fromLTRB(Spacing.medium, 0, 0, 5.0),
+                                  padding: const EdgeInsets.fromLTRB(
+                                      Spacing.medium, 0, 0, 5.0),
                                   child: Text(
                                     'Untuk Nanti Deh...',
                                     style: TextStyle(
@@ -299,7 +303,8 @@ class _BookingPageOneState extends State<BookingPageOne> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(left: Spacing.medium),
+                                  padding: const EdgeInsets.only(
+                                      left: Spacing.medium),
                                   child: Text(
                                     'Aku ingin mereservasi slot loker dulu untuk kunjunganku nanti, aku pasti akan datang kok.',
                                     style: TextStyle(
@@ -307,8 +312,7 @@ class _BookingPageOneState extends State<BookingPageOne> {
                                         fontFamily: 'Montserrat',
                                         color: textCard2,
                                         fontWeight: FontWeights.regular,
-                                        overflow: TextOverflow.clip
-                                    ),
+                                        overflow: TextOverflow.clip),
                                     textAlign: TextAlign.left,
                                   ),
                                 ),
@@ -316,11 +320,13 @@ class _BookingPageOneState extends State<BookingPageOne> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(2.0, Spacing.small, Spacing.small, Spacing.small),
+                            padding: const EdgeInsets.fromLTRB(2.0,
+                                Spacing.small, Spacing.small, Spacing.small),
                             child: SizedBox(
                               height: 107,
                               width: 100,
-                              child: Image.asset('assets/image/libeery2-bookforlater.png'),
+                              child: Image.asset(
+                                  'assets/image/libeery2-bookforlater.png'),
                             ),
                           ),
                         ],
@@ -341,13 +347,13 @@ class _BookingPageOneState extends State<BookingPageOne> {
                     elevation: 5,
                   ),
                   child: const Text(
-                      'Selanjutnya',
-                      style: TextStyle(
-                        fontSize: FontSizes.medium,
-                        fontWeight: FontWeights.medium,
-                        color: AppColors.white,
-                        fontFamily: 'Montserrat',
-                      ),
+                    'Selanjutnya',
+                    style: TextStyle(
+                      fontSize: FontSizes.medium,
+                      fontWeight: FontWeights.medium,
+                      color: AppColors.white,
+                      fontFamily: 'Montserrat',
+                    ),
                   ),
                 ),
               ),
@@ -358,4 +364,3 @@ class _BookingPageOneState extends State<BookingPageOne> {
     );
   }
 }
-

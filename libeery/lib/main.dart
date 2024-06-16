@@ -44,7 +44,17 @@ class MyApp extends StatelessWidget {
             const LoginFormPage(formWidget: LoginStaffForm()),
         '/loginmahasiswa': (context) =>
             const LoginFormPage(formWidget: LoginMhsForm()),
-        '/bookingone': (context) => const BookingPageOne(),
+        '/bookingone': (context) {
+          final UserArguments args =
+              ModalRoute.of(context)!.settings.arguments as UserArguments;
+          final String userId = args.userId;
+          final String username = args.username;
+          return BookingPageOne(
+            userId: userId,
+            username: username,
+          );
+        },
+        // => BookingPageOne(userArgs: widget.args,),
         '/acara': (context) => const AcaraPage()
       },
     );

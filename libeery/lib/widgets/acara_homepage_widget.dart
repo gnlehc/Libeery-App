@@ -27,6 +27,7 @@ class AcaraListHomePageWidget extends StatelessWidget {
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
             ),
+            physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               return AcaraCard(acara: snapshot.data!.data![index]);
             },

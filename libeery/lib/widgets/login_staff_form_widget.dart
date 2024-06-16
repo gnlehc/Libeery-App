@@ -34,9 +34,9 @@ class LoginStaffFormState extends State<LoginStaffForm> {
         const Text(
           "Halo, Binusian!",
           style: TextStyle(
-              fontSize: FontSizes.subtitle,
-              fontWeight: FontWeights.bold,
-              color: AppColors.black,
+            fontSize: FontSizes.subtitle,
+            fontWeight: FontWeights.bold,
+            color: AppColors.black,
           ),
         ),
         const SizedBox(height: Spacing.small),
@@ -57,8 +57,8 @@ class LoginStaffFormState extends State<LoginStaffForm> {
                 visible: errorMessage != null,
                 child: Container(
                   width: double.infinity,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: Spacing.small, vertical: Spacing.small),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: Spacing.small, vertical: Spacing.small),
                   margin: const EdgeInsets.symmetric(vertical: Spacing.small),
                   decoration: BoxDecoration(
                     color: Colors.red[100],
@@ -113,7 +113,8 @@ class LoginStaffFormState extends State<LoginStaffForm> {
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: const BorderSide(
-                      color: AppColors.blue, // Set the border color when focused
+                      color:
+                          AppColors.blue, // Set the border color when focused
                     ),
                   ),
                 ),
@@ -194,14 +195,15 @@ class LoginStaffFormState extends State<LoginStaffForm> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    padding: const EdgeInsets.only(left: Spacing.medium, right: Spacing.medium),
+                    padding: const EdgeInsets.only(
+                        left: Spacing.medium, right: Spacing.medium),
                   ),
                   child: const Text(
                     'Masuk',
                     style: TextStyle(
                       color: AppColors.white,
-                        fontSize: FontSizes.medium,
-                        fontWeight: FontWeights.medium,
+                      fontSize: FontSizes.medium,
+                      fontWeight: FontWeights.medium,
                     ),
                   ),
                 ),
@@ -224,7 +226,8 @@ class LoginStaffFormState extends State<LoginStaffForm> {
   Future<void> loginStaff(BuildContext context) async {
     try {
       MsStaffService staffService = MsStaffService();
-      LoginStaffResponseDTO response = await staffService.loginStaff(nomorIndukController.text,
+      LoginStaffResponseDTO response = await staffService.loginStaff(
+        nomorIndukController.text,
         passwordController.text,
       );
       if (response.statusCode == 200) {

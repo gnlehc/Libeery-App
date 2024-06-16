@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:libeery/models/msuser_model.dart';
 import 'package:libeery/models/mssession_model.dart';
 import 'package:libeery/pages/books_page.dart';
+import 'package:libeery/pages/check_in_page.dart';
+import 'package:libeery/pages/check_out_page.dart';
+import 'package:libeery/pages/profile_page.dart';
 import 'package:libeery/services/msuser_service.dart';
 import 'package:libeery/services/mssession_service.dart';
 import 'package:libeery/styles/style.dart';
@@ -15,15 +18,17 @@ import 'package:libeery/widgets/user_greetings_widget.dart';
 import 'package:libeery/widgets/navbar_widget.dart';
 
 class HomePage extends StatefulWidget {
-  final String? userId;
+  final String userId;
   final String? username;
   final int selectedIndex;
+  final String? nim;
 
   const HomePage({
     Key? key,
     required this.userId,
     required this.username,
     required this.selectedIndex,
+    this.nim,
   }) : super(key: key);
 
   @override
@@ -32,15 +37,51 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late AllUserBookedSession booked = AllUserBookedSession();
+  // late AllUserBookedSession booked;
   List<MsSession> sessions = [];
   bool isLoading = true;
   int _selectedIndex = 0;
+  bool isSessionStarted = false;
 
   @override
   void initState() {
     super.initState();
     _selectedIndex = widget.selectedIndex;
     _loadData();
+  }
+
+  void _checkIn(BuildContext context) async {
+    // Tampilkan dialog check-in
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const CheckInScreen();
+      },
+    ).then((value) {
+      // Jika check-in berhasil, perbarui state
+      if (value != null && value) {
+        setState(() {
+          isSessionStarted = true;
+        });
+      }
+    });
+  }
+
+  void _checkOut(BuildContext context) async {
+    // Tampilkan dialog checkout
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const CheckOutScreen();
+      },
+    ).then((value) {
+      // Jika checkout berhasil, perbarui state
+      if (value != null && value) {
+        setState(() {
+          isSessionStarted = false;
+        });
+      }
+    });
   }
 
   Future<void> _loadData() async {
@@ -53,29 +94,47 @@ class _HomePageState extends State<HomePage> {
         isLoading = false;
       });
     } catch (e) {
-      e.toString();
+      print('Error loading data: $e');
+      // Handle error loading data
     }
   }
 
-  bool isValidSession(int sessionID) {
-    return sessions.any((session) => session.sessionID == sessionID);
-  }
+  // bool isValidSession(int sessionID) {
+  //   return sessions.any((session) => session.sessionID == sessionID);
+  // }
 
   String getSessionTime(int sessionID) {
-    final session = sessions.firstWhere(
-      (session) => session.sessionID == sessionID,
-      orElse: () => MsSession(
-        sessionID: -1,
-        startSession: DateTime.now(),
-        endSession: DateTime.now(),
-      ),
+    MsSession session = MsSession(
+      sessionID: -1,
+      startSession: DateTime.now(),
+      endSession: DateTime.now(),
     );
 
-    if (session.sessionID != -1) {
-      return parseTime(session.startSession, session.endSession);
-    } else {
-      return 'Session not found';
+    for (var sess in sessions) {
+      if (sess.sessionID == sessionID) {
+        session = sess;
+        break;
+      }
     }
+
+    return parseTime(session.startSession, session.endSession);
+  }
+
+  DateTime getSessionStartDateTime(int sessionID) {
+    MsSession session = MsSession(
+      sessionID: -1,
+      startSession: DateTime.now(),
+      endSession: DateTime.now(),
+    );
+
+    for (var sess in sessions) {
+      if (sess.sessionID == sessionID) {
+        session = sess;
+        break;
+      }
+    }
+
+    return session.startSession;
   }
 
   String parseTime(DateTime startTime, DateTime endTime) {
@@ -105,6 +164,15 @@ class _HomePageState extends State<HomePage> {
         ),
       );
     } else if (_selectedIndex == 2) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProfilePage(
+            selectedIndex: 2,
+            userId: widget.userId,
+          ),
+        ),
+      );
       // Navigate to Profile Page
     }
   }
@@ -147,54 +215,59 @@ class _HomePageState extends State<HomePage> {
                     GreetUser(username: widget.username),
                     const SizedBox(height: 20),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(Spacing.medium, 0, Spacing.medium, 0),
+                      padding: const EdgeInsets.fromLTRB(
+                          Spacing.medium, 0, Spacing.medium, 0),
                       child: ConstrainedBox(
-                        constraints: booked.data == null || booked.data!.isEmpty
-                            ? const BoxConstraints()
-                           : BoxConstraints(maxHeight: 250.0 * booked.data!.length),
-                        child: isLoading
-                            ? const Center(
-                                child: SizedBox(
-                                  width: 30.0,
-                                  height: 30.0,
-                                  child: CircularProgressIndicator(),
-                                ),
-                              )
-                              : booked.data == null || booked.data!.isEmpty 
-                              ?  const NoSessionBooked()
-                                : SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        for (var i in booked.data!)
-                                          Column(
-                                            children: [
-                                              OngoingSession(
-                                                loker: i.lokerID!,
-                                                periode: getSessionTime(
-                                                    i.sessionID!),
-                                                startSession: sessions
-                                                    .firstWhere((session) =>
-                                                        session.sessionID ==
-                                                        i.sessionID)
-                                                    .startSession,
-                                              ),
-                                              const SizedBox(height: Spacing.small),
-                                            ],
-                                          ),
-                                      ],
-                                    ),
-                                  )
-                                
-                      ),
+                          constraints:
+                              booked.data == null || booked.data!.isEmpty
+                                  ? const BoxConstraints()
+                                  : BoxConstraints(
+                                      maxHeight: 250.0 * booked.data!.length),
+                          child: isLoading
+                              ? const Center(
+                                  child: SizedBox(
+                                    width: 30.0,
+                                    height: 30.0,
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                )
+                              : booked.data == null || booked.data!.isEmpty
+                                  ? const NoSessionBooked()
+                                  : SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          for (var i in booked.data!)
+                                            Column(
+                                              children: [
+                                                OngoingSession(
+                                                  loker: i.lokerID!,
+                                                  periode: getSessionTime(i
+                                                          .sessionID ??
+                                                      -1), // Handle null sessionID
+                                                  startSession:
+                                                      getSessionStartDateTime(
+                                                          i.sessionID ?? -1),
+                                                ),
+                                                const SizedBox(
+                                                    height: Spacing.small),
+                                              ],
+                                            ),
+                                        ],
+                                      ),
+                                    )),
                     ),
                     const SizedBox(height: Spacing.medium),
-                    const AddNewBookCard(),
+                    AddNewBookCard(
+                      username: widget.username!,
+                      userId: widget.userId,
+                    ),
                   ],
                 ),
               ],
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(Spacing.large, Spacing.large, Spacing.large, 0),
+              padding: const EdgeInsets.fromLTRB(
+                  Spacing.large, Spacing.large, Spacing.large, 0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -204,7 +277,9 @@ class _HomePageState extends State<HomePage> {
                         child: Text(
                           "Acara",
                           style: TextStyle(
-                              fontWeight: FontWeights.bold, fontSize: FontSizes.title, color: AppColors.black),
+                              fontWeight: FontWeights.bold,
+                              fontSize: FontSizes.title,
+                              color: AppColors.black),
                         ),
                       ),
                       GestureDetector(

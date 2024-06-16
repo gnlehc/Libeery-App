@@ -55,4 +55,32 @@ class MsSessionService {
       return 'Unexpected error occured: $error';
     }
   }
+
+  static Future<String?> postDatatoAPIForNow(
+      SessionForNowRequestDTO postSession) async {
+    const url =
+        'https://libeery-api-development.up.railway.app/api/private/bookSession-forNow';
+    try {
+      final dio = Dio();
+      dio.options.validateStatus = (status) {
+        return true;
+      };
+
+      Response response = await dio.post(
+        url,
+        data: json.encode(postSession.toJson()),
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        return null;
+      } else {
+        return response.data['Message'] ?? 'Unknown error occured';
+      }
+    } catch (error) {
+      return 'Unexpected error occured: $error';
+    }
+  }
 }

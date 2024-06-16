@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:libeery/styles/style.dart';
+import 'package:libeery/pages/booking_page_one.dart';
 
 class AddNewBookCard extends StatefulWidget {
-  const AddNewBookCard({super.key});
+  final String userId;
+  final String username;
+  const AddNewBookCard(
+      {super.key, required this.userId, required this.username});
 
   @override
   AddNewBookCardState createState() => AddNewBookCardState();
@@ -13,7 +17,15 @@ class AddNewBookCardState extends State<AddNewBookCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          Navigator.pushNamed(context, '/bookingone');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BookingPageOne(
+                username: widget.username,
+                userId: widget.userId,
+              ),
+            ),
+          );
         },
         child: Center(
           child: Container(
@@ -22,14 +34,14 @@ class AddNewBookCardState extends State<AddNewBookCard> {
             decoration: BoxDecoration(
               gradient: const LinearGradient(
                 colors: [
-                  AppColors.orange, 
-                  Color.fromARGB(255, 250, 184, 97), 
-                  Color.fromARGB(255, 255, 203, 134), 
+                  AppColors.orange,
+                  Color.fromARGB(255, 250, 184, 97),
+                  Color.fromARGB(255, 255, 203, 134),
                 ],
-                begin: Alignment.topLeft, 
-                end: Alignment.bottomRight, 
-                stops: [0.0, 0.7, 1.0], 
-                tileMode: TileMode.clamp, 
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                stops: [0.0, 0.7, 1.0],
+                tileMode: TileMode.clamp,
               ),
               borderRadius: BorderRadius.circular(10),
             ),

@@ -52,12 +52,39 @@ class GetAllMsBookData {
     this.baseOutput,
   });
 
-  
   factory GetAllMsBookData.fromJson(Map<String, dynamic> json) {
     return GetAllMsBookData(
-      data: List<MsBook>.from(
-          json["Data"].map((x) => MsBook.fromJson(x))),
+      data: List<MsBook>.from(json["Data"].map((x) => MsBook.fromJson(x))),
       baseOutput: BaseOutput.fromJson(json['BaseOutput']),
     );
+  }
+}
+
+class ScanOnGoingRequestDTO {
+  final String userID;
+  final String bookingID;
+
+  ScanOnGoingRequestDTO({required this.userID, required this.bookingID});
+
+  factory ScanOnGoingRequestDTO.toJson(Map<String, dynamic> json) {
+    return ScanOnGoingRequestDTO(
+        userID: json['UserID'], bookingID: json['BookingID']);
+  }
+}
+
+class ScanOnGoingResponseDTO {
+  final String userID;
+  final String bookingID;
+
+  ScanOnGoingResponseDTO({
+    required this.userID,
+    required this.bookingID,
+  });
+
+  Map<String, dynamic> fromJson() {
+    return {
+      'UserID': userID,
+      'BookingID': bookingID,
+    };
   }
 }

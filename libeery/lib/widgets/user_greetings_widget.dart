@@ -19,7 +19,8 @@ class GreetUser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: Spacing.large, bottom: Spacing.medium),
+      padding:
+          const EdgeInsets.only(left: Spacing.large, bottom: Spacing.medium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
