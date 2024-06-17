@@ -1,9 +1,18 @@
-import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/material.dart';
 import 'package:libeery/widgets/camera_permission.dart';
 
 class CheckInScreen extends StatefulWidget {
-  const CheckInScreen({super.key});
+  final String userID;
+  final String bookingID;
+  final VoidCallback onCheckInSuccess;
+
+  const CheckInScreen({
+    Key? key,
+    required this.userID,
+    required this.bookingID,
+    required this.onCheckInSuccess,
+  }) : super(key: key);
 
   @override
   CheckInScreenState createState() => CheckInScreenState();
@@ -23,7 +32,7 @@ class CheckInScreenState extends State<CheckInScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: 300, // Sesuaikan ukuran lebar container
+              width: 300,
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -83,8 +92,8 @@ class CheckInScreenState extends State<CheckInScreen> {
                   ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).pop();
-                      _showCameraPermissionPopup(
-                          context); // Show pop up selanjutnya
+                      widget.onCheckInSuccess(); // Notify check-in success
+                      _showCameraPermissionPopup(context);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFF18700),
@@ -144,7 +153,10 @@ class CheckInScreenState extends State<CheckInScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return const CameraPermissionPopup();
+        return CameraPermissionPopup(
+          bookingID: widget.bookingID,
+          userID: widget.userID,
+        );
       },
     );
   }
