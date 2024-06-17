@@ -5,6 +5,7 @@ import 'package:libeery/pages/books_page.dart';
 import 'package:libeery/pages/check_in_page.dart';
 import 'package:libeery/pages/check_out_page.dart';
 import 'package:libeery/pages/profile_page.dart';
+import 'package:libeery/providers/all_provider.dart';
 import 'package:libeery/services/msuser_service.dart';
 import 'package:libeery/services/mssession_service.dart';
 import 'package:libeery/styles/style.dart';
@@ -16,6 +17,7 @@ import 'package:libeery/widgets/check_in_success_popup.dart';
 import 'package:libeery/widgets/no_session_booked_widget.dart';
 import 'package:libeery/widgets/user_greetings_widget.dart';
 import 'package:libeery/widgets/navbar_widget.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   final String userId;
@@ -37,7 +39,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late AllUserBookedSession booked = AllUserBookedSession();
-  // late AllUserBookedSession booked;
   List<MsSession> sessions = [];
   bool isLoading = true;
   int _selectedIndex = 0;
@@ -50,15 +51,21 @@ class _HomePageState extends State<HomePage> {
     _loadData();
   }
 
-  void _checkIn(BuildContext context) async {
-    // Tampilkan dialog check-in
+  void _checkIn(BuildContext context, String userID, String bookingID) async {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return const CheckInScreen();
+        return CheckInScreen(
+          userID: userID,
+          bookingID: bookingID,
+          onCheckInSuccess: () {
+            setState(() {
+              isSessionStarted = true;
+            });
+          },
+        );
       },
     ).then((value) {
-      // Jika check-in berhasil, perbarui state
       if (value != null && value) {
         setState(() {
           isSessionStarted = true;
@@ -67,15 +74,16 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void _checkOut(BuildContext context) async {
-    // Tampilkan dialog checkout
+  void _checkOut(BuildContext context, String userID, String bookingID) async {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return const CheckOutScreen();
+        return CheckOutScreen(
+          userID: userID,
+          bookingID: bookingID,
+        );
       },
     ).then((value) {
-      // Jika checkout berhasil, perbarui state
       if (value != null && value) {
         setState(() {
           isSessionStarted = false;
@@ -86,8 +94,10 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _loadData() async {
     try {
+      final bookingIdProvider =
+          Provider.of<BookingIdProvider>(context, listen: false);
       booked = await MsUserService().usersBookedSessions(widget.userId);
-
+      bookingIdProvider.bookingId = booked.data?.first.bookingID ?? "";
       final loadedSessions = await MsSessionService.getSessionfromAPI();
       setState(() {
         sessions = loadedSessions;
@@ -95,7 +105,6 @@ class _HomePageState extends State<HomePage> {
       });
     } catch (e) {
       print('Error loading data: $e');
-      // Handle error loading data
     }
   }
 
@@ -237,13 +246,29 @@ class _HomePageState extends State<HomePage> {
                                             Column(
                                               children: [
                                                 OngoingSession(
+                                                  userID: widget.userId,
                                                   loker: i.lokerID!,
-                                                  periode: getSessionTime(i
-                                                          .sessionID ??
-                                                      -1), // Handle null sessionID
+                                                  periode: getSessionTime(
+                                                      i.sessionID ?? -1),
                                                   startSession:
                                                       getSessionStartDateTime(
                                                           i.sessionID ?? -1),
+                                                  bookingID: i.bookingID!,
+                                                  // isCheckedIn: isSessionStarted,
+                                                  onCheckIn: () {
+                                                    _checkIn(
+                                                      context,
+                                                      widget.userId,
+                                                      i.bookingID!,
+                                                    );
+                                                  },
+                                                  onCheckOut: () {
+                                                    _checkOut(
+                                                      context,
+                                                      widget.userId,
+                                                      i.bookingID!,
+                                                    );
+                                                  },
                                                 ),
                                                 const SizedBox(
                                                     height: Spacing.small),

@@ -7,13 +7,16 @@ import 'package:libeery/pages/home_page.dart';
 import 'package:libeery/pages/login_form_page.dart';
 import 'package:libeery/pages/login_page.dart';
 import 'package:libeery/pages/splashscreen_page.dart';
+import 'package:libeery/providers/all_provider.dart';
 import 'package:libeery/widgets/login_mhs_form_widget.dart';
 import 'package:libeery/widgets/login_staff_form_widget.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   initializeDateFormatting('id', null).then((_) {
-    runApp(const MyApp());
+    runApp(ChangeNotifierProvider(
+        create: (context) => BookingIdProvider(), child: const MyApp()));
   });
 }
 

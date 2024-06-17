@@ -29,8 +29,7 @@ class ChooseLoginWidgetState extends State<ChooseLoginWidget> {
           style: TextStyle(
               fontSize: FontSizes.subtitle,
               fontWeight: FontWeights.bold,
-              color: AppColors.black
-          ),
+              color: AppColors.black),
         ),
         const SizedBox(height: Spacing.small),
         const Text(
@@ -68,15 +67,15 @@ class ChooseLoginWidgetState extends State<ChooseLoginWidget> {
         ),
         const SizedBox(height: Spacing.large),
         SizedBox(
-          width: double.infinity, 
+          width: double.infinity,
           child: ElevatedButton(
             onPressed: () => _navigateToLogin(context),
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.orange, // Button color
+              backgroundColor: AppColors.orange,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10), // Button corner radius
+                borderRadius: BorderRadius.circular(10),
               ),
-              padding: const EdgeInsets.symmetric(horizontal: Spacing.small), // Button padding
+              padding: const EdgeInsets.symmetric(horizontal: Spacing.small),
             ),
             child: const Text('Pilih', style: TextStyle(color: Colors.white)),
           ),
