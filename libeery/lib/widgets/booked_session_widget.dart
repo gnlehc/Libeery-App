@@ -1,26 +1,85 @@
 import 'package:flutter/material.dart';
+import 'package:libeery/pages/check_in_page.dart';
+import 'package:libeery/pages/check_out_page.dart';
 import 'package:libeery/styles/style.dart';
 
-class OngoingSession extends StatelessWidget {
+class OngoingSession extends StatefulWidget {
   final int loker;
   final String periode;
   final DateTime startSession;
-  const OngoingSession({super.key, required this.loker, required this.periode, required this.startSession});
+  final String userID;
+  final String bookingID;
+  final VoidCallback onCheckIn;
+  final VoidCallback onCheckOut;
 
-  bool isSessionStart (DateTime now, DateTime startSession){
+  const OngoingSession({
+    Key? key,
+    required this.loker,
+    required this.periode,
+    required this.startSession,
+    required this.userID,
+    required this.bookingID,
+    required this.onCheckIn,
+    required this.onCheckOut,
+  }) : super(key: key);
+
+  @override
+  _OngoingSessionState createState() => _OngoingSessionState();
+}
+
+class _OngoingSessionState extends State<OngoingSession> {
+  bool isCheckedIn = false;
+
+  bool isSessionStart(DateTime now, DateTime startSession) {
     int nowHour = now.hour;
     int sessionHour = startSession.hour;
 
-    if(nowHour < sessionHour){
-      return false;
-    }else{
-      return true;
-    }
+    return nowHour >= sessionHour;
+  }
+
+  void _showCheckInPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CheckInScreen(
+          userID: widget.userID,
+          bookingID: widget.bookingID,
+          onCheckInSuccess: () {
+            setState(() {
+              isCheckedIn = true;
+            });
+            widget.onCheckIn();
+          },
+        );
+      },
+    );
+  }
+
+  void _showCheckOutPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CheckOutScreen(
+          userID: widget.userID,
+          bookingID: widget.bookingID,
+        );
+      },
+    ).then((value) {
+      if (value != null && value) {
+        // Handle any state update after check-out (if needed)
+        setState(() {
+          isCheckedIn = false;
+        });
+        widget.onCheckOut(); // Notify parent of check-out
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final bool isSessionStarted = isSessionStart(DateTime.now(), startSession);
+    final bool isSessionStarted =
+        isSessionStart(DateTime.now(), widget.startSession);
+
     return Container(
       decoration: BoxDecoration(
         color: isSessionStarted ? null : AppColors.lightGray,
@@ -33,7 +92,7 @@ class OngoingSession extends StatelessWidget {
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                stops: [0.0, 0.5, 1.0], 
+                stops: [0.0, 0.5, 1.0],
                 tileMode: TileMode.clamp,
               )
             : null,
@@ -48,38 +107,78 @@ class OngoingSession extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             RichText(
-                text: TextSpan(children: [
+              text: TextSpan(children: [
                 TextSpan(
                   text: "Lokermu: ",
                   style: TextStyle(
-                    fontSize: FontSizes.medium, 
-                    fontFamily: "Montserrat", 
-                    color: isSessionStarted ? AppColors.white : AppColors.oldGray,
+                    fontSize: FontSizes.medium,
+                    fontFamily: "Montserrat",
+                    color:
+                        isSessionStarted ? AppColors.white : AppColors.oldGray,
                   ),
                 ),
                 TextSpan(
-                  text: '$loker',
+                  text: '${widget.loker}',
                   style: TextStyle(
-                      fontWeight: FontWeights.bold,
-                      fontSize: FontSizes.subtitle,
-                      fontFamily: "Montserrat",
-                      color: isSessionStarted ? AppColors.white : AppColors.oldGray),
-                )
-            ])),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: "Periode: ",
-                style: TextStyle(fontSize: FontSizes.medium, fontFamily: "Montserrat", color: isSessionStarted ? AppColors.white : AppColors.oldGray),
-              ),
-              TextSpan(
-                text: '$periode',
-                style: TextStyle(
                     fontWeight: FontWeights.bold,
                     fontSize: FontSizes.subtitle,
-                    fontFamily: "Montserrat", color: isSessionStarted ? AppColors.white : AppColors.oldGray),
-              )
-            ])),
+                    fontFamily: "Montserrat",
+                    color:
+                        isSessionStarted ? AppColors.white : AppColors.oldGray,
+                  ),
+                )
+              ]),
+            ),
+            RichText(
+              text: TextSpan(children: [
+                TextSpan(
+                  text: "Periode: ",
+                  style: TextStyle(
+                    fontSize: FontSizes.medium,
+                    fontFamily: "Montserrat",
+                    color:
+                        isSessionStarted ? AppColors.white : AppColors.oldGray,
+                  ),
+                ),
+                TextSpan(
+                  text: '${widget.periode}',
+                  style: TextStyle(
+                    fontWeight: FontWeights.bold,
+                    fontSize: FontSizes.subtitle,
+                    fontFamily: "Montserrat",
+                    color:
+                        isSessionStarted ? AppColors.white : AppColors.oldGray,
+                  ),
+                )
+              ]),
+            ),
+            if (isSessionStarted)
+              GestureDetector(
+                onTap: () {
+                  if (isCheckedIn) {
+                    _showCheckOutPopup(context);
+                  } else {
+                    _showCheckInPopup(context);
+                  }
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      isCheckedIn ? 'Akhiri Sesi' : 'Mulai Sesi',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 11,
+                      ),
+                    ),
+                    const Icon(
+                      Icons.chevron_right,
+                      color: Colors.white,
+                      size: 16,
+                    ),
+                  ],
+                ),
+              ),
           ],
         ),
       ),

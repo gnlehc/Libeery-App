@@ -36,9 +36,9 @@ class LoginMhsFormState extends State<LoginMhsForm> {
         const Text(
           "Halo, Binusian!",
           style: TextStyle(
-              fontSize: FontSizes.subtitle,
-              fontWeight: FontWeights.bold,
-              color: AppColors.black,
+            fontSize: FontSizes.subtitle,
+            fontWeight: FontWeights.bold,
+            color: AppColors.black,
           ),
         ),
         const SizedBox(height: Spacing.small),
@@ -59,8 +59,8 @@ class LoginMhsFormState extends State<LoginMhsForm> {
                 visible: errorMessage != null,
                 child: Container(
                   width: double.infinity,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: Spacing.small, vertical: Spacing.small),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: Spacing.small, vertical: Spacing.small),
                   margin: const EdgeInsets.symmetric(vertical: Spacing.small),
                   decoration: BoxDecoration(
                     color: Colors.red[100],
@@ -178,7 +178,7 @@ class LoginMhsFormState extends State<LoginMhsForm> {
               ),
               const SizedBox(height: Spacing.medium),
               SizedBox(
-                width: double.infinity, 
+                width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () async {
                     if (nomorIndukController.text.isNotEmpty &&
@@ -191,13 +191,11 @@ class LoginMhsFormState extends State<LoginMhsForm> {
                         );
 
                         if (response.statusCode == 200) {
-                          print('Login successful, navigating to home screen...');
-                          Navigator.of(context).pushNamed(
+                          Navigator.of(context).pushNamedAndRemoveUntil(
                             '/home',
+                            (Route<dynamic> route) => false,
                             arguments: UserArguments(
-                              response.userId!,
-                              response.username!,
-                            ),
+                                response.userId!, response.username!),
                           );
                         } else {
                           print('Login failed: ${response.message}');
@@ -221,7 +219,8 @@ class LoginMhsFormState extends State<LoginMhsForm> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    padding: const EdgeInsets.only(left: Spacing.medium, right: Spacing.medium),
+                    padding: const EdgeInsets.only(
+                        left: Spacing.medium, right: Spacing.medium),
                   ),
                   child: const Text(
                     'Masuk',
@@ -233,7 +232,6 @@ class LoginMhsFormState extends State<LoginMhsForm> {
                   ),
                 ),
               ),
-
             ],
           ),
         ),

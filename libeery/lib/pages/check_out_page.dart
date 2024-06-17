@@ -1,19 +1,26 @@
+import 'dart:convert';
 import 'dart:io';
-import 'dart:convert'; // Untuk jsonEncode
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:http/http.dart' as http;
+import 'package:libeery/widgets/check-out-success_popup.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class CheckOutScreen extends StatefulWidget {
-  const CheckOutScreen({super.key});
+  final String userID;
+  final String bookingID;
+
+  const CheckOutScreen({
+    Key? key,
+    required this.userID,
+    required this.bookingID,
+  }) : super(key: key);
 
   @override
-  CheckOutScreenState createState() => CheckOutScreenState();
+  _CheckOutScreenState createState() => _CheckOutScreenState();
 }
 
-class CheckOutScreenState extends State<CheckOutScreen> {
-  final qrKey = GlobalKey(debugLabel: 'QR');
+class _CheckOutScreenState extends State<CheckOutScreen> {
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
   Barcode? barcode;
   String result = "";
@@ -24,7 +31,6 @@ class CheckOutScreenState extends State<CheckOutScreen> {
     super.dispose();
   }
 
-  // In order to get hot reload to work we need to pause the camera if the platform is android
   @override
   void reassemble() async {
     super.reassemble();
@@ -34,29 +40,30 @@ class CheckOutScreenState extends State<CheckOutScreen> {
     controller?.resumeCamera();
   }
 
-  Future<void> _sendQRDataToBackend(
-      String userID, String bookingID, String qrData) async {
+  Future<void> _sendQRDataToBackend(String qrData) async {
+    Dio dio = Dio();
     try {
-      // Ganti URL backend sesuai dengan URL backend kita nih
-      final url = Uri.parse(
-          'https://libeery-api-development.up.railway.app/api/private/check-out');
+      final url =
+          'https://libeery-api-development.up.railway.app/api/private/check-out';
 
-      // Misalkan kita ngirim data QR ke backend dengan menggunakan metode POST
-      final response = await http.post(
+      final response = await dio.post(
         url,
-        body: jsonEncode({
-          'UserID': userID,
-          'BookingID': bookingID,
+        data: jsonEncode({
+          'UserID': widget.userID,
+          'BookingID': widget.bookingID,
           'qr_data': qrData,
         }),
-        headers: {'Content-Type': 'application/json'},
+        options: Options(
+          headers: {'Content-Type': 'application/json'},
+        ),
       );
 
-      // Respon dari backendnya
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = jsonDecode(response.body);
-        if (responseData['Message'] == "Check In Successfull") {
-          _showSnackBar('Check Out Successful');
+        final Map<String, dynamic> responseData = response.data;
+        if (responseData['Message'] == "Check Out Successful") {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          _showCheckOutSuccessPopup();
+          // _showSnackBar('Check Out Successful');
         } else {
           _showSnackBar('Unexpected response: ${responseData['Message']}');
         }
@@ -68,6 +75,15 @@ class CheckOutScreenState extends State<CheckOutScreen> {
     }
   }
 
+  void _showCheckOutSuccessPopup() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CheckOutSuccessPopUp();
+      },
+    );
+  }
+
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message)),
@@ -75,13 +91,13 @@ class CheckOutScreenState extends State<CheckOutScreen> {
   }
 
   Widget buildResult() => Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: Colors.white,
         ),
         child: Text(
-          barcode != null ? 'Result : ${barcode!.code}' : 'Scan a correct qr',
+          barcode != null ? 'Result : ${barcode!.code}' : 'Scan a correct QR',
           style: const TextStyle(
-            fontSize: 8,
+            fontSize: 16,
           ),
         ),
       );
@@ -117,7 +133,9 @@ class CheckOutScreenState extends State<CheckOutScreen> {
                       const Text(
                         'Akhiri Sesi',
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
@@ -138,10 +156,10 @@ class CheckOutScreenState extends State<CheckOutScreen> {
                   const SizedBox(height: 10),
                   const Text(
                     '1. Arahkan kameramu ke barcode yang tertera pada Circulation Area.\n'
-                    '2. Setelah melakukan scan barcode, kamu akan terhitung sudah check-in ke LKC.\n'
-                    '3. Setelah check-in, silahkan mengambil kunci loker dan memakai loker peminjamanmu.',
+                    '2. Setelah melakukan scan barcode, kamu akan terhitung sudah check-out dari LKC.\n'
+                    '3. Silahkan mengembalikan kunci loker dan meninggalkan area peminjaman.',
                     style: TextStyle(
-                      fontSize: 7,
+                      fontSize: 12,
                     ),
                     textAlign: TextAlign.justify,
                   ),
@@ -165,10 +183,8 @@ class CheckOutScreenState extends State<CheckOutScreen> {
           barcode = scanData;
           result = scanData.code!;
         });
-        const userID = "88cb5eba-2aca-4944-871a-f701e76edd1b";
-        const bookingID = "9e3876da-e850-442b-8fa0-c9c3e3fad840";
 
-        _sendQRDataToBackend(userID, bookingID, result);
+        _sendQRDataToBackend(result);
       }
     });
   }

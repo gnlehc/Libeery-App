@@ -231,13 +231,14 @@ class LoginStaffFormState extends State<LoginStaffForm> {
         passwordController.text,
       );
       if (response.statusCode == 200) {
-        print('Navigation to home screen...');
-        Navigator.of(context).pushNamed('/home',
-            arguments: UserArguments(response.userId!, response.username!));
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          '/home',
+          (Route<dynamic> route) => false,
+          arguments: UserArguments(response.userId!, response.username!),
+        );
       } else {
         setState(() {
           errorMessage = response.message;
-          print(response.message);
         });
       }
     } catch (error) {
