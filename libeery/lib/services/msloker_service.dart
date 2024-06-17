@@ -24,7 +24,7 @@ class LokerService {
 
   Future<GetAllMsLokerData> getLokerById(List<int> ids) async {
     const String baseUrl =
-        'http://10.0.2.2:8080/api/private/LokerByMultipleSessionID?session_ids=';
+        'https://libeery-api-development.up.railway.app/api/private/LokerByMultipleSessionID?session_ids=';
     final String queryString = ids.join(',');
     final String url = '$baseUrl$queryString';
 

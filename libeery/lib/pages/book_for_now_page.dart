@@ -307,8 +307,8 @@ class _BookForNowState extends State<BookForNow> {
 
                     if (endSessionTime.isBefore(startSessionTime)) {
                       setState(() {
-                        // startTime =
-                        //     TimeOfDay(hour: endSessionTime.hour - 1, minute: 0);
+                        startTime =
+                            TimeOfDay(hour: endSessionTime.hour - 1, minute: 0);
                         errorMessage = "Waktu akhir session sudah lewat";
                       });
                     } else {
@@ -350,7 +350,7 @@ class _BookForNowState extends State<BookForNow> {
                               username: widget.username,
                               userId: widget.userId,
                             ),
-                            sessionIds: const [],
+                            sessionIds: sessionIDs,
                             startSession: startSessionTime,
                             endSession: endSessionTime,
                             userId: widget.userId,
