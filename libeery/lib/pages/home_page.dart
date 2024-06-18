@@ -6,8 +6,8 @@ import 'package:libeery/pages/check_in_page.dart';
 import 'package:libeery/pages/check_out_page.dart';
 import 'package:libeery/pages/profile_page.dart';
 import 'package:libeery/providers/all_provider.dart';
-import 'package:libeery/services/msuser_service.dart';
 import 'package:libeery/services/mssession_service.dart';
+import 'package:libeery/services/msuser_service.dart';
 import 'package:libeery/styles/style.dart';
 import 'package:libeery/widgets/acara_homepage_widget.dart';
 import 'package:libeery/widgets/book_session_widget.dart';
@@ -48,7 +48,29 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _selectedIndex = widget.selectedIndex;
-    _loadData();
+    Future.delayed(Duration.zero, () {
+      _loadData();
+    });
+  }
+
+  Future<void> _loadData() async {
+    try {
+      final bookingIdProvider =
+          Provider.of<BookingIdProvider>(context, listen: false);
+      booked = await MsUserService.usersBookedSessions(widget.userId);
+      bookingIdProvider.bookingId = booked.data?.first.bookingID ?? "";
+      final loadedSessions = await MsSessionService.getSessionfromAPI();
+
+      setState(() {
+        sessions = loadedSessions;
+        isLoading = false;
+      });
+    } catch (e) {
+      e.toString();
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   void _checkIn(BuildContext context, String userID, String bookingID) async {
@@ -90,22 +112,6 @@ class _HomePageState extends State<HomePage> {
         });
       }
     });
-  }
-
-  Future<void> _loadData() async {
-    try {
-      final bookingIdProvider =
-          Provider.of<BookingIdProvider>(context, listen: false);
-      booked = await MsUserService().usersBookedSessions(widget.userId);
-      bookingIdProvider.bookingId = booked.data?.first.bookingID ?? "";
-      final loadedSessions = await MsSessionService.getSessionfromAPI();
-      setState(() {
-        sessions = loadedSessions;
-        isLoading = false;
-      });
-    } catch (e) {
-      print('Error loading data: $e');
-    }
   }
 
   // bool isValidSession(int sessionID) {
