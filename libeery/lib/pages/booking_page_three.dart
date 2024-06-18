@@ -3,6 +3,7 @@ import 'package:libeery/arguments/user_argument.dart';
 import 'package:libeery/models/msloker_model.dart';
 import 'package:libeery/services/msloker_service.dart';
 import 'package:libeery/pages/booking_page_four.dart';
+import 'package:libeery/styles/style.dart';
 
 class Loker {
   bool dipilih;
@@ -18,6 +19,7 @@ class BookingPage3 extends StatefulWidget {
   final DateTime? endSession;
   final String userId;
   final String username;
+  final String stsrc;
 
   const BookingPage3(
       {Key? key,
@@ -26,7 +28,8 @@ class BookingPage3 extends StatefulWidget {
       required this.endSession,
       required this.sessionIds,
       required this.userId,
-      required this.username})
+      required this.username,
+      required this.stsrc})
       : super(key: key);
 
   @override
@@ -41,7 +44,7 @@ class BookingPage3State extends State<BookingPage3> {
   void getLoker() async {
     LokerService lokerService = LokerService();
     try {
-      final lokerData = await lokerService.getLoker();
+      final lokerData = await lokerService.getLokerById(widget.sessionIds);
       setState(() {
         listLoker = lokerData;
         isLoading = false;
@@ -54,30 +57,11 @@ class BookingPage3State extends State<BookingPage3> {
     }
   }
 
-  // void getUserID() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   setState(() {
-  //     userID = prefs.getString('userID') ?? '';
-  //   });
-  // }
-
   @override
   void initState() {
     super.initState();
     getLoker();
-    // final UserArguments args = ModalRoute.of(context)!.settings.arguments as UserArguments;
-    // final String userId = args.userId;
   }
-
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   if (!_initialized) {
-  //     final UserArguments args = ModalRoute.of(context)!.settings.arguments as UserArguments;
-  //     final String userId = args.userId;
-  //     _initialized = true;
-  //   }
-  // }
 
   List<List<Loker>> lokerUser = List.generate(
     5,
@@ -141,9 +125,7 @@ class BookingPage3State extends State<BookingPage3> {
     // Memeriksa apakah kotak progresif harus diisi atau tidak
     bool filled = progressStatus[step - 1];
     // Warna kotak progresif berdasarkan status
-    Color color = filled
-        ? const Color.fromRGBO(241, 135, 0, 1)
-        : const Color.fromRGBO(197, 197, 197, 1);
+    Color color = filled ? AppColors.orange : AppColors.lightGray;
     return Container(
       width: 80,
       height: 4,
@@ -157,9 +139,6 @@ class BookingPage3State extends State<BookingPage3> {
 
   @override
   Widget build(BuildContext context) {
-    // final UserArguments args =
-    //           ModalRoute.of(context)!.settings.arguments as UserArguments;
-    // final String userId = args.userId;
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -170,7 +149,7 @@ class BookingPage3State extends State<BookingPage3> {
           ),
           backgroundColor: Colors.transparent,
           title: Padding(
-            padding: const EdgeInsets.only(top: 23.0),
+          padding: const EdgeInsets.only(top: Spacing.small),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -188,27 +167,30 @@ class BookingPage3State extends State<BookingPage3> {
           ),
         ),
         body: Center(
-          child: Column(
+          child: isLoading ? const CircularProgressIndicator()
+          : Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
                 height: 120,
-                padding: const EdgeInsets.symmetric(horizontal: 40),
+                padding: const EdgeInsets.symmetric(horizontal: Spacing.large),
                 child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       "Pilih Lokermu!",
                       style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w600,
+                        fontSize: FontSizes.title,
+                        fontWeight: FontWeights.bold,
+                        color: AppColors.black,
                       ),
                     ),
                     Text(
                       "Pilih loker yang ingin kamu tempati selama mengunjungi LKC Binus. Angka 1 - 5 menunjukkan letak baris loker, dimana 1 berarti baris teratas dan 5 adalah baris terbawah.",
                       style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
+                        fontSize: FontSizes.description,
+                        fontWeight: FontWeights.regular,
+                        color: AppColors.black,
                       ),
                     ),
                   ],
@@ -216,21 +198,21 @@ class BookingPage3State extends State<BookingPage3> {
               ),
               Container(
                 height: 30,
-                padding: const EdgeInsets.symmetric(horizontal: 40),
+                padding: const EdgeInsets.symmetric(horizontal: Spacing.large),
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     AvailabilityInfo(
                       information: "Tersedia",
-                      colorInfo: Color(0xff5EC762),
+                      colorInfo: AppColors.green,
                     ),
                     AvailabilityInfo(
                       information: "Tidak Tersedia",
-                      colorInfo: Color(0xffC75E5E),
+                      colorInfo: AppColors.red,
                     ),
                     AvailabilityInfo(
                       information: "Pilihanmu",
-                      colorInfo: Color(0xff0097DA),
+                      colorInfo: AppColors.blue,
                     ),
                   ],
                 ),
@@ -238,7 +220,7 @@ class BookingPage3State extends State<BookingPage3> {
               SizedBox(
                 height: 300,
                 child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    padding: const EdgeInsets.symmetric(horizontal: Spacing.large),
                     child: Row(
                       children: [
                         const SizedBox(
@@ -271,14 +253,16 @@ class BookingPage3State extends State<BookingPage3> {
                                           lockerID: 0,
                                           rowNumber: 0,
                                           columnNumber: 0,
-                                          availability: 'Active',
-                                          stsrc: ''),
+                                          availability: 'Booked',
+                                          stsrc: 'N'),
                                     );
                                   }
 
                                   Color color;
+                                  bool isBooked = false;
                                   if (loker?.availability == 'Booked') {
                                     color = const Color(0xffC75E5E);
+                                    isBooked = true;
                                   } else {
                                     if (lokerUser[rowIndex][columnIndex]
                                         .dipilih) {
@@ -289,10 +273,12 @@ class BookingPage3State extends State<BookingPage3> {
                                   }
 
                                   return GestureDetector(
-                                      onTap: () {
-                                        updateSelectedLocker(
-                                            rowIndex, columnIndex);
-                                      },
+                                      onTap: isBooked
+                                          ? null
+                                          : () {
+                                              updateSelectedLocker(
+                                                  rowIndex, columnIndex);
+                                            },
                                       child: Padding(
                                         padding: const EdgeInsets.only(
                                             top: 16.5, left: 10),
@@ -313,7 +299,7 @@ class BookingPage3State extends State<BookingPage3> {
               Container(
                 height: 60,
                 padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+                    const EdgeInsets.symmetric(vertical: Spacing.small, horizontal: Spacing.large),
                 child: Column(children: [
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -331,8 +317,8 @@ class BookingPage3State extends State<BookingPage3> {
                           ),
                       ]),
                   const Divider(
-                    thickness: 1.0,
-                    color: Color(0xff333333),
+                    thickness: 0.5,
+                    color: AppColors.black,
                   )
                 ]),
               ),
@@ -356,8 +342,7 @@ class BookingPage3State extends State<BookingPage3> {
                                     widget.startSession;
                                 DateTime? endSessionToSend = widget.endSession;
                                 // Check if startSession and endSession are null
-                                if (widget.startSession == null ||
-                                    widget.endSession == null) {
+                                if (widget.stsrc == "A") {
                                   startSessionToSend = null;
                                   endSessionToSend = null;
                                   Navigator.push(
@@ -377,6 +362,7 @@ class BookingPage3State extends State<BookingPage3> {
                                                     selectedColumn + 1)
                                             .lockerID,
                                         userId: widget.userId,
+                                        stsrc: "A",
                                       ),
                                       settings: RouteSettings(
                                         arguments:
@@ -384,7 +370,7 @@ class BookingPage3State extends State<BookingPage3> {
                                       ),
                                     ),
                                   );
-                                } else if (widget.sessionIds.isEmpty) {
+                                } else if (widget.stsrc == "Z") {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -393,7 +379,7 @@ class BookingPage3State extends State<BookingPage3> {
                                         previousPage: widget.previousPage,
                                         startSession: widget.startSession,
                                         endSession: widget.endSession,
-                                        sessionIds: const [],
+                                        sessionIds: widget.sessionIds,
                                         lockerID: listLoker.data!
                                             .firstWhere((loker) =>
                                                 loker.rowNumber ==
@@ -402,6 +388,7 @@ class BookingPage3State extends State<BookingPage3> {
                                                     selectedColumn + 1)
                                             .lockerID,
                                         userId: widget.userId,
+                                        stsrc: "Z",
                                       ),
                                       settings: RouteSettings(
                                         arguments:
@@ -413,23 +400,41 @@ class BookingPage3State extends State<BookingPage3> {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xffF18700),
-                              fixedSize: const Size(134, 20),
+                              backgroundColor: AppColors.orange,
+                              fixedSize: const Size(140, 30),
+                              elevation: 5,
                             ),
-                            child: const Text("Selanjutnya",
-                                style: TextStyle(color: Color(0xffF1F1F1)))),
-                        TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text("Sebelumnya...",
+                            child: const Text(
+                              'Selanjutnya',
+                              style: TextStyle(
+                                fontSize: FontSizes.medium,
+                                fontWeight: FontWeights.medium,
+                                color: AppColors.white,
+                                fontFamily: 'Montserrat',
+                              ),
+                            ),
+                          ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: Spacing.small),
+                          child: Center(
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text(
+                                'Sebelumnya..',
                                 style: TextStyle(
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.w400,
+                                  fontFamily: 'Montserrat',
+                                  fontSize: FontSizes.description,
+                                  fontWeight: FontWeights.regular,
                                   decoration: TextDecoration.underline,
-                                  color: Color.fromRGBO(141, 141, 141, 1),
                                   decorationThickness: 0.2,
-                                )))
+                                  color: AppColors.oldGray,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       ])),
             ],
           ),

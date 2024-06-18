@@ -212,6 +212,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    booked.data?.sort((a, b) => getSessionStartDateTime(a.sessionID ?? -1).compareTo(getSessionStartDateTime(b.sessionID ?? -1)));
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -236,8 +237,8 @@ class _HomePageState extends State<HomePage> {
                           constraints:
                               booked.data == null || booked.data!.isEmpty
                                   ? const BoxConstraints()
-                                  : BoxConstraints(
-                                      maxHeight: 250.0 * booked.data!.length),
+                                  : const BoxConstraints(
+                                      maxHeight: 220),
                           child: isLoading
                               ? const Center(
                                   child: SizedBox(

@@ -38,9 +38,10 @@ class GetAllMsLokerData {
   
   factory GetAllMsLokerData.fromJson(Map<String, dynamic> json) {
     return GetAllMsLokerData(
-      data: List<MsLoker>.from(
-          json["Data"].map((x) => MsLoker.fromJson(x))),
-      baseOutput: BaseOutput.fromJson(json['BaseOutput']),
+      data: List<MsLoker>.from(json["data"].map((x) => MsLoker.fromJson(x))),
+        baseOutput: BaseOutput(
+            message: json["baseOutput"]['message'],
+            statusCode: json["baseOutput"]['statusCode']),
     );
   }
 }

@@ -28,8 +28,8 @@ class _BookingPageOneState extends State<BookingPageOne> {
   Color color3 = const Color.fromRGBO(241, 135, 0, 1);
   Color color4 = const Color.fromRGBO(197, 197, 197, 1);
 
-  Color cardColor1 = const Color.fromRGBO(217, 217, 217, 1);
-  Color cardColor2 = const Color.fromRGBO(217, 217, 217, 1);
+  Color cardColor1 = AppColors.white;
+  Color cardColor2 = AppColors.white;
 
   Color textCard1 = const Color.fromRGBO(51, 51, 51, 1);
   Color textCard2 = const Color.fromRGBO(51, 51, 51, 1);

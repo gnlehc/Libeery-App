@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:libeery/styles/style.dart';
 import 'package:libeery/widgets/check_in_success_popup.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:dio/dio.dart';
@@ -130,11 +131,11 @@ class CameraPermissionPopupState extends State<CameraPermissionPopup> {
                       const Text(
                         'Mulai Sesi',
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                            fontSize: FontSizes.subtitle, fontWeight: FontWeights.bold, color: AppColors.black),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: Spacing.medium),
                   SizedBox(
                     width: 222,
                     height: 259,
@@ -151,7 +152,7 @@ class CameraPermissionPopupState extends State<CameraPermissionPopup> {
                     '1. Arahkan kameramu ke barcode yang tertera pada Circulation Area.\n'
                     '2. Setelah melakukan scan barcode, kamu akan terhitung sudah check-in ke LKC.\n'
                     '3. Setelah check-in, silahkan mengambil kunci loker dan memakai loker peminjamanmu.',
-                    style: TextStyle(fontSize: 7),
+                    style: TextStyle(fontSize: 10),
                     textAlign: TextAlign.justify,
                   ),
                 ],

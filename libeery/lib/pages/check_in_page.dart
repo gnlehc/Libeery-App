@@ -1,5 +1,6 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:libeery/styles/style.dart';
 import 'package:libeery/widgets/camera_permission.dart';
 
 class CheckInScreen extends StatefulWidget {
@@ -49,11 +50,13 @@ class CheckInScreenState extends State<CheckInScreen> {
                       const Text(
                         'Mulai Sesi',
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                            fontSize: FontSizes.subtitle, 
+                            fontWeight: FontWeights.bold,
+                            color: AppColors.black),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: Spacing.medium),
                   Center(
                     child: SizedBox(
                       width: 260,
@@ -75,13 +78,13 @@ class CheckInScreenState extends State<CheckInScreen> {
                             Text(
                               'Izinkan Akses Kamera',
                               style: TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.w600),
+                                  fontSize: FontSizes.medium, fontWeight: FontWeights.bold, color: AppColors.black),
                             ),
                             SizedBox(height: 5),
                             Text(
                               'Untuk melakukan checkout, kami memerlukan servis kameramu untuk dapat memindai barcode tertera',
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 10),
+                              style: TextStyle(fontSize: FontSizes.description, fontWeight: FontWeights.regular, color: AppColors.black),
                             ),
                           ],
                         ),
@@ -108,8 +111,9 @@ class CheckInScreenState extends State<CheckInScreen> {
                         child: Text(
                           'Berikan Izin Akses Kamera',
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 11.57,
+                            color: AppColors.white,
+                            fontSize: FontSizes.description,
+                            fontWeight: FontWeights.medium
                           ),
                         ),
                       ),
@@ -133,8 +137,9 @@ class CheckInScreenState extends State<CheckInScreen> {
                         child: const Text(
                           'Batalkan Sesi',
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 9.28,
+                            color: AppColors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeights.medium,
                           ),
                         ),
                       ),

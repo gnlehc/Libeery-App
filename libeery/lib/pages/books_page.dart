@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libeery/models/msbooks_model.dart';
+import 'package:libeery/pages/profile_page.dart';
 import 'package:libeery/services/msbooks_service.dart';
 import 'package:libeery/pages/home_page.dart';
 import 'package:libeery/styles/style.dart';
@@ -65,7 +66,15 @@ class _BooksPageState extends State<BooksPage> {
     } else if (_selectedIndex == 1) {
       // stay on this page
     } else if (_selectedIndex == 2) {
-      // Navigate to Profile Page
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProfilePage(
+            userId: widget.userId!,
+            selectedIndex: 1,
+          ),
+        ),
+      );
     }
   }
 
