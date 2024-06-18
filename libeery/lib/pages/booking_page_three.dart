@@ -19,6 +19,7 @@ class BookingPage3 extends StatefulWidget {
   final DateTime? endSession;
   final String userId;
   final String username;
+  final String stsrc;
 
   const BookingPage3(
       {Key? key,
@@ -27,7 +28,8 @@ class BookingPage3 extends StatefulWidget {
       required this.endSession,
       required this.sessionIds,
       required this.userId,
-      required this.username})
+      required this.username,
+      required this.stsrc})
       : super(key: key);
 
   @override
@@ -340,8 +342,7 @@ class BookingPage3State extends State<BookingPage3> {
                                     widget.startSession;
                                 DateTime? endSessionToSend = widget.endSession;
                                 // Check if startSession and endSession are null
-                                if (widget.startSession == null ||
-                                    widget.endSession == null) {
+                                if (widget.stsrc == "A") {
                                   startSessionToSend = null;
                                   endSessionToSend = null;
                                   Navigator.push(
@@ -361,6 +362,7 @@ class BookingPage3State extends State<BookingPage3> {
                                                     selectedColumn + 1)
                                             .lockerID,
                                         userId: widget.userId,
+                                        stsrc: "A",
                                       ),
                                       settings: RouteSettings(
                                         arguments:
@@ -368,7 +370,7 @@ class BookingPage3State extends State<BookingPage3> {
                                       ),
                                     ),
                                   );
-                                } else if (widget.sessionIds.isEmpty) {
+                                } else if (widget.stsrc == "Z") {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -377,7 +379,7 @@ class BookingPage3State extends State<BookingPage3> {
                                         previousPage: widget.previousPage,
                                         startSession: widget.startSession,
                                         endSession: widget.endSession,
-                                        sessionIds: const [],
+                                        sessionIds: widget.sessionIds,
                                         lockerID: listLoker.data!
                                             .firstWhere((loker) =>
                                                 loker.rowNumber ==
@@ -386,6 +388,7 @@ class BookingPage3State extends State<BookingPage3> {
                                                     selectedColumn + 1)
                                             .lockerID,
                                         userId: widget.userId,
+                                        stsrc: "Z",
                                       ),
                                       settings: RouteSettings(
                                         arguments:

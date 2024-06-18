@@ -57,6 +57,7 @@ class BookingPage4 extends StatefulWidget {
   final DateTime? startSession;
   final DateTime? endSession;
   final String username;
+  final String stsrc;
 
   const BookingPage4(
       {Key? key,
@@ -66,7 +67,8 @@ class BookingPage4 extends StatefulWidget {
       required this.userId,
       required this.startSession,
       required this.endSession,
-      required this.username})
+      required this.username,
+      required this.stsrc})
       : super(key: key);
 
   @override
@@ -373,8 +375,7 @@ class _BookingPage4State extends State<BookingPage4> {
                           ),
                         ),
                       ),
-                      if (widget.startSession != null &&
-                          widget.endSession != null) ...[
+                      if (widget.stsrc == "A") ...[
                         Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Row(

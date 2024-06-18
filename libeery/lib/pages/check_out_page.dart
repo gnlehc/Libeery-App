@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:libeery/styles/style.dart';
 import 'package:libeery/widgets/check-out-success_popup.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -133,8 +134,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                       const Text(
                         'Akhiri Sesi',
                         style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                          fontSize: FontSizes.subtitle,
+                          fontWeight: FontWeights.bold,
+                          color: AppColors.black,
                         ),
                       ),
                     ],
@@ -152,14 +154,12 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  buildResult(),
-                  const SizedBox(height: 10),
                   const Text(
                     '1. Arahkan kameramu ke barcode yang tertera pada Circulation Area.\n'
                     '2. Setelah melakukan scan barcode, kamu akan terhitung sudah check-out dari LKC.\n'
                     '3. Silahkan mengembalikan kunci loker dan meninggalkan area peminjaman.',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 10,
                     ),
                     textAlign: TextAlign.justify,
                   ),

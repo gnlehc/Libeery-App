@@ -330,10 +330,6 @@ class _HomePageState extends State<HomePage> {
         selectedIndex: _selectedIndex,
         onItemTapped: _onItemTapped,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showCheckInSuccessDialog,
-        child: const Icon(Icons.check),
-      ),
     );
   }
 }
