@@ -59,96 +59,99 @@ class AcaraCard extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text("SEMINAR",
-                      style: TextStyle(
-                          color: AppColors.orange,
-                          fontSize: FontSizes.description,
-                          fontWeight: FontWeights.medium)),
-                  const SizedBox(height: 5.0),
-                  SizedBox(
-                    width: cardWidth * 0.6,
-                    child: Text(
-                      acara.acaraName,
-                      style: const TextStyle(
-                        color: AppColors.black,
-                        fontSize: FontSizes.description,
-                        fontWeight: FontWeights.bold,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      softWrap: false,
-                    ),
-                  ),
-                  const SizedBox(height: Spacing.small),
-                  const Text("TIME & DATE",
-                      style: TextStyle(
-                          color: AppColors.orange,
-                          fontSize: FontSizes.description,
-                          fontWeight: FontWeights.medium)),
-                  const SizedBox(height: 5.0),
-                  Row(
-                    children: [
-                      const Icon(Icons.date_range,
-                          color: AppColors.blue, size: FontSizes.description),
-                      const SizedBox(width: 5.0),
-                      Text(dateFormat.format(acara.acaraDate),
-                          // formatDateTime(acara.acaraDate.toString()),
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontSize: FontSizes.description,
-                              fontWeight: FontWeights.medium)),
-                    ],
-                  ),
-                  const SizedBox(height: Spacing.small),
-                  Row(
-                    children: [
-                      const Icon(Icons.access_time,
-                          color: Color(0xFF0097DA), size: FontSizes.description),
-                      const SizedBox(width: 5.0),
-                      Text(
-                          formatTimeRange(acara.acaraStartTime.toString(),
-                              acara.acaraEndTime.toString()),
-                          style: const TextStyle(
-                              color: AppColors.black,
-                              fontSize: FontSizes.description,
-                              fontWeight: FontWeights.medium)),
-                    ],
-                  ),
-                  const SizedBox(height: Spacing.medium),
-                  Center(
-                    child: GestureDetector(
-                      onTap: _launchGoogleForm,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 5, horizontal: 25),
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [AppColors.orange, Color(0xFFF8C17B)],
-                          ),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: const Text(
-                          'Join here',
-                          style: TextStyle(
-                            color: AppColors.white,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("SEMINAR",
+                        style: TextStyle(
+                            color: AppColors.orange,
                             fontSize: FontSizes.description,
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeights.bold,
+                            fontWeight: FontWeights.medium)),
+                    const SizedBox(height: 5.0),
+                    SizedBox(
+                      width: cardWidth * 0.6,
+                      child: Text(
+                        acara.acaraName,
+                        style: const TextStyle(
+                          color: AppColors.black,
+                          fontSize: FontSizes.description,
+                          fontWeight: FontWeights.bold,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
+                      ),
+                    ),
+                    const SizedBox(height: Spacing.small),
+                    const Text("TIME & DATE",
+                        style: TextStyle(
+                            color: AppColors.orange,
+                            fontSize: FontSizes.description,
+                            fontWeight: FontWeights.medium)),
+                    const SizedBox(height: 5.0),
+                    Row(
+                      children: [
+                        const Icon(Icons.date_range,
+                            color: AppColors.blue, size: FontSizes.description),
+                        const SizedBox(width: 5.0),
+                        Text(dateFormat.format(acara.acaraDate),
+                            // formatDateTime(acara.acaraDate.toString()),
+                            style: const TextStyle(
+                                color: AppColors.black,
+                                fontSize: FontSizes.description,
+                                fontWeight: FontWeights.medium)),
+                      ],
+                    ),
+                    const SizedBox(height: Spacing.small),
+                    Row(
+                      children: [
+                        const Icon(Icons.access_time,
+                            color: Color(0xFF0097DA),
+                            size: FontSizes.description),
+                        const SizedBox(width: 5.0),
+                        Text(
+                            formatTimeRange(acara.acaraStartTime.toString(),
+                                acara.acaraEndTime.toString()),
+                            style: const TextStyle(
+                                color: AppColors.black,
+                                fontSize: FontSizes.description,
+                                fontWeight: FontWeights.medium)),
+                      ],
+                    ),
+                    const SizedBox(height: Spacing.small),
+                    Center(
+                      child: GestureDetector(
+                        onTap: _launchGoogleForm,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 25),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [AppColors.orange, Color(0xFFF8C17B)],
+                            ),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: const Text(
+                            'Join here',
+                            style: TextStyle(
+                              color: AppColors.white,
+                              fontSize: FontSizes.description,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeights.bold,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
-            ),
+            )
           ],
         ),
       ),
