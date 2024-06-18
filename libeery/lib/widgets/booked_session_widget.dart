@@ -66,11 +66,10 @@ class _OngoingSessionState extends State<OngoingSession> {
       },
     ).then((value) {
       if (value != null && value) {
-        // Handle any state update after check-out (if needed)
         setState(() {
           isCheckedIn = false;
         });
-        widget.onCheckOut(); // Notify parent of check-out
+        widget.onCheckOut();
       }
     });
   }
