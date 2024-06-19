@@ -81,7 +81,7 @@ class _BookingPage4State extends State<BookingPage4> {
   late List<MsSession> sessions = [];
   List<DateTime> startSessions = [];
   List<DateTime> endSessions = [];
-  // AllUserBookedSession? _userBookedSessions; // Updated to use AllUserBookedSession
+  // AllUserBookedSession? _userBookedSessions;
 
   @override
   void initState() {
@@ -241,9 +241,7 @@ class _BookingPage4State extends State<BookingPage4> {
   }
 
   Widget buildProgressIndicator(int step) {
-    // Memeriksa apakah kotak progresif harus diisi atau tidak
     bool filled = progressStatus[step - 1];
-    // Warna kotak progresif berdasarkan status
     Color color = filled ? AppColors.orange : AppColors.lightGray;
     return Container(
       width: 80,
@@ -343,18 +341,16 @@ class _BookingPage4State extends State<BookingPage4> {
                             const Text(
                               'Loker yang dipilih ',
                               style: TextStyle(
-                                fontSize: FontSizes.medium,
-                                fontWeight: FontWeights.regular,
-                                color: AppColors.black
-                              ),
+                                  fontSize: FontSizes.medium,
+                                  fontWeight: FontWeights.regular,
+                                  color: AppColors.black),
                             ),
                             Text(
                               '${widget.lockerID}',
                               style: const TextStyle(
-                                fontSize: FontSizes.medium,
-                                fontWeight: FontWeights.medium,
-                                color: AppColors.black
-                              ),
+                                  fontSize: FontSizes.medium,
+                                  fontWeight: FontWeights.medium,
+                                  color: AppColors.black),
                             ),
                           ],
                         ),
@@ -369,10 +365,9 @@ class _BookingPage4State extends State<BookingPage4> {
                           'Waktu Kunjungan',
                           textAlign: TextAlign.left,
                           style: TextStyle(
-                            fontSize: FontSizes.medium,
-                            fontWeight: FontWeights.regular,
-                            color: AppColors.black
-                          ),
+                              fontSize: FontSizes.medium,
+                              fontWeight: FontWeights.regular,
+                              color: AppColors.black),
                         ),
                       ),
                       if (widget.stsrc == "A") ...[
@@ -416,19 +411,17 @@ class _BookingPage4State extends State<BookingPage4> {
                                   Text(
                                     '${DateFormat.Hm().format(slot.startTime)} - ${DateFormat.Hm().format(slot.endTime)} WIB',
                                     style: const TextStyle(
-                                      fontSize: FontSizes.medium,
-                                      fontWeight: FontWeights.medium,
-                                      color: AppColors.black
-                                    ),
+                                        fontSize: FontSizes.medium,
+                                        fontWeight: FontWeights.medium,
+                                        color: AppColors.black),
                                     textAlign: TextAlign.center,
                                   ),
                                   Text(
                                     '${slot.sessions} sesi',
                                     style: const TextStyle(
-                                      fontSize: FontSizes.medium,
-                                      fontWeight: FontWeights.medium,
-                                      color: AppColors.black
-                                    ),
+                                        fontSize: FontSizes.medium,
+                                        fontWeight: FontWeights.medium,
+                                        color: AppColors.black),
                                     textAlign: TextAlign.center,
                                   ),
                                 ],
@@ -445,44 +438,46 @@ class _BookingPage4State extends State<BookingPage4> {
                       Center(
                         child: ElevatedButton(
                           onPressed: () => confirmBooking(),
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.orange,
-                                fixedSize: const Size(140, 30),
-                                elevation: 5,
-                              ),
-                              child: const Text(
-                                'Selanjutnya',
-                                style: TextStyle(
-                                  fontSize: FontSizes.medium,
-                                  fontWeight: FontWeights.medium,
-                                  color: AppColors.white,
-                                  fontFamily: 'Montserrat',
-                                ),
-                              ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.orange,
+                            fixedSize: const Size(140, 30),
+                            elevation: 5,
+                          ),
+                          child: const Text(
+                            'Selanjutnya',
+                            style: TextStyle(
+                              fontSize: FontSizes.medium,
+                              fontWeight: FontWeights.medium,
+                              color: AppColors.white,
+                              fontFamily: 'Montserrat',
                             ),
+                          ),
+                        ),
                       ),
-                      const SizedBox(height: Spacing.small,),
+                      const SizedBox(
+                        height: Spacing.small,
+                      ),
                       Padding(
-                          padding: const EdgeInsets.only(bottom: Spacing.small),
-                          child: Center(
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Text(
-                                'Sebelumnya..',
-                                style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: FontSizes.description,
-                                  fontWeight: FontWeights.regular,
-                                  decoration: TextDecoration.underline,
-                                  decorationThickness: 0.2,
-                                  color: AppColors.oldGray,
-                                ),
+                        padding: const EdgeInsets.only(bottom: Spacing.small),
+                        child: Center(
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text(
+                              'Sebelumnya..',
+                              style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontSize: FontSizes.description,
+                                fontWeight: FontWeights.regular,
+                                decoration: TextDecoration.underline,
+                                decorationThickness: 0.2,
+                                color: AppColors.oldGray,
                               ),
                             ),
                           ),
                         ),
+                      ),
                     ],
                   ),
                 ),
