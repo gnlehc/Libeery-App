@@ -72,6 +72,48 @@ class _BookForLaterState extends State<BookForLater> {
     printer: PrettyPrinter(),
     level: Level.debug,
   );
+  String getSessionTime(int sessionID) {
+    MsSession session = MsSession(
+      sessionID: -1,
+      startSession: DateTime.now(),
+      endSession: DateTime.now(),
+    );
+
+    for (var sess in sessions!) {
+      if (sess.sessionID == sessionID) {
+        session = sess;
+        break;
+      }
+    }
+
+    return parseTime(session.startSession, session.endSession);
+  }
+
+  DateTime getSessionStartDateTime(int sessionID) {
+    MsSession session = MsSession(
+      sessionID: -1,
+      startSession: DateTime.now(),
+      endSession: DateTime.now(),
+    );
+
+    for (var sess in sessions!) {
+      if (sess.sessionID == sessionID) {
+        session = sess;
+        break;
+      }
+    }
+
+    return session.startSession;
+  }
+
+  String parseTime(DateTime startTime, DateTime endTime) {
+    final String formattedStartTime =
+        '${startTime.hour.toString().padLeft(2, '0')}:${startTime.minute.toString().padLeft(2, '0')}';
+    final String formattedEndTime =
+        '${endTime.hour.toString().padLeft(2, '0')}:${endTime.minute.toString().padLeft(2, '0')}';
+
+    return '$formattedStartTime - $formattedEndTime WIB';
+  }
 
   Widget buildProgressIndicator(int step) {
     // Memeriksa apakah kotak progresif harus diisi atau tidak
@@ -319,8 +361,7 @@ class _BookForLaterState extends State<BookForLater> {
                                                                 .hour ==
                                                             endTime,
                                                     orElse: () => MsSession(
-                                                      sessionID:
-                                                          -1, // Provide default values for sessionID, startSession, and endSession
+                                                      sessionID: -1,
                                                       startSession:
                                                           DateTime.now(),
                                                       endSession:
@@ -418,6 +459,11 @@ class _BookForLaterState extends State<BookForLater> {
                       errorMessage = null;
                       if (selectedSessionIDs.isNotEmpty) {
                         logger.d('Selected sessionID: $selectedSessionIDs');
+                        DateTime startSession =
+                            getSessionStartDateTime(selectedSessionIDs.first);
+                        DateTime endSession =
+                            getSessionStartDateTime(selectedSessionIDs.last);
+                        endSession = endSession.add(const Duration(hours: 1));
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -428,8 +474,8 @@ class _BookForLaterState extends State<BookForLater> {
                                 userId: widget.userId,
                               ),
                               sessionIds: selectedSessionIDs,
-                              startSession: null,
-                              endSession: null,
+                              startSession: startSession,
+                              endSession: endSession,
                               userId: widget.userId,
                               stsrc: "A",
                             ),

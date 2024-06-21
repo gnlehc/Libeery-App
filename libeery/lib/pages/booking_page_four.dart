@@ -86,6 +86,8 @@ class _BookingPage4State extends State<BookingPage4> {
   @override
   void initState() {
     super.initState();
+    print('Start Session: ${widget.startSession}');
+    print('End Session: ${widget.endSession}');
     fetchSessions();
   }
 

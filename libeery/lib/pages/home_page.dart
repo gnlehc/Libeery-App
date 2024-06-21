@@ -114,10 +114,6 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  // bool isValidSession(int sessionID) {
-  //   return sessions.any((session) => session.sessionID == sessionID);
-  // }
-
   String getSessionTime(int sessionID) {
     MsSession session = MsSession(
       sessionID: -1,

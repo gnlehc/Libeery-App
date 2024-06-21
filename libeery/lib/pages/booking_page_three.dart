@@ -142,7 +142,6 @@ class BookingPage3State extends State<BookingPage3> {
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          // ini buat ilangin navigationUp dari navigasi bawaan emulator androidnya biar kita bisa pake icon kita sendiri
           flexibleSpace: const Image(
             image: AssetImage('assets/image/whitebackground.png'),
             fit: BoxFit.cover,
@@ -351,10 +350,11 @@ class BookingPage3State extends State<BookingPage3> {
                                         widget.startSession;
                                     DateTime? endSessionToSend =
                                         widget.endSession;
-                                    // Check if startSession and endSession are null
+                                    print('SessionID: ${widget.sessionIds}');
+                                    print(
+                                        'Start Session: ${widget.startSession}');
+                                    print('End Session: ${widget.endSession}');
                                     if (widget.stsrc == "A") {
-                                      startSessionToSend = null;
-                                      endSessionToSend = null;
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -381,6 +381,8 @@ class BookingPage3State extends State<BookingPage3> {
                                         ),
                                       );
                                     } else if (widget.stsrc == "D") {
+                                      startSessionToSend = null;
+                                      endSessionToSend = null;
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
